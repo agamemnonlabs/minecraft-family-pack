@@ -12,7 +12,7 @@ import hashlib, json, os, shutil, subprocess, sys, tempfile, zipfile
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from art import draw_blaster, saber_hilt, saber_blade, mix, hexc, blaster_3d_elements, palette_texture, LIGHTSABERS
 from sounds import swing, VARIANTS
-import undersea
+import undersea, town
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 JAVA, BEDROCK, DATA, DIST = (os.path.join(ROOT, d) for d in ("java", "bedrock", "datapack", "dist"))
@@ -242,6 +242,7 @@ def build_datapack():
     put(f"{d}/function/lightsaber_hit.mcfunction",
         f"advancement revoke @s only family:lightsaber_hit\nplaysound minecraft:{HIT_SOUND} player @a ~ ~ ~\n")
     undersea.datapack(DATA, put, give_string)
+    town.datapack(DATA, put, undersea.DIM, (undersea.HUB_X, undersea.HUB_Y, undersea.HUB_Z))
 
 def zipdir(src, dest):
     """Deterministic zip (fixed timestamps, sorted) so rebuilding unchanged content keeps the same sha1."""

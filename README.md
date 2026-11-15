@@ -19,6 +19,10 @@ Original art and sounds for our family Paper server (Minecraft 26.3, Java + Bedr
   - Admin, where a portal should go: stand there and run `/function family:portal_here` (replaces a 5x5x3
     area under your feet). `/function family:portal_remove` next to one removes its trigger.
     `/function family:portal_plaza` next to one levels a grass plaza around it (radius 8) and adds a beacon beam.
+  - **Town** (`town.py`, previews in `previews/town-*.png`): original cartoon town around the hub. Seashell,
+    coconut and watermelon houses, the Bubble Cafe (a sunken submarine), 6 empty plots for the kids, a jelly
+    meadow, streets, a welcome arch the kids can name, a bus stop and hidden light blocks.
+    Admin, once: `/function family:undersea/build_town` (loads the area, builds in 11 steps, 1 s apart).
 
 | File | Goes to |
 |---|---|
