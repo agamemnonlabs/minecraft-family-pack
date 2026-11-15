@@ -125,11 +125,6 @@ def datapack(data, put, give_string):
     put(f"{f}/effects.mcfunction", mcf(
         f"execute as @a at @s if dimension {DIM} run effect give @s minecraft:conduit_power 20 0 true",
         "schedule function family:undersea/effects 2s replace"))
-    # Run ONCE by an admin, after checking gamerules are per-dimension on this server
-    # (otherwise these would switch monsters off in the Overworld too).
-    put(f"{f}/gamerules.mcfunction", mcf(*[f"{in_sea} gamerule {r}" for r in (
-        "keep_inventory true", "spawn_monsters false", "spawner_blocks_work false", "spawn_phantoms false",
-        "spawn_patrols false", "spawn_wandering_traders false", "drowning_damage false")]))
 
     # --- portals: markers (server-only entities, invisible to all clients) mark each whirlpool.
     # A player is sent once per visit: the in_portal tag stops repeats until they leave it.
@@ -165,7 +160,10 @@ def datapack(data, put, give_string):
 
     # Hub at x=0 z=0: a lit platform 14 blocks down with an upward bubble column (soul sand) as the
     # way home. Run ONCE by an admin: family:undersea/build_hub (it loads the area first).
+    # keep_inventory: the server has it on everywhere; a new dimension may start without it.
+    # Monsters etc. stay as in the Overworld (Marv's call).
     put(f"{f}/build_hub.mcfunction", mcf(
+        f"{in_sea} gamerule keep_inventory true",
         f"{in_sea} forceload add -16 -16 15 15",
         "schedule function family:undersea/build_hub_2 3s replace"))
     y = HUB_Y
