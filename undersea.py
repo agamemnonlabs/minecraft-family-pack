@@ -8,7 +8,8 @@ from undersea_art import bubble_shell, shark_layers, shark_icon
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SEA_LEVEL = 100          # vanilla is 63: land up to y=100 is flooded, hills above it become islands
-HUB_Y = 86               # top of the hub platform at x=0 z=0, 14 blocks below the surface
+HUB_X, HUB_Y, HUB_Z = -168, 38, -144   # hub platform on the seabed of a warm (coral) ocean, measured
+                                       # on the server: arriving mid-water showed nothing but fog
 DIM = "family:undersea"
 
 SHELL = {
@@ -159,30 +160,33 @@ def datapack(data, put, give_string):
         "execute if data storage family:undersea home run return run function family:undersea/to_overworld with storage family:undersea home",
         'tellraw @s {"text": "The way home is lost. Ask a grown-up for help!", "color": "yellow"}'))
 
-    # Hub at x=0 z=0: a lit platform 14 blocks down with an upward bubble column (soul sand) as the
-    # way home. Run ONCE by an admin: family:undersea/build_hub (it loads the area first).
-    # keep_inventory: the server has it on everywhere; a new dimension may start without it.
-    # Monsters etc. stay as in the Overworld (Marv's call).
+    # Hub: a lit platform on the seabed with an upward bubble column (soul sand) as the way home.
+    # Run ONCE by an admin: family:undersea/build_hub (it loads the area first).
+    # Gamerules are per-dimension on this server and a new dimension starts with defaults:
+    # keep_inventory as everywhere else; no monsters (drowned filled all the deep, dark water).
+    hx, y, hz = HUB_X, HUB_Y, HUB_Z
+    area = f"{hx - 16} {hz - 16} {hx + 15} {hz + 15}"
     put(f"{f}/build_hub.mcfunction", mcf(
         f"{in_sea} gamerule keep_inventory true",
-        f"{in_sea} forceload add -16 -16 15 15",
+        f"{in_sea} gamerule spawn_monsters false",
+        f"{in_sea} forceload add {area}",
         "schedule function family:undersea/build_hub_2 3s replace"))
-    y = HUB_Y
+    at_hub = f"execute in {DIM} positioned {hx} {y} {hz}"
     pillars = [(px, pz) for px in (-2, 2) for pz in (-2, 2)]
     lanterns = [(lx, lz) for lx in (-5, 0, 5) for lz in (-5, 0, 5) if (lx, lz) != (0, 0)]
     put(f"{f}/build_hub_2.mcfunction", mcf(
-        f"execute in {DIM} unless loaded 0 {y} 0 run return run schedule function family:undersea/build_hub_2 2s replace",
-        f"{in_sea} fill -6 {y + 1} -6 6 {y + 8} 6 minecraft:water",
-        f"{in_sea} fill -6 {y - 1} -6 6 {y - 1} 6 minecraft:prismarine",
-        f"{in_sea} fill -5 {y} -5 5 {y} 5 minecraft:prismarine_bricks",
-        *[f"{in_sea} setblock {lx} {y} {lz} minecraft:sea_lantern" for lx, lz in lanterns],
-        f"{in_sea} setblock 0 {y} 0 minecraft:soul_sand",
-        *[f"{in_sea} fill {px} {y + 1} {pz} {px} {y + 3} {pz} minecraft:dark_prismarine" for px, pz in pillars],
-        *[f"{in_sea} setblock {px} {y + 4} {pz} minecraft:sea_lantern" for px, pz in pillars],
+        f"{at_hub} unless loaded ~ ~ ~ run return run schedule function family:undersea/build_hub_2 2s replace",
+        f"{at_hub} run fill ~-6 ~1 ~-6 ~6 ~8 ~6 minecraft:water",
+        f"{at_hub} run fill ~-6 ~-1 ~-6 ~6 ~-1 ~6 minecraft:prismarine",
+        f"{at_hub} run fill ~-5 ~ ~-5 ~5 ~ ~5 minecraft:prismarine_bricks",
+        *[f"{at_hub} run setblock ~{lx} ~ ~{lz} minecraft:sea_lantern" for lx, lz in lanterns],
+        f"{at_hub} run setblock ~ ~ ~ minecraft:soul_sand",
+        *[f"{at_hub} run fill ~{px} ~1 ~{pz} ~{px} ~3 ~{pz} minecraft:dark_prismarine" for px, pz in pillars],
+        *[f"{at_hub} run setblock ~{px} ~4 ~{pz} minecraft:sea_lantern" for px, pz in pillars],
         f"{in_sea} kill @e[type=minecraft:marker,tag=family.portal_up,distance=0..]",
-        f'{in_sea} summon minecraft:marker 0.5 {y + 1.5} 0.5 {{Tags: ["family.portal", "family.portal_up"]}}',
-        f"data modify storage family:undersea hub set value {{x: 0.5d, y: {y + 1}.0d, z: 3.5d}}",
-        f"{in_sea} forceload remove -16 -16 15 15"))
+        f'{at_hub} run summon minecraft:marker ~0.5 ~1.5 ~0.5 {{Tags: ["family.portal", "family.portal_up"]}}',
+        f"data modify storage family:undersea hub set value {{x: {hx + 0.5}d, y: {y + 1}.0d, z: {hz + 3.5}d}}",
+        f"{in_sea} forceload remove {area}"))
 
     # Overworld whirlpool, built by an admin where they stand: /function family:portal_here
     # (replaces a 5x5x3 area under their feet). /function family:portal_remove clears the trigger.

@@ -14,8 +14,8 @@ Original art and sounds for our family Paper server (Minecraft 26.3, Java + Bedr
     it takes you to the hub and back to where you left).
   - **Shark costume**: hood, suit, pants, flippers. Crafted from the diamond piece + grey dye + white dye.
     Same protection as diamond, unbreakable.
-  - Admin, once after the first start: `/function family:undersea/build_hub` (builds the hub at 0,0 and
-    turns on keep-inventory there). Monsters spawn as in the Overworld (mostly drowned underwater).
+  - Admin, once after the first start: `/function family:undersea/build_hub` (builds the hub on the
+    seabed at x -168, z -144, and sets keep-inventory on and monster spawning off in the Undersea).
   - Admin, where a portal should go: stand there and run `/function family:portal_here` (replaces a 5x5x3
     area under your feet). `/function family:portal_remove` next to one removes its trigger.
 
