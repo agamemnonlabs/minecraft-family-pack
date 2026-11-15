@@ -78,7 +78,9 @@ def build_java():
         "display": {
             "thirdperson_righthand": {"rotation": [-90, 0, -15], "translation": [2, 0.1, -3], "scale": [0.9, 0.9, 0.9]},
             "thirdperson_lefthand": {"rotation": [-90, 0, -15], "translation": [2, 0.1, -3], "scale": [0.9, 0.9, 0.9]},
-            "firstperson_righthand": {"rotation": [-90, 0, -10], "translation": [1.13, 3.2, 1.13], "scale": [0.68, 0.68, 0.68]},
+            # main hand: also cancel the game's centring of a loaded crossbow (translate -0.641864, rotate y 10)
+            # so it sits on the right like an unloaded crossbow
+            "firstperson_righthand": {"rotation": [-90, 0, -20], "translation": [12.89, 3.2, 4.82], "scale": [0.68, 0.68, 0.68]},
             "firstperson_lefthand": {"rotation": [-90, 0, -10], "translation": [1.13, 3.2, 1.13], "scale": [0.68, 0.68, 0.68]},
             "head": {"rotation": [0, 180, 0], "translation": [0, 13, 7], "scale": [1, 1, 1]}}})
     palette_texture().save(f"{a}/family/textures/item/foam_blaster_palette.png")
