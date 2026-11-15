@@ -106,7 +106,7 @@
         "components": {
           "minecraft:consumable": {
             "consume_seconds": 1.0,
-            "animation": "toot_horn"
+            "animation": "spyglass"
           },
           "minecraft:use_cooldown": {
             "seconds": 3.0,

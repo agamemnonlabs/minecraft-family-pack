@@ -76,7 +76,8 @@ def mappings():
     out = {"minecraft:nautilus_shell": [{
         "bedrock_identifier": "family:bubble_shell", "model": "family:bubble_shell",
         "bedrock_options": {"icons": {"default": "family_bubble_shell"}},
-        "components": {"minecraft:consumable": {"consume_seconds": 1.0, "animation": "toot_horn"},
+        # Geyser has no toot_horn on Bedrock (rejects the whole item); spyglass = held up to the face
+        "components": {"minecraft:consumable": {"consume_seconds": 1.0, "animation": "spyglass"},
                        "minecraft:use_cooldown": {"seconds": 3.0, "cooldown_group": "family:bubble_shell"},
                        "minecraft:max_stack_size": 1}}]}
     for piece, (base, *_rest) in SHARK.items():
