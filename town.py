@@ -101,8 +101,8 @@ def coconut(t, cx, cz):
                     else:
                         b = M + "white_concrete"
                     t.set(cx + x, y, cz + z, b)
-    for x, z in ((-1, -1), (1, -1), (0, 1)):                # the three eyes on top
-        t.v[(cx + x, 12, cz + z)] = M + "black_terracotta"
+    for x, z in ((-2, -1), (2, -1), (0, 2)):                # the three eyes, on the shell near the top
+        t.set(cx + x, 11, cz + z, M + "black_terracotta")
     for y in range(1, 5):                                   # door, flesh showing around it
         for x in range(-1, 2):
             for z in range(3, 8):
