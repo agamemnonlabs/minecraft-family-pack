@@ -5,68 +5,28 @@
       "description": {
         "identifier": "geometry.family_item",
         "texture_width": 16,
-        "texture_height": 16,
-        "visible_bounds_width": 4,
-        "visible_bounds_height": 4.5,
-        "visible_bounds_offset": [
-          0,
-          0.75,
-          0
-        ]
+        "texture_height": 16
       },
       "bones": [
         {
-          "name": "family",
-          "binding": "c.item_slot == 'head' ? 'head' : q.item_slot_to_bone_name(c.item_slot)",
-          "pivot": [
-            0,
-            8,
-            0
-          ]
-        },
-        {
-          "name": "family_x",
-          "parent": "family",
-          "pivot": [
-            0,
-            8,
-            0
-          ]
-        },
-        {
-          "name": "family_y",
-          "parent": "family_x",
-          "pivot": [
-            0,
-            8,
-            0
-          ]
-        },
-        {
-          "name": "family_z",
-          "parent": "family_y",
-          "pivot": [
-            0,
-            8,
-            0
-          ],
+          "name": "rightitem",
           "texture_meshes": [
             {
               "texture": "default",
               "position": [
-                0,
-                8,
-                0
+                4.0,
+                2.0,
+                -2.0
               ],
               "rotation": [
-                90,
-                0,
-                -180
+                0.0,
+                -135.0,
+                90.0
               ],
               "local_pivot": [
-                8,
-                0.5,
-                8
+                12.0,
+                0.0,
+                12.0
               ]
             }
           ]
