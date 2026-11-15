@@ -8,7 +8,7 @@ Run: python3 build.py   (needs Pillow and oggenc)"""
 from PIL import Image
 import hashlib, json, os, shutil, subprocess, sys, tempfile, zipfile
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from art import draw_blaster, saber_hilt, saber_blade, mix, hexc, LIGHTSABERS
+from art import draw_blaster, saber_hilt, saber_blade, mix, hexc, blaster_3d_elements, palette_texture, LIGHTSABERS
 from sounds import swing, VARIANTS
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -61,11 +61,27 @@ def build_java():
     draw_blaster(32).resize((64, 64), 0).save(f"{JAVA}/pack.png")
     a = f"{JAVA}/assets"
     os.makedirs(f"{a}/family/textures/item", exist_ok=True)
-    # blaster: parent = vanilla crossbow, so it is held exactly like the crossbow it replaces
-    put(f"{a}/family/items/foam_blaster.json", {"model": {"type": "minecraft:model", "model": "family:item/foam_blaster"}})
+    # blaster: flat picture in the inventory, on the ground and in frames; 3D model in hand
+    # (a flat picture held straight ahead can only show its top or its edge).
+    put(f"{a}/family/items/foam_blaster.json", {"model": {
+        "type": "minecraft:select", "property": "minecraft:display_context",
+        "cases": [{"when": ["gui", "ground", "fixed"], "model": {"type": "minecraft:model", "model": "family:item/foam_blaster"}}],
+        "fallback": {"type": "minecraft:model", "model": "family:item/foam_blaster_3d"}}})
     put(f"{a}/family/models/item/foam_blaster.json",
         {"parent": "minecraft:item/crossbow", "textures": {"layer0": "family:item/foam_blaster"}})
     draw_blaster(32, "left").save(f"{a}/family/textures/item/foam_blaster.png")
+    # 3D model is built barrel = +y, top = +z, so the crossbow's hand positions apply with 45 degrees
+    # added to the z rotation (the crossbow picture points at 135 degrees, the model at 90).
+    put(f"{a}/family/models/item/foam_blaster_3d.json", {
+        "textures": {"palette": "family:item/foam_blaster_palette", "particle": "family:item/foam_blaster"},
+        "elements": blaster_3d_elements(),
+        "display": {
+            "thirdperson_righthand": {"rotation": [-90, 0, -15], "translation": [2, 0.1, -3], "scale": [0.9, 0.9, 0.9]},
+            "thirdperson_lefthand": {"rotation": [-90, 0, -15], "translation": [2, 0.1, -3], "scale": [0.9, 0.9, 0.9]},
+            "firstperson_righthand": {"rotation": [-90, 0, -10], "translation": [1.13, 3.2, 1.13], "scale": [0.68, 0.68, 0.68]},
+            "firstperson_lefthand": {"rotation": [-90, 0, -10], "translation": [1.13, 3.2, 1.13], "scale": [0.68, 0.68, 0.68]},
+            "head": {"rotation": [0, 180, 0], "translation": [0, 13, 7], "scale": [1, 1, 1]}}})
+    palette_texture().save(f"{a}/family/textures/item/foam_blaster_palette.png")
     # lightsabers: hilt = normal handheld item; blade = full-bright panel (light_emission 15) on top
     for colour, (blade, hilt, _) in LIGHTSABERS.items():
         n = f"lightsaber_{colour}"

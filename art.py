@@ -137,14 +137,56 @@ def saber_blade(blade_hex, solid_halo):
                 continue                                         # flat end at the emitter
             t = min(t, 1.0)
             d = ((cx - ax - t * vx) ** 2 + (cy - ay - t * vy) ** 2) ** 0.5
-            if d <= 0.9:   p[x, y] = white
-            elif d <= 1.7: p[x, y] = mix(blade, white, 0.45)
-            elif d <= 2.6: p[x, y] = blade
-            elif d <= 3.6:
-                p[x, y] = mix(blade, white, 0.25) if solid_halo else blade[:3] + (110,)
+            if d <= 1.4:   p[x, y] = white
+            elif d <= 2.3: p[x, y] = mix(blade, white, 0.6)
+            elif d <= 3.1: p[x, y] = mix(blade, white, 0.25)
+            elif d <= 3.6: p[x, y] = blade
+            elif solid_halo:
+                if d <= 4.2: p[x, y] = mix(blade, white, 0.25)
+            elif d <= 6.0:                                       # soft halo fading out (Java can blend)
+                p[x, y] = blade[:3] + (round(170 * (1 - (d - 3.6) / 2.4) ** 1.3),)
     return img
 
 def draw_glow_saber(blade_hex, hilt_hex, solid_halo):
     img = saber_hilt(hilt_hex)
     img.alpha_composite(saber_blade(blade_hex, solid_halo))
     return img
+
+# ------------------------------------------------------- 3D foam blaster (Java in-hand model)
+# Same parts as the sprite, in sprite pixels: u = along the barrel (rear 0 -> muzzle 38),
+# v = up, w = half-thickness. Colours index PALETTE (4x4 swatches on a 16x16 texture).
+PALETTE = ["#F57A1F", "#C85A10", "#2F7BEA", "#1E4FA8", "#FFD23A", "#43434F", "#1E1E24", "#EEEEEE"]
+BLASTER_3D = [  # (u0, u1, v0, v1, w, colour)
+    (0, 2, -1, 6, 1.5, 0),        # stock butt
+    (2, 9, 4, 6, 1.5, 0),         # stock top bar
+    (2, 9, -1, 1, 1.5, 0),        # stock bottom bar
+    (8, 27, -2, 7, 2.0, 0),       # body
+    (12, 22, 1, 4, 2.2, 2),       # side panel (sticks out a little on both sides)
+    (10, 25, 7, 9, 1.5, 2),       # priming slide
+    (26, 35, 0, 6, 1.5, 0),       # barrel
+    (34, 38, -1, 7, 2.0, 2),      # muzzle
+    (37.9, 38.2, 2, 4, 0.6, 6),   # bore
+    (30, 32, 6, 8, 0.5, 2),       # front sight
+    (10.5, 15, -10, -2, 1.25, 5), # grip
+    (15, 22, -7, -6, 0.5, 4),     # trigger guard (bottom)
+    (21, 22, -7, -2, 0.5, 4),     # trigger guard (front)
+    (17.5, 18.5, -5, -2, 0.4, 6), # trigger
+    (23, 27, -8, -2, 1.5, 2),     # dart clip
+]
+
+def palette_texture():
+    img = Image.new("RGBA", (16, 16), (0, 0, 0, 0))
+    for i, c in enumerate(PALETTE):
+        ImageDraw.Draw(img).rectangle([(i % 4) * 4, (i // 4) * 4, (i % 4) * 4 + 3, (i // 4) * 4 + 3], fill=hexc(c))
+    return img
+
+def blaster_3d_elements():
+    """Model axes: x = side, y = barrel (muzzle at +y), z = top. Centred on (8, 8, 8), 0.5 units per pixel."""
+    els = []
+    for u0, u1, v0, v1, w, c in BLASTER_3D:
+        sx, sy = (c % 4) * 4, (c // 4) * 4
+        uv = [sx + 1, sy + 1, sx + 3, sy + 3]
+        els.append({"from": [8 - w / 2, 8 + (u0 - 19) / 2, 8 + (v0 + 1) / 2],
+                    "to":   [8 + w / 2, 8 + (u1 - 19) / 2, 8 + (v1 + 1) / 2],
+                    "faces": {f: {"uv": uv, "texture": "#palette"} for f in ("north", "south", "east", "west", "up", "down")}})
+    return els
