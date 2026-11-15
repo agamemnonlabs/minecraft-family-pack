@@ -18,6 +18,7 @@ Original art and sounds for our family Paper server (Minecraft 26.3, Java + Bedr
     seabed at x -168, z -144, and sets keep-inventory on and monster spawning off in the Undersea).
   - Admin, where a portal should go: stand there and run `/function family:portal_here` (replaces a 5x5x3
     area under your feet). `/function family:portal_remove` next to one removes its trigger.
+    `/function family:portal_plaza` next to one levels a grass plaza around it (radius 8) and adds a beacon beam.
 
 | File | Goes to |
 |---|---|

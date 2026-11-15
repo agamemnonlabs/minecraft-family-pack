@@ -11,6 +11,26 @@ SEA_LEVEL = 100          # vanilla is 63: land up to y=100 is flooded, hills abo
 HUB_X, HUB_Y, HUB_Z = -168, 38, -144   # hub platform on the seabed of a warm (coral) ocean, measured
                                        # on the server: arriving mid-water showed nothing but fog
 DIM = "family:undersea"
+BEAM_GLASS = "minecraft:light_blue_stained_glass"   # tints the beacon beams that mark both portal ends
+
+def disc_rows(r, hole=0):
+    """(dz, x1, x2) row segments of a disc of radius r around 0,0, minus the square |dx|,|dz| <= hole."""
+    rows = []
+    for dz in range(-int(r), int(r) + 1):
+        w = int((r * r - dz * dz) ** 0.5)
+        rows += [(dz, -w, -hole - 1), (dz, hole + 1, w)] if hole and abs(dz) <= hole else [(dz, -w, w)]
+    return [row for row in rows if row[1] <= row[2]]
+
+def disc_fill(prefix, r, hole, y1, y2, block, replace=""):
+    """fill commands for a disc (relative to the executing position), one per row segment."""
+    return [f"{prefix}fill ~{x1} ~{y1} ~{dz} ~{x2} ~{y2} ~{dz} {block}{' replace ' + replace if replace else ''}"
+            for dz, x1, x2 in disc_rows(r, hole)]
+
+def beacon(prefix, dx, dy, dz):
+    """A beacon on a hidden 3x3 iron base with blue glass on top (it gives no effect unless activated)."""
+    return [f"{prefix}fill ~{dx - 1} ~{dy - 1} ~{dz - 1} ~{dx + 1} ~{dy - 1} ~{dz + 1} minecraft:iron_block",
+            f"{prefix}setblock ~{dx} ~{dy} ~{dz} minecraft:beacon",
+            f"{prefix}setblock ~{dx} ~{dy + 1} ~{dz} {BEAM_GLASS}"]
 
 SHELL = {
     "minecraft:item_model": "family:bubble_shell",
@@ -183,6 +203,11 @@ def datapack(data, put, give_string):
         f"{at_hub} run setblock ~ ~ ~ minecraft:soul_sand",
         *[f"{at_hub} run fill ~{px} ~1 ~{pz} ~{px} ~3 ~{pz} minecraft:dark_prismarine" for px, pz in pillars],
         *[f"{at_hub} run setblock ~{px} ~4 ~{pz} minecraft:sea_lantern" for px, pz in pillars],
+        # flat sand ring out to 10 blocks so the hub stands out from the reef; beacon beam on one corner
+        *disc_fill(f"{at_hub} run ", 10.5, 6, -4, -1, "minecraft:sandstone", "#minecraft:replaceable"),
+        *disc_fill(f"{at_hub} run ", 10.5, 6, 0, 0, "minecraft:sand"),
+        *disc_fill(f"{at_hub} run ", 10.5, 6, 1, 12, "minecraft:water"),
+        *beacon(f"{at_hub} run ", 5, 0, 5),
         f"{in_sea} kill @e[type=minecraft:marker,tag=family.portal_up,distance=0..]",
         f'{at_hub} run summon minecraft:marker ~0.5 ~1.5 ~0.5 {{Tags: ["family.portal", "family.portal_up"]}}',
         f"data modify storage family:undersea hub set value {{x: {hx + 0.5}d, y: {y + 1}.0d, z: {hz + 3.5}d}}",
@@ -207,6 +232,19 @@ def datapack(data, put, give_string):
     put(f"{d}/function/portal_remove.mcfunction", mcf(
         "kill @e[type=minecraft:marker,tag=family.portal,distance=..4]",
         'tellraw @s {"text": "Whirlpool trigger removed (the blocks stay).", "color": "yellow"}'))
+    # Admin, next to an overworld whirlpool: /function family:portal_plaza levels a grass plaza
+    # (radius 8) at the rim's height and adds a beacon beam 6 blocks from the pool's centre.
+    put(f"{d}/function/portal_plaza.mcfunction", mcf(
+        "execute unless entity @e[type=minecraft:marker,tag=family.portal_down,distance=..8] run return run "
+        'tellraw @s {"text": "Stand next to a whirlpool first.", "color": "yellow"}',
+        "execute at @n[type=minecraft:marker,tag=family.portal_down,distance=..8] positioned ~ ~1.5 ~ align xyz "
+        "run function family:undersea/plaza",
+        'tellraw @s {"text": "Plaza and beacon built around the whirlpool.", "color": "aqua"}'))
+    put(f"{f}/plaza.mcfunction", mcf(        # at the pool centre, standing height (rim top is ~-1)
+        *disc_fill("", 8.5, 0, 0, 12, "minecraft:air"),
+        *disc_fill("", 8.5, 2, -11, -2, "minecraft:dirt", "#minecraft:replaceable"),
+        *disc_fill("", 8.5, 2, -1, -1, "minecraft:grass_block"),
+        *beacon("", 0, -1, 6)))
 
     # --- Bubble Shell: hold use for 1 s. The shell is used up like food, so it's handed back a tick
     # later (by then the hand slot is empty): into the empty hand, else the inventory.
