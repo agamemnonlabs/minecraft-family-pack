@@ -1,0 +1,97 @@
+{
+  "format_version": 2,
+  "items": {
+    "minecraft:crossbow": [
+      {
+        "bedrock_identifier": "family:foam_blaster",
+        "model": "family:foam_blaster",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_foam_blaster"
+          },
+          "display_handheld": true,
+          "creative_category": "equipment"
+        }
+      }
+    ],
+    "minecraft:diamond_sword": [
+      {
+        "bedrock_identifier": "family:lightsaber_blue",
+        "model": "family:lightsaber_blue",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_lightsaber_blue"
+          },
+          "display_handheld": true,
+          "creative_category": "equipment"
+        }
+      },
+      {
+        "bedrock_identifier": "family:lightsaber_red",
+        "model": "family:lightsaber_red",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_lightsaber_red"
+          },
+          "display_handheld": true,
+          "creative_category": "equipment"
+        }
+      },
+      {
+        "bedrock_identifier": "family:lightsaber_green",
+        "model": "family:lightsaber_green",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_lightsaber_green"
+          },
+          "display_handheld": true,
+          "creative_category": "equipment"
+        }
+      },
+      {
+        "bedrock_identifier": "family:lightsaber_purple",
+        "model": "family:lightsaber_purple",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_lightsaber_purple"
+          },
+          "display_handheld": true,
+          "creative_category": "equipment"
+        }
+      },
+      {
+        "bedrock_identifier": "family:lightsaber_yellow",
+        "model": "family:lightsaber_yellow",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_lightsaber_yellow"
+          },
+          "display_handheld": true,
+          "creative_category": "equipment"
+        }
+      },
+      {
+        "bedrock_identifier": "family:lightsaber_cyan",
+        "model": "family:lightsaber_cyan",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_lightsaber_cyan"
+          },
+          "display_handheld": true,
+          "creative_category": "equipment"
+        }
+      },
+      {
+        "bedrock_identifier": "family:lightsaber_orange",
+        "model": "family:lightsaber_orange",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_lightsaber_orange"
+          },
+          "display_handheld": true,
+          "creative_category": "equipment"
+        }
+      }
+    ]
+  }
+}

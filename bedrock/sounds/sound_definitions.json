@@ -1,0 +1,18 @@
+{
+  "format_version": "1.14.0",
+  "sound_definitions": {
+    "family.lightsaber_hit": {
+      "category": "player",
+      "max_distance": 16.0,
+      "sounds": [
+        "sounds/family/lightsaber/swing1",
+        "sounds/family/lightsaber/swing2",
+        "sounds/family/lightsaber/swing3",
+        "sounds/family/lightsaber/swing4",
+        "sounds/family/lightsaber/swing5",
+        "sounds/family/lightsaber/swing6",
+        "sounds/family/lightsaber/swing7"
+      ]
+    }
+  }
+}

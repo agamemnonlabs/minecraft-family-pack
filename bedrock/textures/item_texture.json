@@ -1,0 +1,30 @@
+{
+  "resource_pack_name": "family",
+  "texture_name": "atlas.items",
+  "texture_data": {
+    "family_foam_blaster": {
+      "textures": "textures/items/family_foam_blaster"
+    },
+    "family_lightsaber_blue": {
+      "textures": "textures/items/family_lightsaber_blue"
+    },
+    "family_lightsaber_red": {
+      "textures": "textures/items/family_lightsaber_red"
+    },
+    "family_lightsaber_green": {
+      "textures": "textures/items/family_lightsaber_green"
+    },
+    "family_lightsaber_purple": {
+      "textures": "textures/items/family_lightsaber_purple"
+    },
+    "family_lightsaber_yellow": {
+      "textures": "textures/items/family_lightsaber_yellow"
+    },
+    "family_lightsaber_cyan": {
+      "textures": "textures/items/family_lightsaber_cyan"
+    },
+    "family_lightsaber_orange": {
+      "textures": "textures/items/family_lightsaber_orange"
+    }
+  }
+}

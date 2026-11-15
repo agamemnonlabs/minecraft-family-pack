@@ -1,0 +1,26 @@
+{
+  "criteria": {
+    "hit": {
+      "trigger": "minecraft:player_hurt_entity",
+      "conditions": {
+        "damage": {
+          "type": {
+            "direct_entity": {
+              "minecraft:equipment": {
+                "mainhand": {
+                  "items": "minecraft:diamond_sword",
+                  "predicates": {
+                    "minecraft:custom_data": "{family_lightsaber:1b}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "rewards": {
+    "function": "family:lightsaber_hit"
+  }
+}

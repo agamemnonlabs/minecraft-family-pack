@@ -1,0 +1,25 @@
+{
+  "criteria": {
+    "has_amethyst": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:amethyst_shard"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "family:lightsaber_blue",
+      "family:lightsaber_red",
+      "family:lightsaber_green",
+      "family:lightsaber_purple",
+      "family:lightsaber_yellow",
+      "family:lightsaber_cyan",
+      "family:lightsaber_orange"
+    ]
+  }
+}

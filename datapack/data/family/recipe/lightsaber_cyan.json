@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:diamond_sword",
+    "minecraft:amethyst_shard",
+    "minecraft:cyan_dye"
+  ],
+  "result": {
+    "id": "minecraft:diamond_sword",
+    "components": {
+      "minecraft:item_model": "family:lightsaber_cyan",
+      "minecraft:custom_name": {
+        "text": "Cyan Lightsaber",
+        "color": "#36E8F5",
+        "italic": false
+      },
+      "minecraft:custom_data": {
+        "family_lightsaber": true
+      }
+    }
+  }
+}

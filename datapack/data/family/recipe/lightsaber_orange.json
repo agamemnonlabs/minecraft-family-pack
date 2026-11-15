@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:diamond_sword",
+    "minecraft:amethyst_shard",
+    "minecraft:orange_dye"
+  ],
+  "result": {
+    "id": "minecraft:diamond_sword",
+    "components": {
+      "minecraft:item_model": "family:lightsaber_orange",
+      "minecraft:custom_name": {
+        "text": "Orange Lightsaber",
+        "color": "#FF8A2A",
+        "italic": false
+      },
+      "minecraft:custom_data": {
+        "family_lightsaber": true
+      }
+    }
+  }
+}

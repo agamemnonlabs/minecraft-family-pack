@@ -1,0 +1,9 @@
+{
+  "blue": "minecraft:diamond_sword[item_model=\"family:lightsaber_blue\",custom_name={\"text\": \"Blue Lightsaber\", \"color\": \"#3C8CFF\", \"italic\": false},custom_data={family_lightsaber:1b}]",
+  "red": "minecraft:diamond_sword[item_model=\"family:lightsaber_red\",custom_name={\"text\": \"Red Lightsaber\", \"color\": \"#FF2E2E\", \"italic\": false},custom_data={family_lightsaber:1b}]",
+  "green": "minecraft:diamond_sword[item_model=\"family:lightsaber_green\",custom_name={\"text\": \"Green Lightsaber\", \"color\": \"#39E65A\", \"italic\": false},custom_data={family_lightsaber:1b}]",
+  "purple": "minecraft:diamond_sword[item_model=\"family:lightsaber_purple\",custom_name={\"text\": \"Purple Lightsaber\", \"color\": \"#B04CFF\", \"italic\": false},custom_data={family_lightsaber:1b}]",
+  "yellow": "minecraft:diamond_sword[item_model=\"family:lightsaber_yellow\",custom_name={\"text\": \"Yellow Lightsaber\", \"color\": \"#FFE23C\", \"italic\": false},custom_data={family_lightsaber:1b}]",
+  "cyan": "minecraft:diamond_sword[item_model=\"family:lightsaber_cyan\",custom_name={\"text\": \"Cyan Lightsaber\", \"color\": \"#36E8F5\", \"italic\": false},custom_data={family_lightsaber:1b}]",
+  "orange": "minecraft:diamond_sword[item_model=\"family:lightsaber_orange\",custom_name={\"text\": \"Orange Lightsaber\", \"color\": \"#FF8A2A\", \"italic\": false},custom_data={family_lightsaber:1b}]"
+}

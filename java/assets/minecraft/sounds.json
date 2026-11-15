@@ -1,0 +1,13 @@
+{
+  "family.lightsaber_hit": {
+    "sounds": [
+      "family:lightsaber/swing1",
+      "family:lightsaber/swing2",
+      "family:lightsaber/swing3",
+      "family:lightsaber/swing4",
+      "family:lightsaber/swing5",
+      "family:lightsaber/swing6",
+      "family:lightsaber/swing7"
+    ]
+  }
+}

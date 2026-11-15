@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:diamond_sword",
+    "minecraft:amethyst_shard",
+    "minecraft:red_dye"
+  ],
+  "result": {
+    "id": "minecraft:diamond_sword",
+    "components": {
+      "minecraft:item_model": "family:lightsaber_red",
+      "minecraft:custom_name": {
+        "text": "Red Lightsaber",
+        "color": "#FF2E2E",
+        "italic": false
+      },
+      "minecraft:custom_data": {
+        "family_lightsaber": true
+      }
+    }
+  }
+}
