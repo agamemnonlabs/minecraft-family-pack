@@ -7,16 +7,25 @@
 Run: python3 build.py   (needs Pillow and oggenc)"""
 import hashlib, json, os, shutil, subprocess, sys, tempfile, zipfile
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from art import draw_blaster, draw_saber, LIGHTSABERS
+from art import draw_blaster, draw_glow_saber, saber_hilt, saber_blade, LIGHTSABERS
 from sounds import swing, VARIANTS
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 JAVA, BEDROCK, DATA, DIST = (os.path.join(ROOT, d) for d in ("java", "bedrock", "datapack", "dist"))
-VERSION = [1, 0, 1]                       # bump for every change shipped to Bedrock (iPads cache by version)
+VERSION = [1, 0, 2]                       # bump for every change shipped to Bedrock (iPads cache by version)
 JAVA_FORMAT, DATA_FORMAT = 97, 121        # resource / data pack formats of Minecraft 26.3
 BEDROCK_HEADER_UUID = "6f1d2b8e-3c47-4a8e-9d2f-5b1a7c0e4f21"
 BEDROCK_MODULE_UUID = "a3c9e5d7-81f2-4b6a-b0e4-2d8f6c1a9e53"
-HIT_SOUND = "family.lightsaber_hit"       # lives in minecraft: so Geyser passes it to Bedrock unchanged
+HIT_SOUND = "family.lightsaber_hit"
+# vanilla item/generated + item/handheld display transforms (26.3), for the element-based blade model
+HANDHELD_DISPLAY = {
+    "ground": {"rotation": [0, 0, 0], "translation": [0, 2, 0], "scale": [0.5, 0.5, 0.5]},
+    "head": {"rotation": [0, 180, 0], "translation": [0, 13, 7], "scale": [1, 1, 1]},
+    "fixed": {"rotation": [0, 180, 0], "scale": [1, 1, 1]},
+    "thirdperson_righthand": {"rotation": [0, -90, 55], "translation": [0, 4.0, 0.5], "scale": [0.85, 0.85, 0.85]},
+    "thirdperson_lefthand": {"rotation": [0, 90, -55], "translation": [0, 4.0, 0.5], "scale": [0.85, 0.85, 0.85]},
+    "firstperson_righthand": {"rotation": [0, -90, 25], "translation": [1.13, 3.2, 1.13], "scale": [0.68, 0.68, 0.68]},
+    "firstperson_lefthand": {"rotation": [0, 90, -25], "translation": [1.13, 3.2, 1.13], "scale": [0.68, 0.68, 0.68]}}       # lives in minecraft: so Geyser passes it to Bedrock unchanged
 
 def put(path, data):
     os.makedirs(os.path.dirname(path), exist_ok=True)
@@ -51,14 +60,28 @@ def build_java():
     draw_blaster(32).resize((64, 64), 0).save(f"{JAVA}/pack.png")
     a = f"{JAVA}/assets"
     os.makedirs(f"{a}/family/textures/item", exist_ok=True)
-    # parent = vanilla crossbow: same hand positions as the crossbow it replaces
-    items = {"foam_blaster": ("minecraft:item/crossbow", draw_blaster(32, "left"))}
+    # blaster: parent = vanilla crossbow, so it is held exactly like the crossbow it replaces
+    put(f"{a}/family/items/foam_blaster.json", {"model": {"type": "minecraft:model", "model": "family:item/foam_blaster"}})
+    put(f"{a}/family/models/item/foam_blaster.json",
+        {"parent": "minecraft:item/crossbow", "textures": {"layer0": "family:item/foam_blaster"}})
+    draw_blaster(32, "left").save(f"{a}/family/textures/item/foam_blaster.png")
+    # lightsabers: hilt = normal handheld item; blade = full-bright panel (light_emission 15) on top
     for colour, (blade, hilt, _) in LIGHTSABERS.items():
-        items[f"lightsaber_{colour}"] = ("minecraft:item/handheld", draw_saber(blade, hilt))
-    for name, (parent, img) in items.items():
-        put(f"{a}/family/items/{name}.json", {"model": {"type": "minecraft:model", "model": f"family:item/{name}"}})
-        put(f"{a}/family/models/item/{name}.json", {"parent": parent, "textures": {"layer0": f"family:item/{name}"}})
-        img.save(f"{a}/family/textures/item/{name}.png")
+        n = f"lightsaber_{colour}"
+        put(f"{a}/family/items/{n}.json", {"model": {"type": "minecraft:composite", "models": [
+            {"type": "minecraft:model", "model": f"family:item/{n}"},
+            {"type": "minecraft:model", "model": f"family:item/{n}_blade"}]}})
+        put(f"{a}/family/models/item/{n}.json",
+            {"parent": "minecraft:item/handheld", "textures": {"layer0": f"family:item/{n}_hilt"}})
+        put(f"{a}/family/models/item/{n}_blade.json", {
+            "gui_light": "front",
+            "textures": {"blade": f"family:item/{n}_blade", "particle": f"family:item/{n}_hilt"},
+            "elements": [{"from": [0, 0, 7.45], "to": [16, 16, 8.55], "shade": False, "light_emission": 15,
+                          "faces": {"south": {"uv": [0, 0, 16, 16], "texture": "#blade"},
+                                    "north": {"uv": [16, 0, 0, 16], "texture": "#blade"}}}],
+            "display": HANDHELD_DISPLAY})
+        saber_hilt(hilt).save(f"{a}/family/textures/item/{n}_hilt.png")
+        saber_blade(blade, solid_halo=False).save(f"{a}/family/textures/item/{n}_blade.png")
     make_sounds(f"{a}/family/sounds/lightsaber", "swing")
     put(f"{a}/minecraft/sounds.json",
         {HIT_SOUND: {"sounds": [f"family:lightsaber/swing{i}" for i in range(1, len(VARIANTS) + 1)]}})
@@ -74,7 +97,7 @@ def build_bedrock():
     t = f"{BEDROCK}/textures/items"; os.makedirs(t, exist_ok=True)
     textures = {"family_foam_blaster": draw_blaster(32, "right")}
     for colour, (blade, hilt, _) in LIGHTSABERS.items():
-        textures[f"family_lightsaber_{colour}"] = draw_saber(blade, hilt)
+        textures[f"family_lightsaber_{colour}"] = draw_glow_saber(blade, hilt, solid_halo=True)
     for name, img in textures.items():
         img.save(f"{t}/{name}.png")
     put(f"{BEDROCK}/textures/item_texture.json", {"resource_pack_name": "family", "texture_name": "atlas.items",

@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/handheld",
   "textures": {
-    "layer0": "family:item/lightsaber_blue"
+    "layer0": "family:item/lightsaber_blue_hilt"
   }
 }

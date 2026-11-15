@@ -107,3 +107,44 @@ def bevel_outline(img):
                 if any(not (0 <= x + dx < W and 0 <= y + dy < H) or src[x + dx, y + dy][3] == 0
                        for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1))):
                     p[x, y] = shade(src[x, y], 0.7)
+
+# ------------------------------------------------------- glowing lightsabers (32x32)
+def mix(c, other, t):
+    return tuple(round(a + (b - a) * t) for a, b in zip(c[:3], other[:3])) + (c[3],)
+
+def saber_hilt(hilt_hex):
+    """32x32: just the hilt, pixel-doubled from the 16x16 design (bottom-left corner)."""
+    small = draw_saber("#000000", hilt_hex)
+    p = small.load()
+    for y in range(16):
+        for x in range(16):
+            if not (x <= 5 and y >= 10 and (x, y) != (5, 10)):   # keep only hilt + emitter
+                p[x, y] = (0, 0, 0, 0)
+    return small.resize((32, 32), Image.NEAREST)
+
+def saber_blade(blade_hex, solid_halo):
+    """32x32: glowing blade from the emitter to a rounded tip: white core, bright colour, halo.
+    solid_halo=False gives a see-through halo (Java); True an opaque pastel one (Bedrock can't blend)."""
+    img = Image.new("RGBA", (32, 32), (0, 0, 0, 0)); p = img.load()
+    blade = hexc(blade_hex); white = hexc("#FFFFFF")
+    ax, ay, bx, by = 11.0, 21.0, 28.5, 3.5                       # emitter -> tip (pixel centres)
+    vx, vy = bx - ax, by - ay; L2 = vx * vx + vy * vy
+    for y in range(32):
+        for x in range(32):
+            cx, cy = x + 0.5, y + 0.5
+            t = ((cx - ax) * vx + (cy - ay) * vy) / L2
+            if t < 0:
+                continue                                         # flat end at the emitter
+            t = min(t, 1.0)
+            d = ((cx - ax - t * vx) ** 2 + (cy - ay - t * vy) ** 2) ** 0.5
+            if d <= 0.9:   p[x, y] = white
+            elif d <= 1.7: p[x, y] = mix(blade, white, 0.45)
+            elif d <= 2.6: p[x, y] = blade
+            elif d <= 3.6:
+                p[x, y] = mix(blade, white, 0.25) if solid_halo else blade[:3] + (110,)
+    return img
+
+def draw_glow_saber(blade_hex, hilt_hex, solid_halo):
+    img = saber_hilt(hilt_hex)
+    img.alpha_composite(saber_blade(blade_hex, solid_halo))
+    return img
