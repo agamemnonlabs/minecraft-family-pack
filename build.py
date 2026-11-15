@@ -13,7 +13,7 @@ from sounds import swing, VARIANTS
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 JAVA, BEDROCK, DATA, DIST = (os.path.join(ROOT, d) for d in ("java", "bedrock", "datapack", "dist"))
-VERSION = [1, 0, 5]                       # bump for every change shipped to Bedrock (iPads cache by version)
+VERSION = [1, 0, 6]                       # bump for every change shipped to Bedrock (iPads cache by version)
 JAVA_FORMAT, DATA_FORMAT = 97, 121        # resource / data pack formats of Minecraft 26.3
 BEDROCK_HEADER_UUID = "6f1d2b8e-3c47-4a8e-9d2f-5b1a7c0e4f21"
 BEDROCK_MODULE_UUID = "a3c9e5d7-81f2-4b6a-b0e4-2d8f6c1a9e53"
@@ -146,7 +146,7 @@ def build_bedrock():
     # (bedrock-samples attachables/bow.json): "standby" = holding it, "aim" = standby + the
     # first-person pull pose (Bedrock adds the two). Lightsaber sprite runs diagonally like the
     # bow string; blaster muzzle points top-left like the arrow, which points ahead when aiming.
-    # Our sprites are 32px (bow: 16px), so the mesh is doubled and the bone scaled by 0.5.
+    # Our 32px sprites come out about the size of vanilla Bedrock swords/crossbows with the bow's numbers.
     draw_blaster(32, "left").save(f"{t}/family_foam_blaster_held.png")
     attachable("family:foam_blaster", "textures/items/family_foam_blaster_held", "entity_alphatest", "aim")
     for colour, (blade, hilt, _) in LIGHTSABERS.items():
@@ -155,10 +155,10 @@ def build_bedrock():
                    "entity_emissive_alpha", "standby")
     put(f"{BEDROCK}/models/entity/family_item.geo.json", {"format_version": "1.16.0", "minecraft:geometry": [{
         "description": {"identifier": "geometry.family_item", "texture_width": 16, "texture_height": 16},
-        "bones": [{"name": "rightitem", "texture_meshes": [{"texture": "default", "position": [4.0, 2.0, -2.0],
-                   "rotation": [0.0, -135.0, 90.0], "local_pivot": [12.0, 0.0, 12.0]}]}]}]})
+        "bones": [{"name": "rightitem", "texture_meshes": [{"texture": "default", "position": [2.0, 1.0, -1.0],
+                   "rotation": [0.0, -135.0, 90.0], "local_pivot": [6.0, 0.0, 6.0]}]}]}]})
     put(f"{BEDROCK}/animations/family_items.animation.json", {"format_version": "1.8.0", "animations": {
-        f"animation.family.{pose}": {"loop": True, "bones": {"rightitem": {"position": pos, "rotation": rot, "scale": 0.5}}}
+        f"animation.family.{pose}": {"loop": True, "bones": {"rightitem": {"position": pos, "rotation": rot}}}
         for pose, (pos, rot) in BOW_POSES.items()}})
     make_sounds(f"{BEDROCK}/sounds/family/lightsaber", "swing")
     put(f"{BEDROCK}/sounds/sound_definitions.json", {"format_version": "1.14.0", "sound_definitions": {

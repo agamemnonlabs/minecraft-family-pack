@@ -14,8 +14,7 @@
             "c.is_first_person ? 38.0 : 0.0",
             "c.is_first_person ? -120.0 : 0.0",
             "c.is_first_person ? -63.0 : 0.0"
-          ],
-          "scale": 0.5
+          ]
         }
       }
     },
@@ -32,8 +31,7 @@
             "c.is_first_person ? -15.0 : 0.0",
             "c.is_first_person ? -112.0 : 0.0",
             "c.is_first_person ? -28.0 : 0.0"
-          ],
-          "scale": 0.5
+          ]
         }
       }
     }
