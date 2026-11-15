@@ -1,7 +1,7 @@
 """Builds the family pack from art.py / sounds.py.
   dist/family-pack-java.zip         -> PC players (server.properties resource-pack)
   dist/family-pack-bedrock.mcpack   -> iPads (Geyser packs/ folder)
-  dist/family-datapack.zip          -> server world/datapacks: blaster + lightsaber recipes, hit sound
+  dist/family-datapack.zip          -> server world/datapacks: recipes, hit sound, blaster main-hand lock
   dist/lightsabers.json             -> /give item strings, used by ../give-lightsaber.sh
   dist/foam-blaster.item            -> /give item string, used by ../give-blaster.sh
   geyser/custom_mappings/family.json -> Geyser: our items -> custom Bedrock items
@@ -196,7 +196,7 @@ def build_bedrock():
 
 def build_datapack():
     shutil.rmtree(DATA, ignore_errors=True)
-    put(f"{DATA}/pack.mcmeta", {"pack": {"description": "Family server: blaster + lightsaber recipes, hit sound",
+    put(f"{DATA}/pack.mcmeta", {"pack": {"description": "Family server: recipes, lightsaber hit sound, blaster main-hand lock",
                                          "min_format": DATA_FORMAT, "max_format": 999}})
     d = f"{DATA}/data/family"
     for colour, (_, _, dye) in LIGHTSABERS.items():           # diamond sword + amethyst shard + dye
@@ -222,6 +222,18 @@ def build_datapack():
                 "items": "minecraft:diamond_sword",
                 "predicates": {"minecraft:custom_data": "{family_lightsaber:1b}"}}}}}}}}},
         "rewards": {"function": "family:lightsaber_hit"}})
+    # Pewpew only fires from the main hand, and on iPads an off-hand blaster is drawn over the
+    # main-hand item. So a blaster that lands in the off-hand goes straight back to the inventory.
+    put(f"{d}/advancement/blaster_offhand.json", {
+        "criteria": {"offhand": {"trigger": "minecraft:inventory_changed", "conditions": {"player": {
+            "type": "minecraft:entity_properties", "entity": "this", "predicate": {
+            "equipment": {"offhand": {"items": "minecraft:crossbow", "predicates": {
+                "minecraft:custom_data": '{PublicBukkitValues:{"pewpew:item_id":"foam_blaster"}}'}}}}}}}},
+        "rewards": {"function": "family:blaster_offhand"}})
+    put(f"{d}/function/blaster_offhand.mcfunction",       # clear before give: no re-trigger, no duplicates
+        "advancement revoke @s only family:blaster_offhand\n"
+        "item replace entity @s weapon.offhand with air\n"
+        f"give @s {give_string('minecraft:crossbow', BLASTER_COMPONENTS)}\n")
     put(f"{d}/function/lightsaber_hit.mcfunction",
         f"advancement revoke @s only family:lightsaber_hit\nplaysound minecraft:{HIT_SOUND} player @a ~ ~ ~\n")
 

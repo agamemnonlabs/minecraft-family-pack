@@ -1,0 +1,26 @@
+{
+  "criteria": {
+    "offhand": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "player": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "equipment": {
+              "offhand": {
+                "items": "minecraft:crossbow",
+                "predicates": {
+                  "minecraft:custom_data": "{PublicBukkitValues:{\"pewpew:item_id\":\"foam_blaster\"}}"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "rewards": {
+    "function": "family:blaster_offhand"
+  }
+}
