@@ -65,4 +65,3 @@ execute in family:undersea positioned -168 38 -144 run fill ~-26 ~17 ~-52 ~26 ~1
 execute in family:undersea positioned -168 38 -144 run fill ~4 ~-4 ~11 ~8 ~-1 ~17 minecraft:sandstone replace #minecraft:replaceable
 execute in family:undersea positioned -168 38 -144 run fill ~4 ~0 ~11 ~8 ~0 ~17 minecraft:sand
 execute in family:undersea positioned -168 38 -144 run fill ~4 ~1 ~11 ~8 ~6 ~17 minecraft:water
-schedule function family:undersea/town/streets 1s replace

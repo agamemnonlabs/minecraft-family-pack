@@ -326,4 +326,3 @@ execute in family:undersea positioned -168 38 -144 run fill ~8 ~16 ~-32 ~10 ~16 
 execute in family:undersea positioned -168 38 -144 run fill ~8 ~17 ~-35 ~10 ~17 ~-35 minecraft:magenta_stained_glass
 execute in family:undersea positioned -168 38 -144 run fill ~8 ~17 ~-34 ~10 ~17 ~-34 minecraft:magenta_stained_glass
 execute in family:undersea positioned -168 38 -144 run fill ~8 ~17 ~-33 ~10 ~17 ~-33 minecraft:magenta_stained_glass
-schedule function family:undersea/town/lights 1s replace

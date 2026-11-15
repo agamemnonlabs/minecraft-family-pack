@@ -1,0 +1,19 @@
+{
+  "values": [
+    "#minecraft:coral_blocks",
+    "#minecraft:corals",
+    "#minecraft:wall_corals",
+    "minecraft:sea_pickle",
+    "minecraft:kelp",
+    "minecraft:kelp_plant",
+    "minecraft:tall_seagrass",
+    "#minecraft:sand",
+    "minecraft:gravel",
+    "minecraft:sandstone",
+    "minecraft:clay",
+    "minecraft:dirt",
+    "minecraft:magma_block",
+    "#minecraft:base_stone_overworld",
+    "minecraft:suspicious_gravel"
+  ]
+}

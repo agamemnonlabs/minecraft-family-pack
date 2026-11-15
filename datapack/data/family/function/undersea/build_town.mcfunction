@@ -1,2 +1,2 @@
-execute in family:undersea run forceload add -214 -196 -128 -104
-schedule function family:undersea/town/start 4s replace
+execute in family:undersea run forceload add -220 -202 -122 -98
+schedule function family:undersea/town/build_town/0 4s replace

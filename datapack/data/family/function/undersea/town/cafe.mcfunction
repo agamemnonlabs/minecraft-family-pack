@@ -194,4 +194,3 @@ execute in family:undersea positioned -168 38 -144 run fill ~25 ~13 ~13 ~25 ~13 
 execute in family:undersea positioned -168 38 -144 run fill ~25 ~14 ~13 ~25 ~14 ~13 minecraft:iron_bars[waterlogged=true]
 execute in family:undersea positioned -168 38 -144 run fill ~25 ~15 ~13 ~25 ~15 ~13 minecraft:iron_block
 execute in family:undersea positioned -168 38 -144 run fill ~26 ~15 ~13 ~26 ~15 ~13 minecraft:light_blue_stained_glass
-schedule function family:undersea/town/plots 1s replace

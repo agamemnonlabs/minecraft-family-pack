@@ -67,4 +67,3 @@ execute in family:undersea positioned -168 38 -144 run fill ~0 ~8 ~-13 ~0 ~8 ~-1
 execute in family:undersea positioned -168 38 -144 run fill ~-4 ~8 ~-12 ~4 ~8 ~-12 minecraft:horn_coral_block
 execute in family:undersea positioned -168 38 -144 run fill ~0 ~8 ~-11 ~0 ~8 ~-11 minecraft:oak_wall_sign[waterlogged=true,facing=south]{front_text:{messages:[{text:"Welcome to"},{text:""},{text:"(name me!)"},{text:""}]}}
 execute in family:undersea positioned -168 38 -144 run fill ~-3 ~9 ~-12 ~3 ~9 ~-12 minecraft:tube_coral_block
-schedule function family:undersea/town/seashell 1s replace

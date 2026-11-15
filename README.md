@@ -22,7 +22,9 @@ Original art and sounds for our family Paper server (Minecraft 26.3, Java + Bedr
   - **Town** (`town.py`, previews in `previews/town-*.png`): original cartoon town around the hub. Seashell,
     coconut and watermelon houses, the Bubble Cafe (a sunken submarine), 6 empty plots for the kids, a jelly
     meadow, streets, a welcome arch the kids can name, a bus stop and hidden light blocks.
-    Admin, once: `/function family:undersea/build_town` (loads the area, builds in 11 steps, 1 s apart).
+    Admin, ONCE ever: `/function family:undersea/build_town` (it flattens the plots, so never again once kids build).
+    `/function family:undersea/tidy_town` clears natural reef (coral, sand/stone lumps) between and 6 blocks
+    around the town and refreshes the hidden lights; it leaves plots, buildings and anything built alone.
 
 | File | Goes to |
 |---|---|

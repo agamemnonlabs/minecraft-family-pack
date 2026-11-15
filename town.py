@@ -317,22 +317,62 @@ def build():
                 if all((x + a, z + b) not in taken for a in (-1, 0, 1) for b in (-1, 0, 1)):
                     t.lamp(x, z)
     t.part = "lights"                                                          # hidden light, daylight-bright
-    for x in range(-49, 43, 7):
-        for z in range(-52, 41, 7):
-            if any(a <= x <= c and b <= z <= d for a, b, c, d, _ in t.zones) or math.hypot(x, z) <= 11:
+    X1, Z1, X2, Z2 = tidy_box(t)
+    for x in range(X1 + 3, X2, 7):
+        for z in range(Z1 + 3, Z2, 7):
+            if X1 <= x <= X2 and Z1 <= z <= Z2:
                 if (x, 5, z) not in t.v:
                     t.set(x, 5, z, M + "light[level=15]")
     return t
+
+# ---------------------------------------------------------------- tidy: clear the reef between and around
+TIDY_MARGIN, TIDY_TOP = 6, 16
+REEF = ["#minecraft:coral_blocks", "#minecraft:corals", "#minecraft:wall_corals", "minecraft:sea_pickle",
+        "minecraft:kelp", "minecraft:kelp_plant", "minecraft:tall_seagrass", "#minecraft:sand", "minecraft:gravel",
+        "minecraft:sandstone", "minecraft:clay", "minecraft:dirt", "minecraft:magma_block",
+        "#minecraft:base_stone_overworld", "minecraft:suspicious_gravel"]   # natural seabed only: never what people build
+
+def tidy_box(t):
+    return (min(z[0] for z in t.zones) - TIDY_MARGIN, min(z[1] for z in t.zones) - TIDY_MARGIN,
+            max(z[2] for z in t.zones) + TIDY_MARGIN, max(z[3] for z in t.zones) + TIDY_MARGIN)
+
+def tidy_rects(t):
+    """The town's box plus a margin, minus its build zones (plots, buildings, streets, meadow), as
+    rectangles small enough for one fill each (16 high x 2000 = under the 32768-block cap)."""
+    X1, Z1, X2, Z2 = tidy_box(t)
+    def segs(z):
+        out, run = [], None
+        for x in range(X1, X2 + 2):
+            free = x <= X2 and not any(a <= x <= c and b <= z <= d for a, b, c, d, _ in t.zones)
+            if free and run is None:
+                run = x
+            elif not free and run is not None:
+                out.append((run, x - 1)); run = None
+        return out
+    rects, open_ = [], {}
+    for z in range(Z1, Z2 + 2):
+        cur = set(segs(z)) if z <= Z2 else set()
+        for sg in [sg for sg in open_ if sg not in cur]:
+            rects.append((sg[0], open_.pop(sg), sg[1], z - 1))
+        for sg in cur:
+            open_.setdefault(sg, z)
+    out = []
+    for x1, z1, x2, z2 in rects:
+        rows = max(1, 2000 // (x2 - x1 + 1))
+        out += [(x1, zs, x2, min(z2, zs + rows - 1)) for zs in range(z1, z2 + 1, rows)]
+    return out
 
 # ---------------------------------------------------------------- datapack functions
 def datapack(data, put, dim, hub):
     hx, hy, hz = hub
     t = build()
     at = f"execute in {dim} positioned {hx} {hy} {hz} run "
-    xs = [x for (x, _, _) in t.v] + [a for a, *_ in t.zones] + [c for _, _, c, *_ in t.zones]
-    zs = [z for (_, _, z) in t.v] + [b for _, b, *_ in t.zones] + [d for *_, d, _ in t.zones]
-    area = f"{hx + min(xs)} {hz + min(zs)} {hx + max(xs)} {hz + max(zs)}"
+    X1, Z1, X2, Z2 = tidy_box(t)
+    area = f"{hx + X1} {hz + Z1} {hx + X2} {hz + Z2}"
     f = f"{data}/data/family/function/undersea"
+    put(f"{data}/data/family/tags/block/town_reef.json", {"values": REEF})
+    put(f"{data}/data/family/tags/block/town_ground.json",
+        {"values": ["#family:town_reef", "minecraft:water", "minecraft:seagrass"]})
     def fills(positions, only_water=False):
         out, done = [], set()
         for (x, y, z) in sorted(positions, key=lambda p: (p[1], p[2], p[0])):
@@ -344,28 +384,39 @@ def datapack(data, put, dim, hub):
             done.update((i, y, z) for i in range(x, x2 + 1))
             out.append(f"{at}fill ~{x} ~{y} ~{z} ~{x2} ~{y} ~{z} {wl(b)}" + (" replace minecraft:water" if only_water else ""))
         return out
-    prep = []
+    steps = {"prep": []}
     for x1, z1, x2, z2, top in t.zones:
-        prep += [f"{at}fill ~{x1} ~-4 ~{z1} ~{x2} ~-1 ~{z2} {SANDSTONE} replace #minecraft:replaceable",
-                 f"{at}fill ~{x1} ~0 ~{z1} ~{x2} ~0 ~{z2} {SAND}"]
+        steps["prep"] += [f"{at}fill ~{x1} ~-4 ~{z1} ~{x2} ~-1 ~{z2} {SANDSTONE} replace #minecraft:replaceable",
+                          f"{at}fill ~{x1} ~0 ~{z1} ~{x2} ~0 ~{z2} {SAND}"]
         for y1 in range(1, top + 1, 8):              # water in slabs (fill is capped at 32768 blocks)
-            prep.append(f"{at}fill ~{x1} ~{y1} ~{z1} ~{x2} ~{min(top, y1 + 7)} ~{z2} {WATER}")
-    order = ["prep", "streets", "square", "seashell", "coconut", "watermelon", "cafe", "plots", "meadow", "jellies", "lights"]
-    bodies = {"prep": prep, **{p: fills(t.parts[p], p == "lights") for p in order[1:]}}
-    for i, p in enumerate(order):
-        nxt = (f"schedule function family:undersea/town/{order[i + 1]} 1s replace" if i + 1 < len(order) else
-               f"execute in {dim} run forceload remove {area}")
-        put(f"{f}/town/{p}.mcfunction", "\n".join(bodies[p] + [nxt]) + "\n")
-    put(f"{f}/build_town.mcfunction", "\n".join([
-        f"execute in {dim} run forceload add {area}",
-        "schedule function family:undersea/town/start 4s replace"]) + "\n")
-    put(f"{f}/town/start.mcfunction", "\n".join([
-        f"execute in {dim} positioned {hx} {hy} {hz} unless loaded ~{min(xs)} ~ ~{min(zs)} run return run "
-        "schedule function family:undersea/town/start 2s replace",
-        f"execute in {dim} positioned {hx} {hy} {hz} unless loaded ~{max(xs)} ~ ~{max(zs)} run return run "
-        "schedule function family:undersea/town/start 2s replace",
-        "function family:undersea/town/prep"]) + "\n")
-    return {p: len(b) for p, b in bodies.items()}
+            steps["prep"].append(f"{at}fill ~{x1} ~{y1} ~{z1} ~{x2} ~{min(top, y1 + 7)} ~{z2} {WATER}")
+    tidy = []
+    for x1, z1, x2, z2 in tidy_rects(t):              # only natural seabed changes: safe to run again
+        tidy += [f"{at}fill ~{x1} ~-4 ~{z1} ~{x2} ~-1 ~{z2} {SANDSTONE} replace #minecraft:replaceable",
+                 f"{at}fill ~{x1} ~0 ~{z1} ~{x2} ~0 ~{z2} {SAND} replace #family:town_ground",
+                 f"{at}fill ~{x1} ~1 ~{z1} ~{x2} ~{TIDY_TOP} ~{z2} {WATER} replace #family:town_reef"]
+    tidy_steps = [f"tidy_{i // 30 + 1}" for i in range(0, len(tidy), 30)]
+    steps.update({name: tidy[i * 30:(i + 1) * 30] for i, name in enumerate(tidy_steps)})
+    parts = ["streets", "square", "seashell", "coconut", "watermelon", "cafe", "plots", "meadow", "jellies", "lights"]
+    steps.update({p: fills(t.parts[p], p == "lights") for p in parts})
+    for name, cmds in steps.items():
+        put(f"{f}/town/{name}.mcfunction", "\n".join(cmds) + "\n")
+    def chain(entry, names):
+        """entry: load the area, wait until it's loaded, then one step per second, then unload it."""
+        put(f"{f}/{entry}.mcfunction", f"execute in {dim} run forceload add {area}\n"
+            f"schedule function family:undersea/town/{entry}/0 4s replace\n")
+        put(f"{f}/town/{entry}/0.mcfunction", "".join(
+            f"execute in {dim} positioned {hx} {hy} {hz} unless loaded ~{x} ~ ~{z} run return run "
+            f"schedule function family:undersea/town/{entry}/0 2s replace\n" for x, z in ((X1, Z1), (X2, Z2)))
+            + f"function family:undersea/town/{entry}/1\n")
+        for i, name in enumerate(names, 1):
+            nxt = (f"schedule function family:undersea/town/{entry}/{i + 1} 1s replace" if i < len(names)
+                   else f"execute in {dim} run forceload remove {area}")
+            put(f"{f}/town/{entry}/{i}.mcfunction", f"function family:undersea/town/{name}\n{nxt}\n")
+    # build_town ONCE: it flattens the plots too. tidy_town only clears natural seabed and adds light.
+    chain("build_town", ["prep", *tidy_steps, *parts])
+    chain("tidy_town", [*tidy_steps, "lights"])
+    return {name: len(c) for name, c in steps.items()}
 
 # ---------------------------------------------------------------- previews
 COLOURS = {
@@ -420,6 +471,8 @@ def previews():
     # top-down map: 6 px per block, reef left as is shown dark teal
     xs = [x for (x, _, _) in t.v]; zs = [z for (_, _, z) in t.v]
     x0, z0, x1, z1 = min(xs) - 3, min(zs) - 3, max(xs) + 3, max(zs) + 3
+    x0, z0, x1, z1 = (min(x0, tidy_box(t)[0] - 3), min(z0, tidy_box(t)[1] - 3),
+                      max(x1, tidy_box(t)[2] + 3), max(z1, tidy_box(t)[3] + 3))
     k = 7
     img = Image.new("RGB", ((x1 - x0 + 1) * k, (z1 - z0 + 1) * k + 40), (24, 70, 84)); d = ImageDraw.Draw(img)
     top = {}
@@ -429,6 +482,10 @@ def previews():
     for zx in t.zones:
         for x in range(zx[0], zx[2] + 1):
             for z in range(zx[1], zx[3] + 1):
+                top.setdefault((x, z), (0, colour(SAND)))
+    for a, b, c, e in tidy_rects(t):                          # cleared seabed between and around
+        for x in range(a, c + 1):
+            for z in range(b, e + 1):
                 top.setdefault((x, z), (0, colour(SAND)))
     for x in range(-10, 11):                                 # existing hub + sand ring
         for z in range(-10, 11):
@@ -445,7 +502,7 @@ def previews():
         cx, cy = (x - x0 + 0.5) * k, (z - z0 + 0.5) * k
         d.rectangle([cx - w / 2 - 3, cy - 9, cx + w / 2 + 3, cy + 9], fill=(255, 255, 255))
         d.text((cx - w / 2, cy - 8), s, fill=(20, 20, 20), font=font)
-    d.text((10, img.height - 32), "North is up. Dark teal = reef left as it is. Streets lead off the round square at the hub.",
+    d.text((10, img.height - 32), "North is up. Sand = cleared town ground; dark teal = reef beyond the town.",
            fill=(255, 255, 255), font=font)
     img.save(f"{HERE}/previews/town-map.png")
     # buildings, one isometric close-up each, in a grid

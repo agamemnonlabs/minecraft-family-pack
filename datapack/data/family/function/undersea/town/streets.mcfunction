@@ -281,4 +281,3 @@ execute in family:undersea positioned -168 38 -144 run fill ~-4 ~4 ~30 ~-4 ~4 ~3
 execute in family:undersea positioned -168 38 -144 run fill ~4 ~4 ~30 ~4 ~4 ~30 minecraft:sea_lantern
 execute in family:undersea positioned -168 38 -144 run fill ~-4 ~4 ~38 ~-4 ~4 ~38 minecraft:sea_lantern
 execute in family:undersea positioned -168 38 -144 run fill ~4 ~4 ~38 ~4 ~4 ~38 minecraft:sea_lantern
-schedule function family:undersea/town/square 1s replace
