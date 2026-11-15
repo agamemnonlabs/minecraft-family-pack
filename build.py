@@ -1,8 +1,9 @@
 """Builds the family pack from art.py / sounds.py.
   dist/family-pack-java.zip         -> PC players (server.properties resource-pack)
   dist/family-pack-bedrock.mcpack   -> iPads (Geyser packs/ folder)
-  dist/family-datapack.zip          -> server world/datapacks: lightsaber recipes + hit sound
+  dist/family-datapack.zip          -> server world/datapacks: blaster + lightsaber recipes, hit sound
   dist/lightsabers.json             -> /give item strings, used by ../give-lightsaber.sh
+  dist/foam-blaster.item            -> /give item string, used by ../give-blaster.sh
   geyser/custom_mappings/family.json -> Geyser: our items -> custom Bedrock items
 Run: python3 build.py   (needs Pillow and oggenc)"""
 from PIL import Image
@@ -41,10 +42,19 @@ def saber_components(colour):
             "minecraft:custom_name": {"text": f"{colour.title()} Lightsaber", "color": blade, "italic": False},
             "minecraft:custom_data": {"family_lightsaber": True}}
 
-def give_string(colour):
-    c = saber_components(colour)
-    return (f'minecraft:diamond_sword[item_model="{c["minecraft:item_model"]}",'
-            f'custom_name={json.dumps(c["minecraft:custom_name"])},custom_data={{family_lightsaber:1b}}]')
+# Pewpew recognises its gun by the custom_data tag; the rest matches what Pewpew itself puts on the item.
+BLASTER_COMPONENTS = {
+    "minecraft:item_model": "family:foam_blaster",
+    "minecraft:custom_name": {"text": "Foam Blaster", "color": "gold", "italic": False},
+    "minecraft:lore": [{"text": "Foam darts only. Pew pew!", "color": "gray", "italic": False}],
+    "minecraft:use_cooldown": {"seconds": 0.4, "cooldown_group": "pewpew:gun_foam_blaster"},
+    "minecraft:custom_data": {"PublicBukkitValues": {"pewpew:item_id": "foam_blaster"}},
+    "minecraft:charged_projectiles": [{"id": "minecraft:arrow"}]}     # holdPose CROSSBOW look
+
+def give_string(item, components):
+    """/give syntax for the same components the recipes use (JSON is valid SNBT)."""
+    return f"{item}[" + ",".join(f"{k.removeprefix('minecraft:')}={json.dumps(v)}"
+                                 for k, v in components.items()) + "]"
 
 def make_sounds(dest_dir, prefix):
     os.makedirs(dest_dir, exist_ok=True)
@@ -170,21 +180,23 @@ def build_bedrock():
     put(f"{BEDROCK}/sounds/sound_definitions.json", {"format_version": "1.14.0", "sound_definitions": {
         HIT_SOUND: {"category": "player", "max_distance": 16.0,
                     "sounds": [f"sounds/family/lightsaber/swing{i}" for i in range(1, len(VARIANTS) + 1)]}}})
-    def item(model, icon, category):
+    # No creative_category: Geyser can't turn a creative-menu pick of these back into a Java item,
+    # so they'd vanish (and lack the tags that make them work). Kids get them by /give or crafting.
+    def item(model, icon):
         return {"bedrock_identifier": model, "model": model,   # model = the Java item_model on the item
-                "bedrock_options": {"icons": {"default": icon}, "display_handheld": True, "creative_category": category}}
+                "bedrock_options": {"icons": {"default": icon}, "display_handheld": True}}
     put(f"{ROOT}/geyser/custom_mappings/family.json", {"format_version": 2, "items": {
-        "minecraft:crossbow": [{**item("family:foam_blaster", "family_foam_blaster", "equipment"),
+        "minecraft:crossbow": [{**item("family:foam_blaster", "family_foam_blaster"),
             # Bedrock treats it as a usable item (no swing on use): no animation, a use that never
             # completes (like Geyser's trident trick), and no slowdown while held down.
             "components": {"minecraft:consumable": {"consume_seconds": 1000, "animation": "none"},
                            "minecraft:use_effects": {"speed_multiplier": 1.0}}}],
-        "minecraft:diamond_sword": [item(f"family:lightsaber_{c}", f"family_lightsaber_{c}", "equipment")
+        "minecraft:diamond_sword": [item(f"family:lightsaber_{c}", f"family_lightsaber_{c}")
                                     for c in LIGHTSABERS]}})
 
 def build_datapack():
     shutil.rmtree(DATA, ignore_errors=True)
-    put(f"{DATA}/pack.mcmeta", {"pack": {"description": "Family server: lightsaber recipes + hit sound",
+    put(f"{DATA}/pack.mcmeta", {"pack": {"description": "Family server: blaster + lightsaber recipes, hit sound",
                                          "min_format": DATA_FORMAT, "max_format": 999}})
     d = f"{DATA}/data/family"
     for colour, (_, _, dye) in LIGHTSABERS.items():           # diamond sword + amethyst shard + dye
@@ -192,6 +204,14 @@ def build_datapack():
             "type": "minecraft:crafting_shapeless", "category": "equipment",
             "ingredients": ["minecraft:diamond_sword", "minecraft:amethyst_shard", f"minecraft:{dye}"],
             "result": {"id": "minecraft:diamond_sword", "components": saber_components(colour)}})
+    put(f"{d}/recipe/foam_blaster.json", {                    # crossbow + amethyst shard + orange dye
+        "type": "minecraft:crafting_shapeless", "category": "equipment",
+        "ingredients": ["minecraft:crossbow", "minecraft:amethyst_shard", "minecraft:orange_dye"],
+        "result": {"id": "minecraft:crossbow", "components": BLASTER_COMPONENTS}})
+    put(f"{d}/advancement/unlock_foam_blaster.json", {         # separate, so players who already unlocked
+        "criteria": {"has_amethyst": {"trigger": "minecraft:inventory_changed",   # the sabers get it too
+                                      "conditions": {"items": [{"items": "minecraft:amethyst_shard"}]}}},
+        "rewards": {"recipes": ["family:foam_blaster"]}})
     put(f"{d}/advancement/unlock_lightsabers.json", {          # show recipes once they hold an amethyst shard
         "criteria": {"has_amethyst": {"trigger": "minecraft:inventory_changed",
                                       "conditions": {"items": [{"items": "minecraft:amethyst_shard"}]}}},
@@ -224,7 +244,8 @@ if __name__ == "__main__":
     zipdir(JAVA, f"{DIST}/family-pack-java.zip")
     zipdir(BEDROCK, f"{DIST}/family-pack-bedrock.mcpack")
     zipdir(DATA, f"{DIST}/family-datapack.zip")
-    put(f"{DIST}/lightsabers.json", {c: give_string(c) for c in LIGHTSABERS})
+    put(f"{DIST}/lightsabers.json", {c: give_string("minecraft:diamond_sword", saber_components(c)) for c in LIGHTSABERS})
+    put(f"{DIST}/foam-blaster.item", give_string("minecraft:crossbow", BLASTER_COMPONENTS) + "\n")
     for f in sorted(os.listdir(DIST)):
         b = open(f"{DIST}/{f}", "rb").read()
         print(f"{f}: {len(b)} bytes, sha1 {hashlib.sha1(b).hexdigest()}")

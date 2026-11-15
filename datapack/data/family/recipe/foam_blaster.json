@@ -1,0 +1,41 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:crossbow",
+    "minecraft:amethyst_shard",
+    "minecraft:orange_dye"
+  ],
+  "result": {
+    "id": "minecraft:crossbow",
+    "components": {
+      "minecraft:item_model": "family:foam_blaster",
+      "minecraft:custom_name": {
+        "text": "Foam Blaster",
+        "color": "gold",
+        "italic": false
+      },
+      "minecraft:lore": [
+        {
+          "text": "Foam darts only. Pew pew!",
+          "color": "gray",
+          "italic": false
+        }
+      ],
+      "minecraft:use_cooldown": {
+        "seconds": 0.4,
+        "cooldown_group": "pewpew:gun_foam_blaster"
+      },
+      "minecraft:custom_data": {
+        "PublicBukkitValues": {
+          "pewpew:item_id": "foam_blaster"
+        }
+      },
+      "minecraft:charged_projectiles": [
+        {
+          "id": "minecraft:arrow"
+        }
+      ]
+    }
+  }
+}

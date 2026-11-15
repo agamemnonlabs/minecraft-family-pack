@@ -9,8 +9,7 @@
           "icons": {
             "default": "family_foam_blaster"
           },
-          "display_handheld": true,
-          "creative_category": "equipment"
+          "display_handheld": true
         },
         "components": {
           "minecraft:consumable": {
@@ -31,8 +30,7 @@
           "icons": {
             "default": "family_lightsaber_blue"
           },
-          "display_handheld": true,
-          "creative_category": "equipment"
+          "display_handheld": true
         }
       },
       {
@@ -42,8 +40,7 @@
           "icons": {
             "default": "family_lightsaber_red"
           },
-          "display_handheld": true,
-          "creative_category": "equipment"
+          "display_handheld": true
         }
       },
       {
@@ -53,8 +50,7 @@
           "icons": {
             "default": "family_lightsaber_green"
           },
-          "display_handheld": true,
-          "creative_category": "equipment"
+          "display_handheld": true
         }
       },
       {
@@ -64,8 +60,7 @@
           "icons": {
             "default": "family_lightsaber_purple"
           },
-          "display_handheld": true,
-          "creative_category": "equipment"
+          "display_handheld": true
         }
       },
       {
@@ -75,8 +70,7 @@
           "icons": {
             "default": "family_lightsaber_yellow"
           },
-          "display_handheld": true,
-          "creative_category": "equipment"
+          "display_handheld": true
         }
       },
       {
@@ -86,8 +80,7 @@
           "icons": {
             "default": "family_lightsaber_cyan"
           },
-          "display_handheld": true,
-          "creative_category": "equipment"
+          "display_handheld": true
         }
       },
       {
@@ -97,8 +90,7 @@
           "icons": {
             "default": "family_lightsaber_orange"
           },
-          "display_handheld": true,
-          "creative_category": "equipment"
+          "display_handheld": true
         }
       }
     ]
