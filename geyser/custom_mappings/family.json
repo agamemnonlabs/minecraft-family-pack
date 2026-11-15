@@ -93,6 +93,72 @@
           "display_handheld": true
         }
       }
+    ],
+    "minecraft:nautilus_shell": [
+      {
+        "bedrock_identifier": "family:bubble_shell",
+        "model": "family:bubble_shell",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_bubble_shell"
+          }
+        },
+        "components": {
+          "minecraft:consumable": {
+            "consume_seconds": 1.0,
+            "animation": "toot_horn"
+          },
+          "minecraft:use_cooldown": {
+            "seconds": 3.0,
+            "cooldown_group": "family:bubble_shell"
+          },
+          "minecraft:max_stack_size": 1
+        }
+      }
+    ],
+    "minecraft:diamond_helmet": [
+      {
+        "bedrock_identifier": "family:shark_hood",
+        "model": "family:shark_hood",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_shark_hood"
+          }
+        }
+      }
+    ],
+    "minecraft:diamond_chestplate": [
+      {
+        "bedrock_identifier": "family:shark_suit",
+        "model": "family:shark_suit",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_shark_suit"
+          }
+        }
+      }
+    ],
+    "minecraft:diamond_leggings": [
+      {
+        "bedrock_identifier": "family:shark_pants",
+        "model": "family:shark_pants",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_shark_pants"
+          }
+        }
+      }
+    ],
+    "minecraft:diamond_boots": [
+      {
+        "bedrock_identifier": "family:shark_flippers",
+        "model": "family:shark_flippers",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_shark_flippers"
+          }
+        }
+      }
     ]
   }
 }

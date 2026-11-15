@@ -1,0 +1,27 @@
+{
+  "criteria": {
+    "has_diamond_armour": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:diamond_helmet",
+              "minecraft:diamond_chestplate",
+              "minecraft:diamond_leggings",
+              "minecraft:diamond_boots"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "family:shark_hood",
+      "family:shark_suit",
+      "family:shark_pants",
+      "family:shark_flippers"
+    ]
+  }
+}

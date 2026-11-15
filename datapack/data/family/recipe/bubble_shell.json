@@ -1,0 +1,41 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    "minecraft:kelp",
+    "minecraft:sand",
+    "minecraft:glass_bottle"
+  ],
+  "result": {
+    "id": "minecraft:nautilus_shell",
+    "components": {
+      "minecraft:item_model": "family:bubble_shell",
+      "minecraft:custom_name": {
+        "text": "Bubble Shell",
+        "color": "#7FE3F0",
+        "italic": false
+      },
+      "minecraft:lore": [
+        {
+          "text": "Hold to swim to the Undersea and back",
+          "color": "gray",
+          "italic": false
+        }
+      ],
+      "minecraft:consumable": {
+        "consume_seconds": 1.0,
+        "animation": "toot_horn",
+        "has_consume_particles": false,
+        "sound": "minecraft:block.bubble_column.upwards_inside"
+      },
+      "minecraft:use_cooldown": {
+        "seconds": 3.0,
+        "cooldown_group": "family:bubble_shell"
+      },
+      "minecraft:max_stack_size": 1,
+      "minecraft:custom_data": {
+        "family_shell": true
+      }
+    }
+  }
+}

@@ -25,6 +25,21 @@
     },
     "family_lightsaber_orange": {
       "textures": "textures/items/family_lightsaber_orange"
+    },
+    "family_bubble_shell": {
+      "textures": "textures/items/family_bubble_shell"
+    },
+    "family_shark_hood": {
+      "textures": "textures/items/family_shark_hood"
+    },
+    "family_shark_suit": {
+      "textures": "textures/items/family_shark_suit"
+    },
+    "family_shark_pants": {
+      "textures": "textures/items/family_shark_pants"
+    },
+    "family_shark_flippers": {
+      "textures": "textures/items/family_shark_flippers"
     }
   }
 }

@@ -1,0 +1,19 @@
+{
+  "criteria": {
+    "has_kelp": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:kelp"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "family:bubble_shell"
+    ]
+  }
+}
