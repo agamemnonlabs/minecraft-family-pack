@@ -12,7 +12,7 @@ from sounds import swing, VARIANTS
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 JAVA, BEDROCK, DATA, DIST = (os.path.join(ROOT, d) for d in ("java", "bedrock", "datapack", "dist"))
-VERSION = [1, 0, 0]                       # bump for every change shipped to Bedrock
+VERSION = [1, 0, 1]                       # bump for every change shipped to Bedrock (iPads cache by version)
 JAVA_FORMAT, DATA_FORMAT = 97, 121        # resource / data pack formats of Minecraft 26.3
 BEDROCK_HEADER_UUID = "6f1d2b8e-3c47-4a8e-9d2f-5b1a7c0e4f21"
 BEDROCK_MODULE_UUID = "a3c9e5d7-81f2-4b6a-b0e4-2d8f6c1a9e53"
@@ -41,7 +41,8 @@ def make_sounds(dest_dir, prefix):
     with tempfile.TemporaryDirectory() as tmp:
         for i, v in enumerate(VARIANTS, start=1):
             swing(f"{tmp}/s.wav", **v, seed=i)
-            subprocess.run(["oggenc", "-Q", "-q", "5", "-o", f"{dest_dir}/{prefix}{i}.ogg", f"{tmp}/s.wav"], check=True)
+            subprocess.run(["oggenc", "-Q", "-q", "5", "-s", str(1000 + i),   # fixed serial: reproducible files
+                            "-o", f"{dest_dir}/{prefix}{i}.ogg", f"{tmp}/s.wav"], check=True)
 
 def build_java():
     shutil.rmtree(JAVA, ignore_errors=True)
@@ -78,6 +79,29 @@ def build_bedrock():
         img.save(f"{t}/{name}.png")
     put(f"{BEDROCK}/textures/item_texture.json", {"resource_pack_name": "family", "texture_name": "atlas.items",
         "texture_data": {n: {"textures": f"textures/items/{n}"} for n in textures}})
+    # In-hand blaster: copy of Bedrock's own crossbow attachable (same mesh rotation and wield
+    # animation numbers from Mojang's bedrock-samples), so it is held like a crossbow, not a pickaxe.
+    draw_blaster(32, "left").save(f"{t}/family_foam_blaster_held.png")   # same orientation as crossbow art
+    put(f"{BEDROCK}/attachables/family_foam_blaster.json", {"format_version": "1.10.0", "minecraft:attachable": {
+        "description": {
+            "identifier": "family:foam_blaster",
+            "materials": {"default": "entity_alphatest"},
+            "textures": {"default": "textures/items/family_foam_blaster_held"},
+            "geometry": {"default": "geometry.family_foam_blaster"},
+            "animations": {"wield": "animation.family_foam_blaster.wield"},
+            "scripts": {"animate": ["wield"]},
+            "render_controllers": ["controller.render.family_item"]}}})
+    put(f"{BEDROCK}/models/entity/family_foam_blaster.geo.json", {"format_version": "1.16.0", "minecraft:geometry": [{
+        "description": {"identifier": "geometry.family_foam_blaster", "texture_width": 16, "texture_height": 16},
+        "bones": [{"name": "rightitem", "texture_meshes": [
+            {"position": [0.0, -5.0, -3.0], "rotation": [90.0, 0.0, -49.0], "texture": "default"}]}]}]})
+    put(f"{BEDROCK}/animations/family_foam_blaster.animation.json", {"format_version": "1.8.0", "animations": {
+        "animation.family_foam_blaster.wield": {"loop": True, "bones": {"rightitem": {
+            "position": ["c.is_first_person ? 13.0 : 0.5", "c.is_first_person ? 7.0 : -0.5", "c.is_first_person ? 2.0 : -1.5"],
+            "rotation": ["c.is_first_person ? -9.0 : 0.0", "c.is_first_person ? 60.0 : -3.0", "c.is_first_person ? -47.0 : 3.25"]}}}}})
+    put(f"{BEDROCK}/render_controllers/family.render_controllers.json", {"format_version": "1.10.0", "render_controllers": {
+        "controller.render.family_item": {"geometry": "geometry.default",
+                                          "materials": [{"*": "material.default"}], "textures": ["texture.default"]}}})
     make_sounds(f"{BEDROCK}/sounds/family/lightsaber", "swing")
     put(f"{BEDROCK}/sounds/sound_definitions.json", {"format_version": "1.14.0", "sound_definitions": {
         HIT_SOUND: {"category": "player", "max_distance": 16.0,
