@@ -8,12 +8,12 @@ Run: python3 build.py   (needs Pillow and oggenc)"""
 from PIL import Image
 import hashlib, json, os, shutil, subprocess, sys, tempfile, zipfile
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from art import draw_blaster, draw_glow_saber, saber_hilt, saber_blade, mix, hexc, LIGHTSABERS
+from art import draw_blaster, saber_hilt, saber_blade, mix, hexc, LIGHTSABERS
 from sounds import swing, VARIANTS
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 JAVA, BEDROCK, DATA, DIST = (os.path.join(ROOT, d) for d in ("java", "bedrock", "datapack", "dist"))
-VERSION = [1, 0, 6]                       # bump for every change shipped to Bedrock (iPads cache by version)
+VERSION = [1, 0, 8]                       # bump for every change shipped to Bedrock (iPads cache by version)
 JAVA_FORMAT, DATA_FORMAT = 97, 121        # resource / data pack formats of Minecraft 26.3
 BEDROCK_HEADER_UUID = "6f1d2b8e-3c47-4a8e-9d2f-5b1a7c0e4f21"
 BEDROCK_MODULE_UUID = "a3c9e5d7-81f2-4b6a-b0e4-2d8f6c1a9e53"
@@ -87,27 +87,9 @@ def build_java():
     put(f"{a}/minecraft/sounds.json",
         {HIT_SOUND: {"sounds": [f"family:lightsaber/swing{i}" for i in range(1, len(VARIANTS) + 1)]}})
 
-# Mojang's player bow: wield pose, plus the first-person pull pose added on top for "aim".
-fp = lambda a, b: f"c.is_first_person ? {a} : {b}"
-BOW_POSES = {
-    "standby": ([fp(-5.5, 0.5), fp(-3.0, -2.5), fp(-3.0, 1.0)], [fp(38.0, 0.0), fp(-120.0, 0.0), fp(-63.0, 0.0)]),
-    "aim": ([fp(-7.0, 0.5), fp(-0.5, -2.5), fp(-7.8, 1.0)], [fp(-15.0, 0.0), fp(-112.0, 0.0), fp(-28.0, 0.0)]),
-}
-def attachable(identifier, texture, material, pose):
-    put(f"{BEDROCK}/attachables/{identifier.split(':')[1]}.json", {"format_version": "1.10.0", "minecraft:attachable": {
-        "description": {
-            "identifier": identifier,
-            "materials": {"default": material, "enchanted": material},
-            "textures": {"default": texture, "enchanted": "textures/misc/enchanted_item_glint"},
-            "geometry": {"default": "geometry.family_item"},
-            "animations": {"hold": f"animation.family.{pose}"},
-            "scripts": {"animate": ["hold"]},
-            "render_controllers": ["controller.render.item_default"]}}})
-
-def held_saber_emissive(blade_hex, hilt_hex):
-    """In-hand lightsaber for Bedrock (entity_emissive_alpha: the more transparent a pixel, the more it
-    glows; alpha 0 = hidden). Bright tube: wide white core fading to the blade colour at the rim.
-    Hilt stays opaque so it is lit normally."""
+def bright_saber(blade_hex, hilt_hex):
+    """Bedrock lightsaber picture: bright tube (wide white core fading to the blade colour at the rim).
+    Fully opaque, because Bedrock item pictures can't blend."""
     img = saber_hilt(hilt_hex); p = img.load()
     blade = hexc(blade_hex); white = hexc("#FFFFFF")
     ax, ay, bx, by = 11.0, 21.0, 28.5, 3.5
@@ -123,7 +105,7 @@ def held_saber_emissive(blade_hex, hilt_hex):
             c = (white if d <= 1.4 else mix(blade, white, 0.6) if d <= 2.3
                  else mix(blade, white, 0.25) if d <= 3.1 else blade if d <= 3.6 else None)
             if c:
-                p[x, y] = c[:3] + (25,)
+                p[x, y] = c
     return img
 
 def build_bedrock():
@@ -137,29 +119,35 @@ def build_bedrock():
     t = f"{BEDROCK}/textures/items"; os.makedirs(t, exist_ok=True)
     textures = {"family_foam_blaster": draw_blaster(32, "right")}
     for colour, (blade, hilt, _) in LIGHTSABERS.items():
-        textures[f"family_lightsaber_{colour}"] = draw_glow_saber(blade, hilt, solid_halo=True)
+        textures[f"family_lightsaber_{colour}"] = bright_saber(blade, hilt)
     for name, img in textures.items():
         img.save(f"{t}/{name}.png")
     put(f"{BEDROCK}/textures/item_texture.json", {"resource_pack_name": "family", "texture_name": "atlas.items",
         "texture_data": {n: {"textures": f"textures/items/{n}"} for n in textures}})
-    # In-hand models (attachables). Poses and mesh copied from Mojang's player bow attachable
-    # (bedrock-samples attachables/bow.json): "standby" = holding it, "aim" = standby + the
-    # first-person pull pose (Bedrock adds the two). Lightsaber sprite runs diagonally like the
-    # bow string; blaster muzzle points top-left like the arrow, which points ahead when aiming.
-    # Our 32px sprites come out about the size of vanilla Bedrock swords/crossbows with the bow's numbers.
+    # In-hand blaster (attachable). Mesh and pose copied from Mojang's player bow attachable
+    # (bedrock-samples attachables/bow.json): its first-person pull pose (wield + pull, which
+    # Bedrock adds together) points the arrow ahead, and our blaster's muzzle sits where the
+    # arrow tip is (top-left). Lightsabers use Bedrock's normal sword hold (no attachable): in
+    # testing, no Bedrock material made held items glow, and the normal hold keeps the sword swing.
     draw_blaster(32, "left").save(f"{t}/family_foam_blaster_held.png")
-    attachable("family:foam_blaster", "textures/items/family_foam_blaster_held", "entity_alphatest", "aim")
-    for colour, (blade, hilt, _) in LIGHTSABERS.items():
-        held_saber_emissive(blade, hilt).save(f"{t}/family_lightsaber_{colour}_held.png")
-        attachable(f"family:lightsaber_{colour}", f"textures/items/family_lightsaber_{colour}_held",
-                   "entity_emissive_alpha", "standby")
+    put(f"{BEDROCK}/attachables/foam_blaster.json", {"format_version": "1.10.0", "minecraft:attachable": {
+        "description": {
+            "identifier": "family:foam_blaster",
+            "materials": {"default": "entity_alphatest", "enchanted": "entity_alphatest"},
+            "textures": {"default": "textures/items/family_foam_blaster_held", "enchanted": "textures/misc/enchanted_item_glint"},
+            "geometry": {"default": "geometry.family_item"},
+            "animations": {"hold": "animation.family.aim"},
+            "scripts": {"animate": ["hold"]},
+            "render_controllers": ["controller.render.item_default"]}}})
     put(f"{BEDROCK}/models/entity/family_item.geo.json", {"format_version": "1.16.0", "minecraft:geometry": [{
         "description": {"identifier": "geometry.family_item", "texture_width": 16, "texture_height": 16},
         "bones": [{"name": "rightitem", "texture_meshes": [{"texture": "default", "position": [2.0, 1.0, -1.0],
                    "rotation": [0.0, -135.0, 90.0], "local_pivot": [6.0, 0.0, 6.0]}]}]}]})
+    fp = lambda a, b: f"c.is_first_person ? {a} : {b}"
     put(f"{BEDROCK}/animations/family_items.animation.json", {"format_version": "1.8.0", "animations": {
-        f"animation.family.{pose}": {"loop": True, "bones": {"rightitem": {"position": pos, "rotation": rot}}}
-        for pose, (pos, rot) in BOW_POSES.items()}})
+        "animation.family.aim": {"loop": True, "bones": {"rightitem": {
+            "position": [fp(-7.0, 0.5), fp(-0.5, -2.5), fp(-7.8, 1.0)],
+            "rotation": [fp(-15.0, 0.0), fp(-112.0, 0.0), fp(-28.0, 0.0)]}}}}})
     make_sounds(f"{BEDROCK}/sounds/family/lightsaber", "swing")
     put(f"{BEDROCK}/sounds/sound_definitions.json", {"format_version": "1.14.0", "sound_definitions": {
         HIT_SOUND: {"category": "player", "max_distance": 16.0,
@@ -168,7 +156,11 @@ def build_bedrock():
         return {"bedrock_identifier": model, "model": model,   # model = the Java item_model on the item
                 "bedrock_options": {"icons": {"default": icon}, "display_handheld": True, "creative_category": category}}
     put(f"{ROOT}/geyser/custom_mappings/family.json", {"format_version": 2, "items": {
-        "minecraft:crossbow": [item("family:foam_blaster", "family_foam_blaster", "equipment")],
+        "minecraft:crossbow": [{**item("family:foam_blaster", "family_foam_blaster", "equipment"),
+            # Bedrock treats it as a usable item (no swing on use): no animation, a use that never
+            # completes (like Geyser's trident trick), and no slowdown while held down.
+            "components": {"minecraft:consumable": {"consume_seconds": 1000, "animation": "none"},
+                           "minecraft:use_effects": {"speed_multiplier": 1.0}}}],
         "minecraft:diamond_sword": [item(f"family:lightsaber_{c}", f"family_lightsaber_{c}", "equipment")
                                     for c in LIGHTSABERS]}})
 

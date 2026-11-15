@@ -11,6 +11,15 @@
           },
           "display_handheld": true,
           "creative_category": "equipment"
+        },
+        "components": {
+          "minecraft:consumable": {
+            "consume_seconds": 1000,
+            "animation": "none"
+          },
+          "minecraft:use_effects": {
+            "speed_multiplier": 1.0
+          }
         }
       }
     ],
