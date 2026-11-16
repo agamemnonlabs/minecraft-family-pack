@@ -164,8 +164,8 @@ def datapack(data, put, give_string):
             [biome(n, t, depth) for n, t in surface for depth in (0.0, 1.0)]
             + [biome("lush_caves", full, [0.2, 0.9])]}}})
 
-    put(f"{data}/data/minecraft/tags/function/load.json", {"values": ["family:undersea/load"]})
-    put(f"{data}/data/minecraft/tags/function/tick.json", {"values": ["family:undersea/tick"]})
+    put(f"{data}/data/minecraft/tags/function/load.json", {"values": ["family:undersea/load", "family:undersea/wardrobe/load"]})
+    put(f"{data}/data/minecraft/tags/function/tick.json", {"values": ["family:undersea/tick", "family:undersea/wardrobe/tick"]})
     f = f"{d}/function/undersea"
     put(f"{f}/load.mcfunction", mcf(
         *[f"scoreboard objectives add family.{s} dummy" for s in ("rx", "ry", "rz", "ret")],
@@ -195,7 +195,7 @@ def datapack(data, put, give_string):
         "effect give @s minecraft:conduit_power 20 0 true",
         "function family:undersea/to_hub with storage family:undersea hub",
         "execute at @s run playsound minecraft:block.bubble_column.whirlpool_inside player @s ~ ~ ~",
-        'title @s actionbar {"text": "Welcome to the Undersea!", "color": "aqua"}'))
+        'title @s actionbar {"text": "Welcome to the Undersea! Step on a pink pad to dress up.", "color": "aqua"}'))
     put(f"{f}/to_hub.mcfunction", f"$execute in {DIM} run tp @s $(x) $(y) $(z)\n")
     put(f"{f}/go_up.mcfunction", mcf(
         "execute unless score @s family.ret matches 1 run return run function family:undersea/to_home",

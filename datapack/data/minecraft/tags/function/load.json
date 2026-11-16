@@ -1,5 +1,6 @@
 {
   "values": [
-    "family:undersea/load"
+    "family:undersea/load",
+    "family:undersea/wardrobe/load"
   ]
 }

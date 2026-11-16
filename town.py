@@ -288,12 +288,9 @@ def build():
     t.part = "streets"
     t.box(-45, 0, 19, -4, 0, 20, CURB); t.clear(-45, 19, -4, 20, 6)               # footpath between plot rows
     meadow(t, -24, -50, 24, -28); t.clear(-26, -52, 26, -27, 18)
-    t.part = "square"                                                          # square, arch, bus stop
+    t.part = "square"                                    # square, arch, bus stop (its benches made way for wardrobe.py)
     for x, z in ((7, 7), (-7, 7), (7, -7), (-7, -7)):
         t.lamp(x, z)
-    for z, f in ((-8, "north"), (8, "south")):
-        for x in (-6, -5, -4, 4, 5, 6):
-            t.set(x, 1, z, M + f"spruce_stairs[facing={f}]")
     for x in (-4, 4):
         t.box(x, 1, -12, x, 7, -12, M + "brain_coral_block")
     t.box(-4, 8, -12, 4, 8, -12, M + "horn_coral_block")

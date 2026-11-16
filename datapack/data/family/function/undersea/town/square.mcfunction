@@ -1,13 +1,9 @@
 execute in family:undersea positioned -168 38 -144 run fill ~-4 ~1 ~-12 ~-4 ~1 ~-12 minecraft:brain_coral_block
 execute in family:undersea positioned -168 38 -144 run fill ~4 ~1 ~-12 ~4 ~1 ~-12 minecraft:brain_coral_block
-execute in family:undersea positioned -168 38 -144 run fill ~-6 ~1 ~-8 ~-4 ~1 ~-8 minecraft:spruce_stairs[waterlogged=true,facing=north]
-execute in family:undersea positioned -168 38 -144 run fill ~4 ~1 ~-8 ~6 ~1 ~-8 minecraft:spruce_stairs[waterlogged=true,facing=north]
 execute in family:undersea positioned -168 38 -144 run fill ~-7 ~1 ~-7 ~-7 ~1 ~-7 minecraft:prismarine_wall[waterlogged=true]
 execute in family:undersea positioned -168 38 -144 run fill ~7 ~1 ~-7 ~7 ~1 ~-7 minecraft:prismarine_wall[waterlogged=true]
 execute in family:undersea positioned -168 38 -144 run fill ~-7 ~1 ~7 ~-7 ~1 ~7 minecraft:prismarine_wall[waterlogged=true]
 execute in family:undersea positioned -168 38 -144 run fill ~7 ~1 ~7 ~7 ~1 ~7 minecraft:prismarine_wall[waterlogged=true]
-execute in family:undersea positioned -168 38 -144 run fill ~-6 ~1 ~8 ~-4 ~1 ~8 minecraft:spruce_stairs[waterlogged=true,facing=south]
-execute in family:undersea positioned -168 38 -144 run fill ~4 ~1 ~8 ~6 ~1 ~8 minecraft:spruce_stairs[waterlogged=true,facing=south]
 execute in family:undersea positioned -168 38 -144 run fill ~4 ~1 ~12 ~4 ~1 ~12 minecraft:oak_sign[waterlogged=true,rotation=4]{front_text:{messages:[{text:""},{text:"BUS STOP"},{text:""},{text:""}]}}
 execute in family:undersea positioned -168 38 -144 run fill ~5 ~1 ~12 ~5 ~1 ~12 minecraft:spruce_fence[waterlogged=true]
 execute in family:undersea positioned -168 38 -144 run fill ~7 ~1 ~12 ~7 ~1 ~12 minecraft:spruce_fence[waterlogged=true]
