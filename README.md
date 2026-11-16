@@ -25,9 +25,13 @@ Original art and sounds for our family Paper server (Minecraft 26.3, Java + Bedr
     Admin, ONCE ever: `/function family:undersea/build_town` (it flattens the plots, so never again once kids build).
     `/function family:undersea/tidy_town` clears natural reef (coral, sand/stone lumps) between and 6 blocks
     around the town and refreshes the hidden lights; it leaves plots, buildings and anything built alone.
+  - **Costume ring** (`wardrobe.py`, preview `previews/wardrobe.png`): free costumes at the hub. Eight armour
+    stands wear the costumes around the hub, each with a pink pad in front. Stepping on a pad gives the pieces of
+    that costume you don't already have. Admin: `/function family:undersea/build_wardrobe` (safe to re-run:
+    it replaces the stands and pads).
 
 ### Paint your own costume
-Any costume (`shark`, `diver`, `angler`, `turtle`, `coral`, `axolotl`, `sponge`) can be hand-painted:
+Any costume (`shark`, `diver`, `angler`, `turtle`, `coral`, `axolotl`, `sponge`, `spongebuddy`) can be hand-painted:
 1. `python3 undersea_art.py <name>` writes the current art to `art/costumes/<name>_1.png` (hood, top, sleeves,
    feet) and `<name>_2.png` (legs + waistband), plus `guide_<name>_1.png` / `_2.png` showing which pixels are which.
 2. Paint `<name>_1.png` / `<name>_2.png` in a pixel editor that keeps transparency (Piskel, Aseprite, Pixilart).
