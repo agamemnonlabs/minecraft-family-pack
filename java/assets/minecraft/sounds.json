@@ -9,5 +9,53 @@
       "family:lightsaber/swing6",
       "family:lightsaber/swing7"
     ]
+  },
+  "family.katana_flame_swing": {
+    "sounds": [
+      "family:katana/flame_swing1",
+      "family:katana/flame_swing2",
+      "family:katana/flame_swing3"
+    ]
+  },
+  "family.katana_flame_special": {
+    "sounds": [
+      "family:katana/flame_special"
+    ]
+  },
+  "family.katana_water_swing": {
+    "sounds": [
+      "family:katana/water_swing1",
+      "family:katana/water_swing2",
+      "family:katana/water_swing3"
+    ]
+  },
+  "family.katana_water_special": {
+    "sounds": [
+      "family:katana/water_special"
+    ]
+  },
+  "family.katana_thunder_swing": {
+    "sounds": [
+      "family:katana/thunder_swing1",
+      "family:katana/thunder_swing2",
+      "family:katana/thunder_swing3"
+    ]
+  },
+  "family.katana_thunder_special": {
+    "sounds": [
+      "family:katana/thunder_special"
+    ]
+  },
+  "family.katana_wind_swing": {
+    "sounds": [
+      "family:katana/wind_swing1",
+      "family:katana/wind_swing2",
+      "family:katana/wind_swing3"
+    ]
+  },
+  "family.katana_wind_special": {
+    "sounds": [
+      "family:katana/wind_special"
+    ]
   }
 }

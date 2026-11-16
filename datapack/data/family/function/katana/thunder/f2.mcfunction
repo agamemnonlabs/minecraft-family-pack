@@ -1,0 +1,17 @@
+particle minecraft:electric_spark ^0.00 ^-0.43 ^2.17 0.05 0.05 0.05 0 2
+particle minecraft:electric_spark ^0.00 ^-0.75 ^2.09 0.05 0.05 0.05 0 2
+particle minecraft:electric_spark ^0.00 ^-1.05 ^1.95 0.05 0.05 0.05 0 2
+particle minecraft:electric_spark ^0.00 ^-1.32 ^1.76 0.05 0.05 0.05 0 2
+particle minecraft:electric_spark ^0.00 ^-1.56 ^1.52 0.05 0.05 0.05 0 2
+particle minecraft:electric_spark ^0.00 ^-1.75 ^1.25 0.05 0.05 0.05 0 2
+particle minecraft:electric_spark ^0.00 ^-1.89 ^0.95 0.05 0.05 0.05 0 2
+particle minecraft:dust{color:[1.00,0.88,0.30],scale:1.3} ^0.00 ^-0.43 ^2.17 0.03 0.03 0.03 0.0 1
+particle minecraft:dust{color:[1.00,0.88,0.30],scale:1.3} ^0.00 ^-0.75 ^2.09 0.03 0.03 0.03 0.0 1
+particle minecraft:dust{color:[1.00,0.88,0.30],scale:1.3} ^0.00 ^-1.05 ^1.95 0.03 0.03 0.03 0.0 1
+particle minecraft:dust{color:[1.00,0.88,0.30],scale:1.3} ^0.00 ^-1.32 ^1.76 0.03 0.03 0.03 0.0 1
+particle minecraft:dust{color:[1.00,0.88,0.30],scale:1.3} ^0.00 ^-1.56 ^1.52 0.03 0.03 0.03 0.0 1
+particle minecraft:dust{color:[1.00,0.88,0.30],scale:1.3} ^0.00 ^-1.75 ^1.25 0.03 0.03 0.03 0.0 1
+particle minecraft:dust{color:[1.00,0.88,0.30],scale:1.3} ^0.00 ^-1.89 ^0.95 0.03 0.03 0.03 0.0 1
+particle minecraft:end_rod ^0.00 ^-0.43 ^2.17 0.03 0.03 0.03 0.0 1
+particle minecraft:end_rod ^0.00 ^-1.32 ^1.76 0.03 0.03 0.03 0.0 1
+particle minecraft:end_rod ^0.00 ^-1.89 ^0.95 0.03 0.03 0.03 0.0 1

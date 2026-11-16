@@ -1,0 +1,49 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:diamond_sword",
+    "minecraft:amethyst_shard",
+    "minecraft:blaze_powder"
+  ],
+  "result": {
+    "id": "minecraft:diamond_sword",
+    "components": {
+      "minecraft:item_model": "family:katana_flame",
+      "minecraft:custom_name": {
+        "text": "Flame Katana",
+        "color": "#FF7A1A",
+        "italic": false
+      },
+      "minecraft:lore": [
+        {
+          "text": "Special move: Ember Crescent",
+          "color": "gray",
+          "italic": false
+        },
+        {
+          "text": "Hold use to unleash it",
+          "color": "dark_gray",
+          "italic": false
+        }
+      ],
+      "minecraft:attack_animation": {
+        "type": "whack",
+        "duration": 8
+      },
+      "minecraft:consumable": {
+        "consume_seconds": 1000,
+        "animation": "none",
+        "has_consume_particles": false,
+        "sound": "minecraft:intentionally_empty"
+      },
+      "minecraft:use_effects": {
+        "can_sprint": true,
+        "speed_multiplier": 1.0
+      },
+      "minecraft:custom_data": {
+        "family_katana": "flame"
+      }
+    }
+  }
+}

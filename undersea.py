@@ -164,8 +164,7 @@ def datapack(data, put, give_string):
             [biome(n, t, depth) for n, t in surface for depth in (0.0, 1.0)]
             + [biome("lush_caves", full, [0.2, 0.9])]}}})
 
-    put(f"{data}/data/minecraft/tags/function/load.json", {"values": ["family:undersea/load", "family:undersea/wardrobe/load"]})
-    put(f"{data}/data/minecraft/tags/function/tick.json", {"values": ["family:undersea/tick", "family:undersea/wardrobe/tick"]})
+    # load/tick function tags are written by build.py (they list every module's functions)
     f = f"{d}/function/undersea"
     put(f"{f}/load.mcfunction", mcf(
         *[f"scoreboard objectives add family.{s} dummy" for s in ("rx", "ry", "rz", "ret")],

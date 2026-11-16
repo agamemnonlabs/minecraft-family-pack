@@ -1,0 +1,5 @@
+# Family pack: elemental katanas. A datapack cannot see a swing at air or at a block, so this tags the
+# player on every left-click (PC and iPad alike); the datapack (family:katana/tick) then checks what the
+# player is holding and draws that katana's arc. Hits on mobs and players are handled by the datapack.
+on left click:
+	add "family.swing" to scoreboard tags of player

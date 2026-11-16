@@ -2,12 +2,12 @@
   "format_version": 2,
   "header": {
     "name": "Family server pack",
-    "description": "Foam blaster, lightsabers, Undersea",
+    "description": "Foam blaster, lightsabers, katanas, Undersea",
     "uuid": "6f1d2b8e-3c47-4a8e-9d2f-5b1a7c0e4f21",
     "version": [
       1,
       0,
-      11
+      12
     ],
     "min_engine_version": [
       1,
@@ -22,7 +22,7 @@
       "version": [
         1,
         0,
-        11
+        12
       ]
     }
   ]

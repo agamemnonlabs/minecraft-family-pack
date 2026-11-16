@@ -1,0 +1,49 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:diamond_sword",
+    "minecraft:amethyst_shard",
+    "minecraft:prismarine_crystals"
+  ],
+  "result": {
+    "id": "minecraft:diamond_sword",
+    "components": {
+      "minecraft:item_model": "family:katana_water",
+      "minecraft:custom_name": {
+        "text": "Water Katana",
+        "color": "#3FA9FF",
+        "italic": false
+      },
+      "minecraft:lore": [
+        {
+          "text": "Special move: Tide Ribbon",
+          "color": "gray",
+          "italic": false
+        },
+        {
+          "text": "Hold use to unleash it",
+          "color": "dark_gray",
+          "italic": false
+        }
+      ],
+      "minecraft:attack_animation": {
+        "type": "whack",
+        "duration": 9
+      },
+      "minecraft:consumable": {
+        "consume_seconds": 1000,
+        "animation": "none",
+        "has_consume_particles": false,
+        "sound": "minecraft:intentionally_empty"
+      },
+      "minecraft:use_effects": {
+        "can_sprint": true,
+        "speed_multiplier": 1.0
+      },
+      "minecraft:custom_data": {
+        "family_katana": "water"
+      }
+    }
+  }
+}

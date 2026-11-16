@@ -1,0 +1,26 @@
+{
+  "criteria": {
+    "hit": {
+      "trigger": "minecraft:player_hurt_entity",
+      "conditions": {
+        "damage": {
+          "type": {
+            "direct_entity": {
+              "minecraft:equipment": {
+                "mainhand": {
+                  "items": "minecraft:diamond_sword",
+                  "predicates": {
+                    "minecraft:custom_data": "{family_katana:\"thunder\"}"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "rewards": {
+    "function": "family:katana/thunder/hit"
+  }
+}

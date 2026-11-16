@@ -92,6 +92,94 @@
           },
           "display_handheld": true
         }
+      },
+      {
+        "bedrock_identifier": "family:katana_flame",
+        "model": "family:katana_flame",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_katana_flame"
+          },
+          "display_handheld": true
+        },
+        "components": {
+          "minecraft:consumable": {
+            "consume_seconds": 1000,
+            "animation": "none"
+          },
+          "minecraft:use_effects": {
+            "speed_multiplier": 1.0
+          },
+          "minecraft:attack_animation": {
+            "duration": 8
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:katana_water",
+        "model": "family:katana_water",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_katana_water"
+          },
+          "display_handheld": true
+        },
+        "components": {
+          "minecraft:consumable": {
+            "consume_seconds": 1000,
+            "animation": "none"
+          },
+          "minecraft:use_effects": {
+            "speed_multiplier": 1.0
+          },
+          "minecraft:attack_animation": {
+            "duration": 9
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:katana_thunder",
+        "model": "family:katana_thunder",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_katana_thunder"
+          },
+          "display_handheld": true
+        },
+        "components": {
+          "minecraft:consumable": {
+            "consume_seconds": 1000,
+            "animation": "none"
+          },
+          "minecraft:use_effects": {
+            "speed_multiplier": 1.0
+          },
+          "minecraft:attack_animation": {
+            "duration": 5
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:katana_wind",
+        "model": "family:katana_wind",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_katana_wind"
+          },
+          "display_handheld": true
+        },
+        "components": {
+          "minecraft:consumable": {
+            "consume_seconds": 1000,
+            "animation": "none"
+          },
+          "minecraft:use_effects": {
+            "speed_multiplier": 1.0
+          },
+          "minecraft:attack_animation": {
+            "duration": 5
+          }
+        }
       }
     ],
     "minecraft:nautilus_shell": [

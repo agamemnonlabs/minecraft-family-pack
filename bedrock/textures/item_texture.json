@@ -124,6 +124,18 @@
     },
     "family_spongebuddy_shoes": {
       "textures": "textures/items/family_spongebuddy_shoes"
+    },
+    "family_katana_flame": {
+      "textures": "textures/items/family_katana_flame"
+    },
+    "family_katana_water": {
+      "textures": "textures/items/family_katana_water"
+    },
+    "family_katana_thunder": {
+      "textures": "textures/items/family_katana_thunder"
+    },
+    "family_katana_wind": {
+      "textures": "textures/items/family_katana_wind"
     }
   }
 }

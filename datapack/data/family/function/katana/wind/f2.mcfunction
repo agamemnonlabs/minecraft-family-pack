@@ -1,0 +1,17 @@
+particle minecraft:dust{color:[0.92,1.00,0.96],scale:1.2} ^0.08 ^-0.80 ^2.04 0.03 0.03 0.03 0.0 1
+particle minecraft:dust{color:[0.92,1.00,0.96],scale:1.2} ^0.39 ^-0.66 ^2.19 0.03 0.03 0.03 0.0 1
+particle minecraft:dust{color:[0.92,1.00,0.96],scale:1.2} ^0.57 ^-0.37 ^2.35 0.03 0.03 0.03 0.0 1
+particle minecraft:dust{color:[0.92,1.00,0.96],scale:1.2} ^0.55 ^-0.01 ^2.50 0.03 0.03 0.03 0.0 1
+particle minecraft:dust{color:[0.92,1.00,0.96],scale:1.2} ^0.33 ^0.27 ^2.66 0.03 0.03 0.03 0.0 1
+particle minecraft:dust{color:[0.92,1.00,0.96],scale:1.2} ^-0.03 ^0.38 ^2.81 0.03 0.03 0.03 0.0 1
+particle minecraft:dust{color:[0.92,1.00,0.96],scale:1.2} ^-0.40 ^0.26 ^2.97 0.03 0.03 0.03 0.0 1
+particle minecraft:dust{color:[0.92,1.00,0.96],scale:1.2} ^-0.63 ^-0.05 ^3.12 0.03 0.03 0.03 0.0 1
+particle minecraft:dust{color:[0.44,0.95,0.75],scale:1.0} ^-0.08 ^0.30 ^2.04 0.03 0.03 0.03 0.0 1
+particle minecraft:dust{color:[0.44,0.95,0.75],scale:1.0} ^-0.39 ^0.16 ^2.19 0.03 0.03 0.03 0.0 1
+particle minecraft:dust{color:[0.44,0.95,0.75],scale:1.0} ^-0.57 ^-0.13 ^2.35 0.03 0.03 0.03 0.0 1
+particle minecraft:dust{color:[0.44,0.95,0.75],scale:1.0} ^-0.55 ^-0.49 ^2.50 0.03 0.03 0.03 0.0 1
+particle minecraft:dust{color:[0.44,0.95,0.75],scale:1.0} ^-0.33 ^-0.77 ^2.66 0.03 0.03 0.03 0.0 1
+particle minecraft:dust{color:[0.44,0.95,0.75],scale:1.0} ^0.03 ^-0.88 ^2.81 0.03 0.03 0.03 0.0 1
+particle minecraft:dust{color:[0.44,0.95,0.75],scale:1.0} ^0.40 ^-0.76 ^2.97 0.03 0.03 0.03 0.0 1
+particle minecraft:dust{color:[0.44,0.95,0.75],scale:1.0} ^0.63 ^-0.45 ^3.12 0.03 0.03 0.03 0.0 1
+particle minecraft:sweep_attack ^0.00 ^-0.25 ^2.00 0.03 0.03 0.03 0.0 1

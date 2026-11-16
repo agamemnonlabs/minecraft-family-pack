@@ -1,0 +1,49 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:diamond_sword",
+    "minecraft:amethyst_shard",
+    "minecraft:feather"
+  ],
+  "result": {
+    "id": "minecraft:diamond_sword",
+    "components": {
+      "minecraft:item_model": "family:katana_wind",
+      "minecraft:custom_name": {
+        "text": "Wind Katana",
+        "color": "#6FF2C0",
+        "italic": false
+      },
+      "minecraft:lore": [
+        {
+          "text": "Special move: Gale Spiral",
+          "color": "gray",
+          "italic": false
+        },
+        {
+          "text": "Hold use to unleash it",
+          "color": "dark_gray",
+          "italic": false
+        }
+      ],
+      "minecraft:attack_animation": {
+        "type": "whack",
+        "duration": 5
+      },
+      "minecraft:consumable": {
+        "consume_seconds": 1000,
+        "animation": "none",
+        "has_consume_particles": false,
+        "sound": "minecraft:intentionally_empty"
+      },
+      "minecraft:use_effects": {
+        "can_sprint": true,
+        "speed_multiplier": 1.0
+      },
+      "minecraft:custom_data": {
+        "family_katana": "wind"
+      }
+    }
+  }
+}

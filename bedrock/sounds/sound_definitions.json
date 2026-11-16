@@ -13,6 +13,70 @@
         "sounds/family/lightsaber/swing6",
         "sounds/family/lightsaber/swing7"
       ]
+    },
+    "family.katana_flame_swing": {
+      "category": "player",
+      "max_distance": 24.0,
+      "sounds": [
+        "sounds/family/katana/flame_swing1",
+        "sounds/family/katana/flame_swing2",
+        "sounds/family/katana/flame_swing3"
+      ]
+    },
+    "family.katana_flame_special": {
+      "category": "player",
+      "max_distance": 32.0,
+      "sounds": [
+        "sounds/family/katana/flame_special"
+      ]
+    },
+    "family.katana_water_swing": {
+      "category": "player",
+      "max_distance": 24.0,
+      "sounds": [
+        "sounds/family/katana/water_swing1",
+        "sounds/family/katana/water_swing2",
+        "sounds/family/katana/water_swing3"
+      ]
+    },
+    "family.katana_water_special": {
+      "category": "player",
+      "max_distance": 32.0,
+      "sounds": [
+        "sounds/family/katana/water_special"
+      ]
+    },
+    "family.katana_thunder_swing": {
+      "category": "player",
+      "max_distance": 24.0,
+      "sounds": [
+        "sounds/family/katana/thunder_swing1",
+        "sounds/family/katana/thunder_swing2",
+        "sounds/family/katana/thunder_swing3"
+      ]
+    },
+    "family.katana_thunder_special": {
+      "category": "player",
+      "max_distance": 32.0,
+      "sounds": [
+        "sounds/family/katana/thunder_special"
+      ]
+    },
+    "family.katana_wind_swing": {
+      "category": "player",
+      "max_distance": 24.0,
+      "sounds": [
+        "sounds/family/katana/wind_swing1",
+        "sounds/family/katana/wind_swing2",
+        "sounds/family/katana/wind_swing3"
+      ]
+    },
+    "family.katana_wind_special": {
+      "category": "player",
+      "max_distance": 32.0,
+      "sounds": [
+        "sounds/family/katana/wind_special"
+      ]
     }
   }
 }

@@ -7,6 +7,15 @@ Original art and sounds for our family Paper server (Minecraft 26.3, Java + Bedr
   Main hand only: one put in the off-hand goes back to the inventory.
 - **Lightsabers**: 7 colours, separate items on top of a diamond sword (item model `family:lightsaber_<colour>`).
   Crafted from diamond sword + amethyst shard + dye; hitting something plays a "vwoom".
+- **Elemental katanas** (`katana.py`, art in `katana_art.py`, sounds in `katana_sounds.py`): Flame, Water, Thunder and
+  Wind, separate items on top of a diamond sword (item model `family:katana_<element>`). Crafted from diamond sword +
+  amethyst shard + blaze powder / prismarine crystals / copper ingot / feather, or `../give-katana.sh ELEMENT PLAYER`.
+  - Every swing draws that katana's own arc of particles. Swings at air need the Skript plugin with
+    `skript/family-katana.sk` (a datapack can't see them); hits on mobs and players also add a burst.
+  - Hold use for the special move (Ember Crescent, Tide Ribbon, Storm Strike, Gale Spiral): 6 damage to hostile
+    mobs only (tag `family:katana_targets`), other players are only pushed back, 3 s cooldown.
+  - PC players see glowing, animated blades and a whack or stab swing; iPads see bright pictures and the swing speed.
+  - Previews: `python3 katana.py` writes `previews/katanas.png` and `previews/katana-sounds-<element>.wav`.
 - **The Undersea** (`undersea.py`, art in `undersea_art.py`): dimension `family:undersea`, vanilla overworld
   terrain with the sea level raised to 100 and only vanilla ocean biomes (Bedrock players can't see custom
   biomes). Everyone there gets conduit power (breathing + underwater sight).
@@ -46,6 +55,7 @@ Any costume (`shark`, `diver`, `angler`, `turtle`, `coral`, `axolotl`, `sponge`,
 | `dist/family-pack-bedrock.mcpack` | `plugins/Geyser-Spigot/packs/` (iPads) |
 | `geyser/custom_mappings/family.json` | `plugins/Geyser-Spigot/custom_mappings/` |
 | `dist/family-datapack.zip` | `world/datapacks/` (recipes, hit sound, blaster main-hand lock) |
+| `skript/family-katana.sk` | `plugins/Skript/scripts/` (katana swing arcs; needs the Skript plugin) |
 
 Rebuild after editing `art.py` / `sounds.py`: `python3 build.py` (needs Pillow and `oggenc` from vorbis-tools).
 The server links to a specific commit, so a rebuild only goes live once that link and its sha1 are updated.

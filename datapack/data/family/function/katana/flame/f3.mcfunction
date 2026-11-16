@@ -1,0 +1,13 @@
+particle minecraft:flame ^1.03 ^0.22 ^1.72 0.04 0.04 0.04 0.01 1
+particle minecraft:flame ^1.28 ^0.29 ^1.54 0.04 0.04 0.04 0.01 1
+particle minecraft:flame ^1.50 ^0.37 ^1.32 0.04 0.04 0.04 0.01 1
+particle minecraft:flame ^1.68 ^0.45 ^1.08 0.04 0.04 0.04 0.01 1
+particle minecraft:flame ^1.83 ^0.52 ^0.81 0.04 0.04 0.04 0.01 1
+particle minecraft:flame ^1.93 ^0.60 ^0.52 0.04 0.04 0.04 0.01 1
+particle minecraft:dust{color:[1.00,0.35,0.12],scale:1.6} ^1.18 ^0.32 ^1.97 0.03 0.03 0.03 0.0 1
+particle minecraft:dust{color:[1.00,0.35,0.12],scale:1.6} ^1.47 ^0.39 ^1.77 0.03 0.03 0.03 0.0 1
+particle minecraft:dust{color:[1.00,0.35,0.12],scale:1.6} ^1.72 ^0.47 ^1.52 0.03 0.03 0.03 0.0 1
+particle minecraft:dust{color:[1.00,0.35,0.12],scale:1.6} ^1.94 ^0.55 ^1.24 0.03 0.03 0.03 0.0 1
+particle minecraft:dust{color:[1.00,0.35,0.12],scale:1.6} ^2.10 ^0.62 ^0.93 0.03 0.03 0.03 0.0 1
+particle minecraft:dust{color:[1.00,0.35,0.12],scale:1.6} ^2.22 ^0.70 ^0.60 0.03 0.03 0.03 0.0 1
+particle minecraft:lava ^1.93 ^0.60 ^0.52 0.15 0.15 0.15 0 3

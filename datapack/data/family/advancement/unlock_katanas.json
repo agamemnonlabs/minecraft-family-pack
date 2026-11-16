@@ -1,0 +1,22 @@
+{
+  "criteria": {
+    "has_amethyst": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:amethyst_shard"
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "family:katana_flame",
+      "family:katana_water",
+      "family:katana_thunder",
+      "family:katana_wind"
+    ]
+  }
+}
