@@ -16,7 +16,7 @@ import undersea, town
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 JAVA, BEDROCK, DATA, DIST = (os.path.join(ROOT, d) for d in ("java", "bedrock", "datapack", "dist"))
-VERSION = [1, 0, 9]                       # bump for every change shipped to Bedrock (iPads cache by version)
+VERSION = [1, 0, 11]                      # bump for every change shipped to Bedrock (iPads cache by version)
 JAVA_FORMAT, DATA_FORMAT = 97, 121        # resource / data pack formats of Minecraft 26.3
 BEDROCK_HEADER_UUID = "6f1d2b8e-3c47-4a8e-9d2f-5b1a7c0e4f21"
 BEDROCK_MODULE_UUID = "a3c9e5d7-81f2-4b6a-b0e4-2d8f6c1a9e53"

@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:diamond_helmet",
+    "minecraft:pink_dye",
+    "minecraft:magenta_dye"
+  ],
+  "result": {
+    "id": "minecraft:diamond_helmet",
+    "components": {
+      "minecraft:item_model": "family:axolotl_hood",
+      "minecraft:custom_name": {
+        "text": "Axolotl Hood",
+        "color": "#F7B6CF",
+        "italic": false
+      },
+      "minecraft:equippable": {
+        "slot": "head",
+        "asset_id": "family:axolotl",
+        "equip_sound": "minecraft:item.armor.equip_diamond"
+      },
+      "minecraft:unbreakable": {},
+      "minecraft:custom_data": {
+        "family_costume": "axolotl"
+      }
+    }
+  }
+}

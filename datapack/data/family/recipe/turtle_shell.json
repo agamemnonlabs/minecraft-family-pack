@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:diamond_chestplate",
+    "minecraft:green_dye",
+    "minecraft:lime_dye"
+  ],
+  "result": {
+    "id": "minecraft:diamond_chestplate",
+    "components": {
+      "minecraft:item_model": "family:turtle_shell",
+      "minecraft:custom_name": {
+        "text": "Turtle Shell",
+        "color": "#8CCB72",
+        "italic": false
+      },
+      "minecraft:equippable": {
+        "slot": "chest",
+        "asset_id": "family:turtle",
+        "equip_sound": "minecraft:item.armor.equip_diamond"
+      },
+      "minecraft:unbreakable": {},
+      "minecraft:custom_data": {
+        "family_costume": "turtle"
+      }
+    }
+  }
+}

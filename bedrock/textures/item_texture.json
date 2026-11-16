@@ -40,6 +40,90 @@
     },
     "family_shark_flippers": {
       "textures": "textures/items/family_shark_flippers"
+    },
+    "family_diver_helmet": {
+      "textures": "textures/items/family_diver_helmet"
+    },
+    "family_diver_suit": {
+      "textures": "textures/items/family_diver_suit"
+    },
+    "family_diver_pants": {
+      "textures": "textures/items/family_diver_pants"
+    },
+    "family_diver_boots": {
+      "textures": "textures/items/family_diver_boots"
+    },
+    "family_angler_hood": {
+      "textures": "textures/items/family_angler_hood"
+    },
+    "family_angler_suit": {
+      "textures": "textures/items/family_angler_suit"
+    },
+    "family_angler_pants": {
+      "textures": "textures/items/family_angler_pants"
+    },
+    "family_angler_fins": {
+      "textures": "textures/items/family_angler_fins"
+    },
+    "family_turtle_hood": {
+      "textures": "textures/items/family_turtle_hood"
+    },
+    "family_turtle_shell": {
+      "textures": "textures/items/family_turtle_shell"
+    },
+    "family_turtle_pants": {
+      "textures": "textures/items/family_turtle_pants"
+    },
+    "family_turtle_flippers": {
+      "textures": "textures/items/family_turtle_flippers"
+    },
+    "family_coral_helm": {
+      "textures": "textures/items/family_coral_helm"
+    },
+    "family_coral_breastplate": {
+      "textures": "textures/items/family_coral_breastplate"
+    },
+    "family_coral_greaves": {
+      "textures": "textures/items/family_coral_greaves"
+    },
+    "family_coral_boots": {
+      "textures": "textures/items/family_coral_boots"
+    },
+    "family_axolotl_hood": {
+      "textures": "textures/items/family_axolotl_hood"
+    },
+    "family_axolotl_suit": {
+      "textures": "textures/items/family_axolotl_suit"
+    },
+    "family_axolotl_pants": {
+      "textures": "textures/items/family_axolotl_pants"
+    },
+    "family_axolotl_feet": {
+      "textures": "textures/items/family_axolotl_feet"
+    },
+    "family_sponge_hood": {
+      "textures": "textures/items/family_sponge_hood"
+    },
+    "family_sponge_top": {
+      "textures": "textures/items/family_sponge_top"
+    },
+    "family_sponge_legs": {
+      "textures": "textures/items/family_sponge_legs"
+    },
+    "family_sponge_feet": {
+      "textures": "textures/items/family_sponge_feet"
+    },
+    "family_spongebuddy_hood": {
+      "textures": "textures/items/family_spongebuddy_hood"
+    },
+    "family_spongebuddy_shirt": {
+      "textures": "textures/items/family_spongebuddy_shirt"
+    },
+    "family_spongebuddy_shorts": {
+      "textures": "textures/items/family_spongebuddy_shorts"
+    },
+    "family_spongebuddy_shoes": {
+      "textures": "textures/items/family_spongebuddy_shoes"
     }
   }
 }

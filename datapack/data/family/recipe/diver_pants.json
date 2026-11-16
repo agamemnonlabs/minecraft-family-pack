@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:diamond_leggings",
+    "minecraft:orange_dye",
+    "minecraft:brown_dye"
+  ],
+  "result": {
+    "id": "minecraft:diamond_leggings",
+    "components": {
+      "minecraft:item_model": "family:diver_pants",
+      "minecraft:custom_name": {
+        "text": "Diver Pants",
+        "color": "#E0B25A",
+        "italic": false
+      },
+      "minecraft:equippable": {
+        "slot": "legs",
+        "asset_id": "family:diver",
+        "equip_sound": "minecraft:item.armor.equip_diamond"
+      },
+      "minecraft:unbreakable": {},
+      "minecraft:custom_data": {
+        "family_costume": "diver"
+      }
+    }
+  }
+}

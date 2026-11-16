@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:diamond_boots",
+    "minecraft:pink_dye",
+    "minecraft:magenta_dye"
+  ],
+  "result": {
+    "id": "minecraft:diamond_boots",
+    "components": {
+      "minecraft:item_model": "family:axolotl_feet",
+      "minecraft:custom_name": {
+        "text": "Axolotl Feet",
+        "color": "#F7B6CF",
+        "italic": false
+      },
+      "minecraft:equippable": {
+        "slot": "feet",
+        "asset_id": "family:axolotl",
+        "equip_sound": "minecraft:item.armor.equip_diamond"
+      },
+      "minecraft:unbreakable": {},
+      "minecraft:custom_data": {
+        "family_costume": "axolotl"
+      }
+    }
+  }
+}

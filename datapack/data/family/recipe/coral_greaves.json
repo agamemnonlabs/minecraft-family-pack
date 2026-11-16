@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:diamond_leggings",
+    "minecraft:pink_dye",
+    "minecraft:blue_dye"
+  ],
+  "result": {
+    "id": "minecraft:diamond_leggings",
+    "components": {
+      "minecraft:item_model": "family:coral_greaves",
+      "minecraft:custom_name": {
+        "text": "Coral Greaves",
+        "color": "#F59CC8",
+        "italic": false
+      },
+      "minecraft:equippable": {
+        "slot": "legs",
+        "asset_id": "family:coral",
+        "equip_sound": "minecraft:item.armor.equip_diamond"
+      },
+      "minecraft:unbreakable": {},
+      "minecraft:custom_data": {
+        "family_costume": "coral"
+      }
+    }
+  }
+}

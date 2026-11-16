@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:diamond_chestplate",
+    "minecraft:yellow_dye",
+    "minecraft:white_dye"
+  ],
+  "result": {
+    "id": "minecraft:diamond_chestplate",
+    "components": {
+      "minecraft:item_model": "family:sponge_top",
+      "minecraft:custom_name": {
+        "text": "Sponge Top",
+        "color": "#F4E888",
+        "italic": false
+      },
+      "minecraft:equippable": {
+        "slot": "chest",
+        "asset_id": "family:sponge",
+        "equip_sound": "minecraft:item.armor.equip_diamond"
+      },
+      "minecraft:unbreakable": {},
+      "minecraft:custom_data": {
+        "family_costume": "sponge"
+      }
+    }
+  }
+}

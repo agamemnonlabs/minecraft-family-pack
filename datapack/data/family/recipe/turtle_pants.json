@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:diamond_leggings",
+    "minecraft:green_dye",
+    "minecraft:lime_dye"
+  ],
+  "result": {
+    "id": "minecraft:diamond_leggings",
+    "components": {
+      "minecraft:item_model": "family:turtle_pants",
+      "minecraft:custom_name": {
+        "text": "Turtle Pants",
+        "color": "#8CCB72",
+        "italic": false
+      },
+      "minecraft:equippable": {
+        "slot": "legs",
+        "asset_id": "family:turtle",
+        "equip_sound": "minecraft:item.armor.equip_diamond"
+      },
+      "minecraft:unbreakable": {},
+      "minecraft:custom_data": {
+        "family_costume": "turtle"
+      }
+    }
+  }
+}

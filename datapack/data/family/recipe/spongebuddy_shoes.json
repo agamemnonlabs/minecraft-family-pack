@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:diamond_boots",
+    "minecraft:yellow_dye",
+    "minecraft:brown_dye"
+  ],
+  "result": {
+    "id": "minecraft:diamond_boots",
+    "components": {
+      "minecraft:item_model": "family:spongebuddy_shoes",
+      "minecraft:custom_name": {
+        "text": "Sponge Buddy Shoes",
+        "color": "#FFE14D",
+        "italic": false
+      },
+      "minecraft:equippable": {
+        "slot": "feet",
+        "asset_id": "family:spongebuddy",
+        "equip_sound": "minecraft:item.armor.equip_diamond"
+      },
+      "minecraft:unbreakable": {},
+      "minecraft:custom_data": {
+        "family_costume": "spongebuddy"
+      }
+    }
+  }
+}

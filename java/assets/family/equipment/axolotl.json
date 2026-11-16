@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "family:axolotl"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "family:axolotl"
+      }
+    ]
+  }
+}

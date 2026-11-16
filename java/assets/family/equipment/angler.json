@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "family:angler"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "family:angler"
+      }
+    ]
+  }
+}

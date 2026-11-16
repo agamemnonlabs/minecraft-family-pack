@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:diamond_boots",
+    "minecraft:green_dye",
+    "minecraft:lime_dye"
+  ],
+  "result": {
+    "id": "minecraft:diamond_boots",
+    "components": {
+      "minecraft:item_model": "family:turtle_flippers",
+      "minecraft:custom_name": {
+        "text": "Turtle Flippers",
+        "color": "#8CCB72",
+        "italic": false
+      },
+      "minecraft:equippable": {
+        "slot": "feet",
+        "asset_id": "family:turtle",
+        "equip_sound": "minecraft:item.armor.equip_diamond"
+      },
+      "minecraft:unbreakable": {},
+      "minecraft:custom_data": {
+        "family_costume": "turtle"
+      }
+    }
+  }
+}

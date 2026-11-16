@@ -1,0 +1,14 @@
+{
+  "layers": {
+    "humanoid": [
+      {
+        "texture": "family:sponge"
+      }
+    ],
+    "humanoid_leggings": [
+      {
+        "texture": "family:sponge"
+      }
+    ]
+  }
+}

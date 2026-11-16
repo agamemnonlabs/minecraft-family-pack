@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:diamond_boots",
+    "minecraft:yellow_dye",
+    "minecraft:white_dye"
+  ],
+  "result": {
+    "id": "minecraft:diamond_boots",
+    "components": {
+      "minecraft:item_model": "family:sponge_feet",
+      "minecraft:custom_name": {
+        "text": "Sponge Feet",
+        "color": "#F4E888",
+        "italic": false
+      },
+      "minecraft:equippable": {
+        "slot": "feet",
+        "asset_id": "family:sponge",
+        "equip_sound": "minecraft:item.armor.equip_diamond"
+      },
+      "minecraft:unbreakable": {},
+      "minecraft:custom_data": {
+        "family_costume": "sponge"
+      }
+    }
+  }
+}

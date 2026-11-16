@@ -1,0 +1,29 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "equipment",
+  "ingredients": [
+    "minecraft:diamond_leggings",
+    "minecraft:black_dye",
+    "minecraft:yellow_dye"
+  ],
+  "result": {
+    "id": "minecraft:diamond_leggings",
+    "components": {
+      "minecraft:item_model": "family:angler_pants",
+      "minecraft:custom_name": {
+        "text": "Angler Pants",
+        "color": "#B9A8E8",
+        "italic": false
+      },
+      "minecraft:equippable": {
+        "slot": "legs",
+        "asset_id": "family:angler",
+        "equip_sound": "minecraft:item.armor.equip_diamond"
+      },
+      "minecraft:unbreakable": {},
+      "minecraft:custom_data": {
+        "family_costume": "angler"
+      }
+    }
+  }
+}

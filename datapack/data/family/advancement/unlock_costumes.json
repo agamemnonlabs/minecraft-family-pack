@@ -1,0 +1,55 @@
+{
+  "criteria": {
+    "has_diamond_armour": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:diamond_helmet",
+              "minecraft:diamond_chestplate",
+              "minecraft:diamond_leggings",
+              "minecraft:diamond_boots"
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "recipes": [
+      "family:shark_hood",
+      "family:shark_suit",
+      "family:shark_pants",
+      "family:shark_flippers",
+      "family:diver_helmet",
+      "family:diver_suit",
+      "family:diver_pants",
+      "family:diver_boots",
+      "family:angler_hood",
+      "family:angler_suit",
+      "family:angler_pants",
+      "family:angler_fins",
+      "family:turtle_hood",
+      "family:turtle_shell",
+      "family:turtle_pants",
+      "family:turtle_flippers",
+      "family:coral_helm",
+      "family:coral_breastplate",
+      "family:coral_greaves",
+      "family:coral_boots",
+      "family:axolotl_hood",
+      "family:axolotl_suit",
+      "family:axolotl_pants",
+      "family:axolotl_feet",
+      "family:sponge_hood",
+      "family:sponge_top",
+      "family:sponge_legs",
+      "family:sponge_feet",
+      "family:spongebuddy_hood",
+      "family:spongebuddy_shirt",
+      "family:spongebuddy_shorts",
+      "family:spongebuddy_shoes"
+    ]
+  }
+}

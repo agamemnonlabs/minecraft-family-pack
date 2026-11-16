@@ -125,6 +125,69 @@
             "default": "family_shark_hood"
           }
         }
+      },
+      {
+        "bedrock_identifier": "family:diver_helmet",
+        "model": "family:diver_helmet",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_diver_helmet"
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:angler_hood",
+        "model": "family:angler_hood",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_angler_hood"
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:turtle_hood",
+        "model": "family:turtle_hood",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_turtle_hood"
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:coral_helm",
+        "model": "family:coral_helm",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_coral_helm"
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:axolotl_hood",
+        "model": "family:axolotl_hood",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_axolotl_hood"
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:sponge_hood",
+        "model": "family:sponge_hood",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_sponge_hood"
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:spongebuddy_hood",
+        "model": "family:spongebuddy_hood",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_spongebuddy_hood"
+          }
+        }
       }
     ],
     "minecraft:diamond_chestplate": [
@@ -134,6 +197,69 @@
         "bedrock_options": {
           "icons": {
             "default": "family_shark_suit"
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:diver_suit",
+        "model": "family:diver_suit",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_diver_suit"
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:angler_suit",
+        "model": "family:angler_suit",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_angler_suit"
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:turtle_shell",
+        "model": "family:turtle_shell",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_turtle_shell"
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:coral_breastplate",
+        "model": "family:coral_breastplate",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_coral_breastplate"
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:axolotl_suit",
+        "model": "family:axolotl_suit",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_axolotl_suit"
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:sponge_top",
+        "model": "family:sponge_top",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_sponge_top"
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:spongebuddy_shirt",
+        "model": "family:spongebuddy_shirt",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_spongebuddy_shirt"
           }
         }
       }
@@ -147,6 +273,69 @@
             "default": "family_shark_pants"
           }
         }
+      },
+      {
+        "bedrock_identifier": "family:diver_pants",
+        "model": "family:diver_pants",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_diver_pants"
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:angler_pants",
+        "model": "family:angler_pants",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_angler_pants"
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:turtle_pants",
+        "model": "family:turtle_pants",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_turtle_pants"
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:coral_greaves",
+        "model": "family:coral_greaves",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_coral_greaves"
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:axolotl_pants",
+        "model": "family:axolotl_pants",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_axolotl_pants"
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:sponge_legs",
+        "model": "family:sponge_legs",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_sponge_legs"
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:spongebuddy_shorts",
+        "model": "family:spongebuddy_shorts",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_spongebuddy_shorts"
+          }
+        }
       }
     ],
     "minecraft:diamond_boots": [
@@ -156,6 +345,69 @@
         "bedrock_options": {
           "icons": {
             "default": "family_shark_flippers"
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:diver_boots",
+        "model": "family:diver_boots",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_diver_boots"
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:angler_fins",
+        "model": "family:angler_fins",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_angler_fins"
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:turtle_flippers",
+        "model": "family:turtle_flippers",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_turtle_flippers"
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:coral_boots",
+        "model": "family:coral_boots",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_coral_boots"
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:axolotl_feet",
+        "model": "family:axolotl_feet",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_axolotl_feet"
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:sponge_feet",
+        "model": "family:sponge_feet",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_sponge_feet"
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:spongebuddy_shoes",
+        "model": "family:spongebuddy_shoes",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_spongebuddy_shoes"
           }
         }
       }

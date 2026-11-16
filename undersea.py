@@ -1,10 +1,10 @@
-"""The Undersea: an ocean-only dimension, whirlpool portals, the Bubble Shell and the Shark costume.
+"""The Undersea: an ocean-only dimension, whirlpool portals, the Bubble Shell and the sea costumes.
 build.py calls java(), bedrock(), datapack() and mappings(); art lives in undersea_art.py.
 
 Bedrock players (via Geyser) only see vanilla biomes, so the Undersea uses vanilla ocean biomes
 (warm, lukewarm, ocean, lush caves) and gets its look from terrain + a raised sea level."""
 import json, os
-from undersea_art import bubble_shell, shark_layers, shark_icon
+from undersea_art import bubble_shell, costume_layers, costume_icon
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 SEA_LEVEL = 100          # vanilla is 63: land up to y=100 is flooded, hills above it become islands
@@ -42,54 +42,79 @@ SHELL = {
     "minecraft:max_stack_size": 1,
     "minecraft:custom_data": {"family_shell": True}}
 
-# piece -> (diamond base item, equipment slot, Bedrock armour geometry/visibility name, name)
-SHARK = {"hood": ("diamond_helmet", "head", "helmet", "Shark Hood"),
-         "suit": ("diamond_chestplate", "chest", "chestplate", "Shark Suit"),
-         "pants": ("diamond_leggings", "legs", "leggings", "Shark Pants"),
-         "flippers": ("diamond_boots", "feet", "boots", "Shark Flippers")}
-LAYER_VISIBLE = {"helmet": "helmet", "chestplate": "chest", "leggings": "leg", "boots": "boot"}
+# Costumes are diamond armour underneath (same protection, unbreakable), crafted from the diamond piece
+# + two dyes. costume -> (name colour, (dye, dye), [(piece, item name)] for head, chest, legs, feet)
+COSTUMES = {
+    "shark": ("#9CC3DA", ("gray_dye", "white_dye"),
+              [("hood", "Shark Hood"), ("suit", "Shark Suit"), ("pants", "Shark Pants"), ("flippers", "Shark Flippers")]),
+    "diver": ("#E0B25A", ("orange_dye", "brown_dye"),
+              [("helmet", "Diver Helmet"), ("suit", "Diver Suit"), ("pants", "Diver Pants"), ("boots", "Diver Boots")]),
+    "angler": ("#B9A8E8", ("black_dye", "yellow_dye"),
+               [("hood", "Angler Hood"), ("suit", "Angler Suit"), ("pants", "Angler Pants"), ("fins", "Angler Fins")]),
+    "turtle": ("#8CCB72", ("green_dye", "lime_dye"),
+               [("hood", "Turtle Hood"), ("shell", "Turtle Shell"), ("pants", "Turtle Pants"), ("flippers", "Turtle Flippers")]),
+    "coral": ("#F59CC8", ("pink_dye", "blue_dye"),
+              [("helm", "Coral Helm"), ("breastplate", "Coral Breastplate"), ("greaves", "Coral Greaves"), ("boots", "Coral Boots")]),
+    "axolotl": ("#F7B6CF", ("pink_dye", "magenta_dye"),
+                [("hood", "Axolotl Hood"), ("suit", "Axolotl Suit"), ("pants", "Axolotl Pants"), ("feet", "Axolotl Feet")]),
+    "sponge": ("#F4E888", ("yellow_dye", "white_dye"),
+               [("hood", "Sponge Hood"), ("top", "Sponge Top"), ("legs", "Sponge Legs"), ("feet", "Sponge Feet")]),
+    "spongebuddy": ("#FFE14D", ("yellow_dye", "brown_dye"),
+                  [("hood", "Sponge Buddy Hood"), ("shirt", "Sponge Buddy Shirt"), ("shorts", "Sponge Buddy Shorts"), ("shoes", "Sponge Buddy Shoes")]),
+}
+# slot -> (diamond base item, Bedrock armour geometry, Bedrock layer-visibility variable)
+SLOTS = {"head": ("diamond_helmet", "helmet", "helmet"), "chest": ("diamond_chestplate", "chestplate", "chest"),
+         "legs": ("diamond_leggings", "leggings", "leg"), "feet": ("diamond_boots", "boots", "boot")}
 
-def shark_components(piece):
-    _, slot, _, name = SHARK[piece]
-    return {"minecraft:item_model": f"family:shark_{piece}",
-            "minecraft:custom_name": {"text": name, "color": "#9CC3DA", "italic": False},
-            "minecraft:equippable": {"slot": slot, "asset_id": "family:shark",
+def pieces():
+    """(costume, slot, piece, item name) for every costume piece."""
+    for costume, (_, _, names) in COSTUMES.items():
+        for slot, (piece, name) in zip(SLOTS, names):
+            yield costume, slot, piece, name
+
+def costume_components(costume, slot, piece, name):
+    return {"minecraft:item_model": f"family:{costume}_{piece}",
+            "minecraft:custom_name": {"text": name, "color": COSTUMES[costume][0], "italic": False},
+            "minecraft:equippable": {"slot": slot, "asset_id": f"family:{costume}",
                                      "equip_sound": "minecraft:item.armor.equip_diamond"},
             "minecraft:unbreakable": {},
-            "minecraft:custom_data": {"family_costume": "shark"}}
+            "minecraft:custom_data": {"family_costume": costume}}
 
 # ------------------------------------------------------------------ Java resource pack
 def java(a, put):
     flat = lambda n: {"parent": "minecraft:item/generated", "textures": {"layer0": f"family:item/{n}"}}
-    for n, img in [("bubble_shell", bubble_shell())] + [(f"shark_{p}", shark_icon(p)) for p in SHARK]:
+    icons = [("bubble_shell", bubble_shell())] + [(f"{c}_{p}", costume_icon(c, s)) for c, s, p, _ in pieces()]
+    for n, img in icons:
         put(f"{a}/family/items/{n}.json", {"model": {"type": "minecraft:model", "model": f"family:item/{n}"}})
         put(f"{a}/family/models/item/{n}.json", flat(n))
         img.save(f"{a}/family/textures/item/{n}.png")
-    put(f"{a}/family/equipment/shark.json", {"layers": {"humanoid": [{"texture": "family:shark"}],
-                                                        "humanoid_leggings": [{"texture": "family:shark"}]}})
-    layer1, layer2 = shark_layers()
-    for layer, img in (("humanoid", layer1), ("humanoid_leggings", layer2)):
-        os.makedirs(f"{a}/family/textures/entity/equipment/{layer}", exist_ok=True)
-        img.save(f"{a}/family/textures/entity/equipment/{layer}/shark.png")
+    for c in COSTUMES:
+        put(f"{a}/family/equipment/{c}.json", {"layers": {"humanoid": [{"texture": f"family:{c}"}],
+                                                          "humanoid_leggings": [{"texture": f"family:{c}"}]}})
+        for layer, img in zip(("humanoid", "humanoid_leggings"), costume_layers(c)):
+            os.makedirs(f"{a}/family/textures/entity/equipment/{layer}", exist_ok=True)
+            img.save(f"{a}/family/textures/entity/equipment/{layer}/{c}.png")
 
 # ------------------------------------------------------------------ Bedrock pack
 def bedrock(b, put):
     """Writes armour textures + attachables; returns item icons for item_texture.json."""
     os.makedirs(f"{b}/textures/models/armor", exist_ok=True)
-    layer1, layer2 = shark_layers()
-    layer1.save(f"{b}/textures/models/armor/family_shark_1.png")
-    layer2.save(f"{b}/textures/models/armor/family_shark_2.png")
-    for piece, (_, _, geo, _) in SHARK.items():   # same setup as Mojang's diamond armour attachables
-        put(f"{b}/attachables/shark_{piece}.json", {"format_version": "1.8.0", "minecraft:attachable": {
+    for c in COSTUMES:
+        for i, img in enumerate(costume_layers(c), 1):
+            img.save(f"{b}/textures/models/armor/family_{c}_{i}.png")
+    for c, slot, piece, _ in pieces():           # same setup as Mojang's diamond armour attachables
+        _, geo, visible = SLOTS[slot]
+        put(f"{b}/attachables/{c}_{piece}.json", {"format_version": "1.8.0", "minecraft:attachable": {
             "description": {
-                "identifier": f"family:shark_{piece}",
+                "identifier": f"family:{c}_{piece}",
                 "materials": {"default": "armor", "enchanted": "armor_enchanted"},
-                "textures": {"default": f"textures/models/armor/family_shark_{2 if geo == 'leggings' else 1}",
+                "textures": {"default": f"textures/models/armor/family_{c}_{2 if slot == 'legs' else 1}",
                              "enchanted": "textures/misc/enchanted_actor_glint"},
                 "geometry": {"default": f"geometry.humanoid.armor.{geo}"},
-                "scripts": {"parent_setup": f"variable.{LAYER_VISIBLE[geo]}_layer_visible = 0.0;"},
+                "scripts": {"parent_setup": f"variable.{visible}_layer_visible = 0.0;"},
                 "render_controllers": ["controller.render.armor"]}}})
-    return {"family_bubble_shell": bubble_shell(), **{f"family_shark_{p}": shark_icon(p) for p in SHARK}}
+    return {"family_bubble_shell": bubble_shell(),
+            **{f"family_{c}_{p}": costume_icon(c, s) for c, s, p, _ in pieces()}}
 
 def mappings():
     """Geyser custom item definitions (format 2). Protection and the wearable slot come from the
@@ -101,14 +126,16 @@ def mappings():
         "components": {"minecraft:consumable": {"consume_seconds": 1.0, "animation": "spyglass"},
                        "minecraft:use_cooldown": {"seconds": 3.0, "cooldown_group": "family:bubble_shell"},
                        "minecraft:max_stack_size": 1}}]}
-    for piece, (base, *_rest) in SHARK.items():
-        out[f"minecraft:{base}"] = [{"bedrock_identifier": f"family:shark_{piece}", "model": f"family:shark_{piece}",
-                                     "bedrock_options": {"icons": {"default": f"family_shark_{piece}"}}}]
+    for c, slot, piece, _ in pieces():
+        out.setdefault(f"minecraft:{SLOTS[slot][0]}", []).append({
+            "bedrock_identifier": f"family:{c}_{piece}", "model": f"family:{c}_{piece}",
+            "bedrock_options": {"icons": {"default": f"family_{c}_{piece}"}}})
     return out
 
 def gives(give_string):
     return {"bubble_shell": give_string("minecraft:nautilus_shell", SHELL),
-            **{f"shark_{p}": give_string(f"minecraft:{SHARK[p][0]}", shark_components(p)) for p in SHARK}}
+            **{f"{c}_{p}": give_string(f"minecraft:{SLOTS[s][0]}", costume_components(c, s, p, n))
+               for c, s, p, n in pieces()}}
 
 # ------------------------------------------------------------------ Datapack
 def mcf(*lines):
@@ -275,12 +302,13 @@ def datapack(data, put, give_string):
         "criteria": {"has_kelp": {"trigger": "minecraft:inventory_changed",
                                   "conditions": {"items": [{"items": "minecraft:kelp"}]}}},
         "rewards": {"recipes": ["family:bubble_shell"]}})
-    for piece, (base, *_rest) in SHARK.items():      # diamond piece + grey dye + white dye
-        put(f"{d}/recipe/shark_{piece}.json", {
+    for c, slot, piece, name in pieces():          # diamond piece + the costume's two dyes
+        base = SLOTS[slot][0]
+        put(f"{d}/recipe/{c}_{piece}.json", {
             "type": "minecraft:crafting_shapeless", "category": "equipment",
-            "ingredients": [f"minecraft:{base}", "minecraft:gray_dye", "minecraft:white_dye"],
-            "result": {"id": f"minecraft:{base}", "components": shark_components(piece)}})
-    put(f"{d}/advancement/unlock_shark.json", {
+            "ingredients": [f"minecraft:{base}", *(f"minecraft:{dye}" for dye in COSTUMES[c][1])],
+            "result": {"id": f"minecraft:{base}", "components": costume_components(c, slot, piece, name)}})
+    put(f"{d}/advancement/unlock_costumes.json", {
         "criteria": {"has_diamond_armour": {"trigger": "minecraft:inventory_changed", "conditions": {"items": [
-            {"items": [f"minecraft:{b}" for b, *_ in SHARK.values()]}]}}},
-        "rewards": {"recipes": [f"family:shark_{p}" for p in SHARK]}})
+            {"items": [f"minecraft:{b}" for b, *_ in SLOTS.values()]}]}}},
+        "rewards": {"recipes": [f"family:{c}_{p}" for c, _, p, _ in pieces()]}})

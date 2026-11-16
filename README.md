@@ -26,6 +26,16 @@ Original art and sounds for our family Paper server (Minecraft 26.3, Java + Bedr
     `/function family:undersea/tidy_town` clears natural reef (coral, sand/stone lumps) between and 6 blocks
     around the town and refreshes the hidden lights; it leaves plots, buildings and anything built alone.
 
+### Paint your own costume
+Any costume (`shark`, `diver`, `angler`, `turtle`, `coral`, `axolotl`, `sponge`) can be hand-painted:
+1. `python3 undersea_art.py <name>` writes the current art to `art/costumes/<name>_1.png` (hood, top, sleeves,
+   feet) and `<name>_2.png` (legs + waistband), plus `guide_<name>_1.png` / `_2.png` showing which pixels are which.
+2. Paint `<name>_1.png` / `<name>_2.png` in a pixel editor that keeps transparency (Piskel, Aseprite, Pixilart).
+   Keep them 64x32. Pixels are either solid or fully see-through (half-transparent ones get rounded).
+   Leave the hood's face hole and the bottom 2 rows of the sleeves empty if you want the face and hands to show.
+3. `python3 build.py`: if both files exist they replace the drawn art, on PC and iPad alike (bump `VERSION`).
+   Delete them to go back to the drawn art. The item icons stay as drawn.
+
 | File | Goes to |
 |---|---|
 | `dist/family-pack-java.zip` | `server.properties` `resource-pack` (PC players) |
