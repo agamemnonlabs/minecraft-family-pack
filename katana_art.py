@@ -21,7 +21,8 @@ STEEL, STEEL_DARK, GOLD = hexc("#D5DCE4"), hexc("#7E8894"), hexc("#E8B84A")
 P0, P1 = (3.0, 29.0), (29.6, 2.4)               # pommel end -> tip, pixel coordinates
 L = math.dist(P0, P1)
 DX, DY = (P1[0] - P0[0]) / L, (P1[1] - P0[1]) / L
-NX, NY = -DY, DX                                 # +v points down-right: the cutting edge side
+NX, NY = DY, -DX                                 # +v points up-left: the cutting edge side. Held items turn this
+                                                 # side forward/down (where axe heads sit); down-right faced back.
 POMMEL, HANDLE, GUARD, COLLAR = 1.6, 9.6, 12.0, 13.2   # where each part ends (u)
 FRAMES = 8                                       # Java blade animation frames
 

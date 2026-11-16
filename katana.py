@@ -345,7 +345,7 @@ def preview():
         parts = []
         for v in range(3):
             parts += snd.swing(el, __import__("random").Random(v + 1), int(snd.SWING_SECONDS * snd.RATE)) + gap
-        parts += gap + snd.special(el, rnd, int(snd.SPECIAL_SECONDS * snd.RATE))
+        parts += gap + snd.special(el, rnd, int(snd.special_seconds(el) * snd.RATE))
         m = max(abs(x) for x in parts) or 1
         with tempfile.TemporaryDirectory() as tmp:
             with wave.open(f"{tmp}/p.wav", "wb") as w:

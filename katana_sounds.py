@@ -80,6 +80,20 @@ def add_buzz(out, rnd, f, amp, env):
         ph += (f * (1 + rnd.uniform(-0.08, 0.08))) / RATE
         out[i] += amp * env(i / n) * (2 * (ph % 1.0) - 1)          # jittery sawtooth = electric hum
 
+def add_crash(out, rnd, t0, amp):
+    """One wave breaking at t0 seconds: a dull thump, a bright splash that settles, then fizzing foam."""
+    bp = BandPass(0.5); lp = prev = churn = 0.0; k, kc = 2 * math.pi * 160 / RATE, 2 * math.pi * 6 / RATE
+    for i in range(int(t0 * RATE), len(out)):
+        t = i / RATE - t0; x = rnd.uniform(-1, 1)
+        lp += k * (x - lp); hiss = x - prev; prev = x
+        churn += kc * (rnd.uniform(-1, 1) - churn)                 # slow random swell and fall of the roar
+        splash = bp(x, 1200 + 3300 * math.exp(-t / 0.35))          # bright at first, then settling
+        out[i] += amp * math.sin(0.5 * math.pi * min(1.0, t / 0.05)) * (1 + 40 * churn) * (
+            THUMP * lp * math.exp(-t / 0.22) + splash * math.exp(-t / 0.5) + FOAM * hiss * math.exp(-t / 0.7))
+    dur = len(out) / RATE
+    add_crackle(out, rnd, 500, 0.5 * amp, ms=2,
+                env=lambda f: 0.0 if f * dur < t0 else math.exp(-(f * dur - t0) / 0.6))
+
 def low_rumble(rnd, n, fc, env):
     lp = 0.0; out = []
     k = 2 * math.pi * fc / RATE
@@ -113,14 +127,16 @@ def special(el, rnd, n):
         for i, r in enumerate(low_rumble(rnd, n, 220, lambda t: bell(t, 0.45, 0.35))):
             out[i] += 4.0 * r
         add_crackle(out, rnd, 260, 1.0, env=lambda t: bell(t, 0.5, 0.35))
-    elif el == "water":     # a wave rolling past and splashing
-        out = whoosh(rnd, n, 250, 1300, 0.4, 0.3, q=1.2)
-        for i in range(n):
-            out[i] *= 0.75 + 0.25 * math.sin(2 * math.pi * 4 * i / RATE)
-        add_bloops(out, [(rnd.uniform(0.1, 0.7) * n / RATE, rnd.uniform(0.3, 1.0)) for _ in range(12)], 0.3)
-        splash = whoosh(rnd, n, 1500, 5000, 0.72, 0.12, q=0.6)
-        for i, s in enumerate(splash):
-            out[i] += 0.45 * s
+    elif el == "water":     # waves crashing: a big wave breaks as the move hits, a smaller one follows, then the wash
+        out = [0.0] * n
+        bp = BandPass(0.8)
+        for i in range(int(WAVE_HIT * RATE)):                         # the wave rising before it breaks
+            g = (i / RATE / WAVE_HIT) ** 2
+            out[i] += 0.5 * g * bp(rnd.uniform(-1, 1), 250 + 700 * g)
+        add_crash(out, rnd, WAVE_HIT, 1.0)
+        add_crash(out, rnd, WAVE_HIT + 0.8, 0.45)
+        for i, s in enumerate(whoosh(rnd, n, 700, 2400, 0.8, 0.14, q=0.5)):   # water drawing back over sand
+            out[i] += 0.25 * s
     elif el == "thunder":   # buzz, a sharp crack, then a rolling rumble
         out = [0.0] * n
         add_buzz(out, rnd, 90, 0.18, lambda t: bell(t, 0.08, 0.06))
@@ -136,11 +152,15 @@ def special(el, rnd, n):
         add_tone(out, 700, 1500, 0.08, 0.45, 0.28, wobble=60)
     return out
 
-SWING_SECONDS, SPECIAL_SECONDS = 0.5, 1.2
-SWING_VARIANTS = 3
+SWING_SECONDS, SWING_VARIANTS = 0.5, 3
+WAVE_HIT = 0.15                 # the water special's wave lands on its third tick
+THUMP, FOAM = 14.0, 0.25        # crash mix (the splash is 1.0)
+
+def special_seconds(el):
+    return 2.0 if el == "water" else 1.2          # the waves need time to wash out; the cooldown is 3 s
 
 def make(el, kind, path, seed):
     if kind == "swing":
         render(path, SWING_SECONDS, lambda rnd, n: swing(el, rnd, n), seed)
     else:
-        render(path, SPECIAL_SECONDS, lambda rnd, n: special(el, rnd, n), seed)
+        render(path, special_seconds(el), lambda rnd, n: special(el, rnd, n), seed)
