@@ -76,10 +76,13 @@ Original art and sounds for our family Paper server (Minecraft 26.3, Java + Bedr
     - Best times are on the sidebar, shown only in the Undersea (everyone there is on the aqua team `family.undersea`,
       so names show aqua). The score is race points (3000 minus the time in tenths of a second) so the fastest is on
       top: PCs show the time, iPads show the time after the name and the points on the right.
+    - **Leaderboard**: floating BEST TIMES text in front of the bus stop, beside Driver Finnley, with the top 5 names
+      and times, updated at every finish. It turns to face you and you can swim through it. A racer appears after their next finish (names are picked up then: a player
+      head filled with their profile, in a hidden item display). The sorted top 10 is in storage `family:race board`.
     - A broken ring block comes back within 5 s while someone is near the hub.
     - Admin: `/function family:undersea/build_race` (places the gate and rings only into water, so never over
       anything built; re-run replaces the floating numbers). `/function family:undersea/race/reset_times` clears the
-      board.
+      sidebar and the leaderboard.
 
 ### Paint your own costume
 Any costume (`shark`, `diver`, `angler`, `turtle`, `coral`, `axolotl`, `sponge`, `spongebuddy`) can be hand-painted:

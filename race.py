@@ -12,6 +12,10 @@
   show aqua there). The score is race points, 3000 minus the time in tenths of a second, so the fastest is on top on
   PC and iPad. PCs show the time instead of the number (fixed number format); iPads show "name time" and the points
   (Geyser adds the fixed text to the name and Bedrock always shows the score).
+- Leaderboard: floating BEST TIMES text in front of the bus stop, beside Driver Finnley, shows the top 5 best times
+  with names. It turns to face you (on iPad it's a name tag anyway) and nothing solid is behind it, so kids swim right
+  through. A datapack can't read names off the scoreboard, so each finish puts the racer's name (from a player head's
+  profile, in a hidden item display) and best time into a sorted top-10 list in storage family:race board.
 - Leaving the Undersea, leaving the game, "Stop racing" or the limit ends a race and gives back the kid's game mode.
 - A ring block that gets broken (it turns to water) comes back within 5 s while someone is near the hub.
 Coordinates are relative to the hub centre, like town.py; y=0 is the street.
@@ -43,6 +47,10 @@ RETIRED = [((0, 4, 34), "z"), ((26, 5, 28), "x"), ((42, 5, 14), "z"), ((42, 5, -
            ((42, 5, 0), "z")]                                                                 # ring 5 before the lift
 LIFT_CAP = 16                           # where a lift's column ends; the column is x/z +-1 around the ring centre, y 1..15
 LIFT_END = M + "light[level=15,waterlogged=true]"   # not water, so the bubbles stop; no collision, so nobody is pinned
+BOARD_AT, BOARD_SHOWN = (4.5, 1.7, 13.5), 5       # leaderboard text: over the sidewalk between the BUS STOP sign and
+                                                   # Finnley (his name tag is 2 blocks south), bottom at 1.7 up
+OLD_BOARD = {(-4, y, z): M + ("horn_coral_block" if y == 4 else "dark_prismarine")    # the first leaderboard, a wall
+             for y in range(1, 5) for z in range(12, 17)}   # across the street on a lamp's spot: build puts the lamp back
 # Found in the world but not in town.py (probes, 2026-11-17): the course keeps clear of them.
 SEEN = {**{(x, y, z): M + "wet_sponge" for x, y in ((-2, 1), (-2, 2), (-2, 3), (-1, 3), (0, 3), (1, 1), (1, 2), (1, 3))
            for z in (29, 30)},                                              # a kids' sponge arch on the south street
@@ -299,7 +307,8 @@ def datapack(data, put):
         "title @s subtitle " + json.dumps(secs("s", "d") + [{"text": " seconds", "color": "white"}]),
         'title @s title {"text":"FINISH!","color":"gold","bold":true}',
         *best,
-        tell("Nice swim, {kid}! ", secs("s", "d"), " seconds. Your best is ", secs("bs", "bd"), " seconds. Try again?")))
+        tell("Nice swim, {kid}! ", secs("s", "d"), " seconds. Your best is ", secs("bs", "bd"), " seconds. Try again?"),
+        f"function {fn}/leaderboard/add"))
     put(f"{f}/new_best.mcfunction", mcf(
         "scoreboard players operation @s family.race = #pts family.race_tmp",
         "execute store result storage family:race t.s int 1 run scoreboard players get #s family.race_tmp",
@@ -307,7 +316,8 @@ def datapack(data, put):
         f"function {fn}/board with storage family:race t",
         "title @s subtitle " + json.dumps(secs("s", "d") + [{"text": " seconds: your best!", "color": "white"}]),
         'title @s title {"text":"FINISH!","color":"gold","bold":true}',
-        tell("Whoosh! ", secs("s", "d"), " seconds, {kid}! That's your best time yet. It's on the board!")))
+        tell("Whoosh! ", secs("s", "d"), " seconds, {kid}! That's your best time yet. It's on the board!"),
+        f"function {fn}/leaderboard/add"))
     put(f"{f}/board.mcfunction",
         '$scoreboard players display numberformat @s family.race fixed {"text":"$(s).$(d)s","color":"aqua"}\n')
 
@@ -359,6 +369,53 @@ def datapack(data, put):
         "execute unless entity @s[tag=family.racing] run return fail",
         f"function {fn}/end", say("driver", "OK, {kid}! Tap me any time to race again.")))
 
+    # --- the leaderboard: the top 10 best times in storage family:race board ([{u: UUID, n: name, p: points, s, d}],
+    # best first), the top BOARD_SHOWN on the board's text display. A name can't be read off the scoreboard, so a player
+    # head in a hidden item display is filled with the racer's profile and the name is read from it. (26.3 loot functions
+    # are keyed "type", not "function".)
+    namer = "@e[type=minecraft:item_display,tag=family.race.namer,limit=1]"
+    sign = "@e[type=minecraft:text_display,tag=family.race.board,limit=1]"
+    lb = f"{fn}/leaderboard"
+    put(f"{f}/leaderboard/add.mcfunction", mcf(                  # as the racer, after every finish
+        "execute unless score @s family.race matches 0.. run return fail",
+        "data remove storage family:race new",
+        f"item replace entity {namer} contents with minecraft:player_head",
+        f'item modify entity {namer} contents {{type:"minecraft:fill_player_head",entity:"this"}}',
+        f'data modify storage family:race new.n set from entity {namer} item.components."minecraft:profile".name',
+        'execute unless data storage family:race new.n run data modify storage family:race new.n set value "?"',
+        "data modify storage family:race new.u set from entity @s UUID",
+        "execute store result storage family:race new.p int 1 run scoreboard players get @s family.race",
+        *best,
+        "execute store result storage family:race new.s int 1 run scoreboard players get #bs family.race_tmp",
+        "execute store result storage family:race new.d int 1 run scoreboard players get #bd family.race_tmp",
+        f"function {lb}/drop with storage family:race new",
+        "scoreboard players operation #np family.race_tmp = @s family.race",
+        "data modify storage family:race at.i set value 0",
+        f"function {lb}/insert with storage family:race at",
+        "data remove storage family:race board[10]",
+        f"function {lb}/show"))
+    put(f"{f}/leaderboard/drop.mcfunction", "$data remove storage family:race board[{u:$(u)}]\n")
+    put(f"{f}/leaderboard/insert.mcfunction", mcf(               # walk down the list; go in before the first slower one
+        "$execute unless data storage family:race board[$(i)] run return run "
+        "data modify storage family:race board append from storage family:race new",
+        "$execute store result score #bp family.race_tmp run data get storage family:race board[$(i)].p",
+        "$execute if score #np family.race_tmp > #bp family.race_tmp run return run "
+        "data modify storage family:race board insert $(i) from storage family:race new",
+        "$scoreboard players set #i family.race_tmp $(i)", "scoreboard players add #i family.race_tmp 1",
+        "execute store result storage family:race at.i int 1 run scoreboard players get #i family.race_tmp",
+        f"function {lb}/insert with storage family:race at"))
+    put(f"{f}/leaderboard/show.mcfunction", mcf(
+        "data modify storage family:race view set value {" + ",".join(f'l{k}:"-"' for k in range(BOARD_SHOWN)) + "}",
+        *[l for k in range(BOARD_SHOWN) for l in (
+            f"data modify storage family:race row set from storage family:race board[{k}]",
+            f"data modify storage family:race row.k set value {k}",
+            f"execute if data storage family:race board[{k}] run function {lb}/line with storage family:race row")],
+        f"function {lb}/render with storage family:race view"))
+    put(f"{f}/leaderboard/line.mcfunction", '$data modify storage family:race view.l$(k) set value "$(n)   $(s).$(d)s"\n')
+    put(f"{f}/leaderboard/render.mcfunction", f"$data modify entity {sign} text set value " + json.dumps(
+        [{"text": "BEST TIMES\n", "color": "gold", "bold": True},
+         {"text": "\n".join(f"{k + 1}. $(l{k})" for k in range(BOARD_SHOWN)), "color": "white", "bold": False}]) + "\n")
+
     # --- the course: rings, gate and lift ends placed only into water or bubbles (never over anything built), the
     # lifts' soul sand only into the sand floor (after the ends, so the column stops there), numbers as text displays.
     # A mined soul sand block fills with water: repair puts it back. The first lift's glass caps are swapped out.
@@ -379,7 +436,19 @@ def datapack(data, put):
                                   "translation": [F(0), F(0), F(0)], "scale": [F(1.5 if i == 0 else 2.5)] * 3}}
         return f"execute in {dim} run summon minecraft:text_display {hx + x} {hy + y} {hz + z} {snbt(nbt)}"
     retired = {p: b for c, axis in RETIRED for p, b in ring(c, axis)[0].items() if p not in course and p not in seabed}
-    xs = [p[0] for p in [*course, *retired]] + [-3]; zs = [p[2] for p in [*course, *retired]] + [ARCH_Z]
+    xs = [p[0] for p in [*course, *retired, *OLD_BOARD]] + [-3]; zs = [p[2] for p in [*course, *retired, *OLD_BOARD]] + [ARCH_Z]
+    def summon_board():
+        """The leaderboard text (turns to face the viewer, like a name tag) and the hidden name helper in the ground
+        under it (scale 0: invisible on PC; iPads can't see item displays anyway)."""
+        x, y, z = BOARD_AT
+        flat = lambda k: {"left_rotation": [F(0), F(0), F(0), F(1)], "right_rotation": [F(0), F(0), F(0), F(1)],
+                          "translation": [F(0), F(0), F(0)], "scale": [F(k)] * 3}
+        text = {"Tags": ["family.race.label", "family.race.board"], "billboard": "center",
+                "brightness": {"sky": 15, "block": 15}, "line_width": 220, "transformation": flat(1.4),
+                "text": {"text": "BEST TIMES", "color": "gold", "bold": True}}
+        helper = {"Tags": ["family.race.label", "family.race.namer"], "transformation": flat(0)}
+        return [f"execute in {dim} run summon minecraft:text_display {hx + x} {hy + y} {hz + z} {snbt(text)}",
+                f"execute in {dim} run summon minecraft:item_display {hx + x} {hy - 0.5} {hz + z} {snbt(helper)}"]
     area = f"{hx + min(xs)} {hz + min(zs)} {hx + max(xs)} {hz + max(zs)}"
     put(f"{data}/data/family/function/undersea/build_race.mcfunction", mcf(
         f"execute in {dim} run forceload add {area}", f"schedule function {fn}/build 3s replace"))
@@ -387,13 +456,17 @@ def datapack(data, put):
         *[f"execute in {dim} unless loaded {hx + x} {hy} {hz + z} run return run schedule function {fn}/build 2s replace"
           for x, z in ((min(xs), min(zs)), (max(xs), max(zs)))],
         f"execute in {dim} run kill @e[type=minecraft:text_display,tag=family.race.label]",
+        f"execute in {dim} run kill @e[type=minecraft:item_display,tag=family.race.namer]",
         *[f"execute in {dim} if block {a(*p)} {b} run setblock {a(*p)} minecraft:water" for p, b in sorted(retired.items())],
         *[f"execute in {dim} if block {a(*p)} minecraft:light_blue_stained_glass run setblock {a(*p)} {b}"
           for p, b in sorted(lifts()[0].items())],
+        *[f"execute in {dim} if block {a(*p)} {b} run setblock {a(*p)} {town.wl(T.v[p]) if p in T.v else 'minecraft:water'}"
+          for p, b in sorted(OLD_BOARD.items())],
         *place, *sink("#family:race_seabed"),
-        *[summon_label(i) for i in range(0, N + 1)],
+        *[summon_label(i) for i in range(0, N + 1)], *summon_board(), f"function {lb}/show",
         f"execute in {dim} run forceload remove {area}"))
-    put(f"{f}/reset_times.mcfunction", mcf("scoreboard players reset * family.race"))   # admin: clear the board
+    put(f"{f}/reset_times.mcfunction", mcf(                                           # admin: clear both boards
+        "scoreboard players reset * family.race", "data remove storage family:race board", f"function {fn}/leaderboard/show"))
 
 # ---------------------------------------------------------------- preview
 def preview():

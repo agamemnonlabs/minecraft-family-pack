@@ -1,6 +1,7 @@
 execute in family:undersea unless loaded -181 38 -185 run return run schedule function family:undersea/race/build 2s replace
 execute in family:undersea unless loaded -121 38 -103 run return run schedule function family:undersea/race/build 2s replace
 execute in family:undersea run kill @e[type=minecraft:text_display,tag=family.race.label]
+execute in family:undersea run kill @e[type=minecraft:item_display,tag=family.race.namer]
 execute in family:undersea if block -181 43 -180 minecraft:white_concrete run setblock -181 43 -180 minecraft:water
 execute in family:undersea if block -181 44 -180 minecraft:white_concrete run setblock -181 44 -180 minecraft:water
 execute in family:undersea if block -181 45 -180 minecraft:white_concrete run setblock -181 45 -180 minecraft:water
@@ -138,6 +139,26 @@ execute in family:undersea if block -124 54 -143 minecraft:light_blue_stained_gl
 execute in family:undersea if block -123 54 -145 minecraft:light_blue_stained_glass run setblock -123 54 -145 minecraft:light[level=15,waterlogged=true]
 execute in family:undersea if block -123 54 -144 minecraft:light_blue_stained_glass run setblock -123 54 -144 minecraft:light[level=15,waterlogged=true]
 execute in family:undersea if block -123 54 -143 minecraft:light_blue_stained_glass run setblock -123 54 -143 minecraft:light[level=15,waterlogged=true]
+execute in family:undersea if block -172 39 -132 minecraft:dark_prismarine run setblock -172 39 -132 minecraft:water
+execute in family:undersea if block -172 39 -131 minecraft:dark_prismarine run setblock -172 39 -131 minecraft:water
+execute in family:undersea if block -172 39 -130 minecraft:dark_prismarine run setblock -172 39 -130 minecraft:prismarine_wall[waterlogged=true]
+execute in family:undersea if block -172 39 -129 minecraft:dark_prismarine run setblock -172 39 -129 minecraft:water
+execute in family:undersea if block -172 39 -128 minecraft:dark_prismarine run setblock -172 39 -128 minecraft:water
+execute in family:undersea if block -172 40 -132 minecraft:dark_prismarine run setblock -172 40 -132 minecraft:water
+execute in family:undersea if block -172 40 -131 minecraft:dark_prismarine run setblock -172 40 -131 minecraft:water
+execute in family:undersea if block -172 40 -130 minecraft:dark_prismarine run setblock -172 40 -130 minecraft:prismarine_wall[waterlogged=true]
+execute in family:undersea if block -172 40 -129 minecraft:dark_prismarine run setblock -172 40 -129 minecraft:water
+execute in family:undersea if block -172 40 -128 minecraft:dark_prismarine run setblock -172 40 -128 minecraft:water
+execute in family:undersea if block -172 41 -132 minecraft:dark_prismarine run setblock -172 41 -132 minecraft:water
+execute in family:undersea if block -172 41 -131 minecraft:dark_prismarine run setblock -172 41 -131 minecraft:water
+execute in family:undersea if block -172 41 -130 minecraft:dark_prismarine run setblock -172 41 -130 minecraft:prismarine_wall[waterlogged=true]
+execute in family:undersea if block -172 41 -129 minecraft:dark_prismarine run setblock -172 41 -129 minecraft:water
+execute in family:undersea if block -172 41 -128 minecraft:dark_prismarine run setblock -172 41 -128 minecraft:water
+execute in family:undersea if block -172 42 -132 minecraft:horn_coral_block run setblock -172 42 -132 minecraft:water
+execute in family:undersea if block -172 42 -131 minecraft:horn_coral_block run setblock -172 42 -131 minecraft:water
+execute in family:undersea if block -172 42 -130 minecraft:horn_coral_block run setblock -172 42 -130 minecraft:sea_lantern
+execute in family:undersea if block -172 42 -129 minecraft:horn_coral_block run setblock -172 42 -129 minecraft:water
+execute in family:undersea if block -172 42 -128 minecraft:horn_coral_block run setblock -172 42 -128 minecraft:water
 execute in family:undersea if block -172 39 -126 #family:race_free run setblock -172 39 -126 minecraft:black_concrete
 execute in family:undersea if block -172 40 -126 #family:race_free run setblock -172 40 -126 minecraft:white_concrete
 execute in family:undersea if block -172 41 -126 #family:race_free run setblock -172 41 -126 minecraft:black_concrete
@@ -360,4 +381,7 @@ execute in family:undersea run summon minecraft:text_display -155.5 50.3 -181.5 
 execute in family:undersea run summon minecraft:text_display -167.5 48.3 -164.5 {"Tags":["family.race.label"],"billboard":"center","brightness":{"sky":15,"block":15},"text":{"text":"9","color":"gold","bold":true},"transformation":{"left_rotation":[0.0f,0.0f,0.0f,1.0f],"right_rotation":[0.0f,0.0f,0.0f,1.0f],"translation":[0.0f,0.0f,0.0f],"scale":[2.5f,2.5f,2.5f]}}
 execute in family:undersea run summon minecraft:text_display -167.5 44.2 -155.5 {"Tags":["family.race.label"],"billboard":"center","brightness":{"sky":15,"block":15},"text":{"text":"10","color":"gold","bold":true},"transformation":{"left_rotation":[0.0f,0.0f,0.0f,1.0f],"right_rotation":[0.0f,0.0f,0.0f,1.0f],"translation":[0.0f,0.0f,0.0f],"scale":[2.5f,2.5f,2.5f]}}
 execute in family:undersea run summon minecraft:text_display -161.5 50.3 -143.5 {"Tags":["family.race.label"],"billboard":"center","brightness":{"sky":15,"block":15},"text":{"text":"11","color":"gold","bold":true},"transformation":{"left_rotation":[0.0f,0.0f,0.0f,1.0f],"right_rotation":[0.0f,0.0f,0.0f,1.0f],"translation":[0.0f,0.0f,0.0f],"scale":[2.5f,2.5f,2.5f]}}
+execute in family:undersea run summon minecraft:text_display -163.5 39.7 -130.5 {"Tags":["family.race.label","family.race.board"],"billboard":"center","brightness":{"sky":15,"block":15},"line_width":220,"transformation":{"left_rotation":[0.0f,0.0f,0.0f,1.0f],"right_rotation":[0.0f,0.0f,0.0f,1.0f],"translation":[0.0f,0.0f,0.0f],"scale":[1.4f,1.4f,1.4f]},"text":{"text":"BEST TIMES","color":"gold","bold":true}}
+execute in family:undersea run summon minecraft:item_display -163.5 37.5 -130.5 {"Tags":["family.race.label","family.race.namer"],"transformation":{"left_rotation":[0.0f,0.0f,0.0f,1.0f],"right_rotation":[0.0f,0.0f,0.0f,1.0f],"translation":[0.0f,0.0f,0.0f],"scale":[0.0f,0.0f,0.0f]}}
+function family:undersea/race/leaderboard/show
 execute in family:undersea run forceload remove -181 -185 -121 -103

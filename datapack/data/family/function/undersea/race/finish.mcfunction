@@ -20,3 +20,4 @@ scoreboard players operation #bs family.race_tmp /= #10 family.race_tmp
 scoreboard players operation #bd family.race_tmp = #b family.race_tmp
 scoreboard players operation #bd family.race_tmp %= #10 family.race_tmp
 tellraw @s [{"text": "Driver Finnley", "color": "aqua"}, {"text": ": ", "color": "white"}, {"text": "Nice swim, ", "color": "white"}, {"selector": "@s", "color": "white"}, {"text": "! ", "color": "white"}, {"score": {"name": "#s", "objective": "family.race_tmp"}}, {"text": "."}, {"score": {"name": "#d", "objective": "family.race_tmp"}}, {"text": " seconds. Your best is ", "color": "white"}, {"score": {"name": "#bs", "objective": "family.race_tmp"}}, {"text": "."}, {"score": {"name": "#bd", "objective": "family.race_tmp"}}, {"text": " seconds. Try again?", "color": "white"}]
+function family:undersea/race/leaderboard/add

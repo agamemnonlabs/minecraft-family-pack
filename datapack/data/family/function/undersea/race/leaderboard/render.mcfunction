@@ -1,0 +1,1 @@
+$data modify entity @e[type=minecraft:text_display,tag=family.race.board,limit=1] text set value [{"text": "BEST TIMES\n", "color": "gold", "bold": true}, {"text": "1. $(l0)\n2. $(l1)\n3. $(l2)\n4. $(l3)\n5. $(l4)", "color": "white", "bold": false}]

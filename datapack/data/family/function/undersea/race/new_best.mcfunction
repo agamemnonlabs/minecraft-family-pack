@@ -5,3 +5,4 @@ function family:undersea/race/board with storage family:race t
 title @s subtitle [{"score": {"name": "#s", "objective": "family.race_tmp"}}, {"text": "."}, {"score": {"name": "#d", "objective": "family.race_tmp"}}, {"text": " seconds: your best!", "color": "white"}]
 title @s title {"text":"FINISH!","color":"gold","bold":true}
 tellraw @s [{"text": "Driver Finnley", "color": "aqua"}, {"text": ": ", "color": "white"}, {"text": "Whoosh! ", "color": "white"}, {"score": {"name": "#s", "objective": "family.race_tmp"}}, {"text": "."}, {"score": {"name": "#d", "objective": "family.race_tmp"}}, {"text": " seconds, ", "color": "white"}, {"selector": "@s", "color": "white"}, {"text": "! That's your best time yet. It's on the board!", "color": "white"}]
+function family:undersea/race/leaderboard/add
