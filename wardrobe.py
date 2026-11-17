@@ -3,6 +3,8 @@ wear the costumes on the edge of the hub's sand ring, two in each corner between
 the hub. Stepping onto the glowing pad in front of one gives that costume's pieces you don't already
 have (in your inventory or worn), so it never hands out duplicates.
 The town square's four benches stood where the pads go, so the build removes them (spruce stairs only).
+Self-repair: every 5 s while a player has been near the hub for 5 s, a missing stand or pad is put back
+(the wait lets the stands load first, so it never makes doubles).
 Coordinates are relative to the hub centre, like town.py.
   python3 wardrobe.py -> previews/wardrobe.png
   build.py            -> family:undersea/wardrobe/*  (admin runs family:undersea/build_wardrobe; safe to re-run)"""
@@ -36,6 +38,7 @@ def datapack(data, put, give_string):
     hx, hy, hz = undersea.HUB_X, undersea.HUB_Y, undersea.HUB_Z
     dim, f = undersea.DIM, f"{data}/data/family/function/undersea/wardrobe"
     in_sea = f"execute in {dim} run "
+    at_hub, someone = f"in {dim} positioned {hx} {hy} {hz}", "entity @a[distance=..24]"
     put(f"{f}/load.mcfunction", "scoreboard objectives add family.pad dummy\nscoreboard objectives add family.lastpad dummy\n")
     # Every tick: which pad is each player on (0 = none)? Only a change of pad hands anything out,
     # so standing on a pad doesn't repeat; stepping back on only gives pieces that went missing.
@@ -43,7 +46,19 @@ def datapack(data, put, give_string):
         ["scoreboard players set @a family.pad 0"]
         + [f"{in_sea}scoreboard players set @a[x={hx + px},y={hy + 1},z={hz + pz},dx=0,dy=1,dz=0] family.pad {i}"
            for i, (_, _, (px, pz), *_) in enumerate(stands(), 1)]
-        + ["execute as @a unless score @s family.pad = @s family.lastpad run function family:undersea/wardrobe/step"]) + "\n")
+        + ["execute as @a unless score @s family.pad = @s family.lastpad run function family:undersea/wardrobe/step",
+           # #near counts ticks with a player near the hub; at 100 (5 s) repair runs and resets it
+           f"execute {at_hub} if {someone} run scoreboard players add #near family.pad 1",
+           f"execute {at_hub} unless {someone} run scoreboard players set #near family.pad 0",
+           "execute if score #near family.pad matches 100.. run function family:undersea/wardrobe/repair"]) + "\n")
+    summons = [f"summon minecraft:armor_stand {hx + x + 0.5} {hy + 1} {hz + z + 0.5} {stand_nbt(c, t, col, yaw)}"
+               for x, z, _, yaw, c, t, col in stands()]
+    pads = [f"{hx + px} {hy} {hz + pz}" for _, _, (px, pz), *_ in stands()]
+    put(f"{f}/repair.mcfunction", "\n".join(
+        ["scoreboard players set #near family.pad 0"]
+        + [f"execute in {dim} positioned {hx + x + 0.5} {hy + 1} {hz + z + 0.5} unless entity "
+           f"@e[type=minecraft:armor_stand,tag=family.wardrobe,distance=..1] run {s}" for (x, z, *_), s in zip(stands(), summons)]
+        + [f"execute in {dim} unless block {p} {PAD} run setblock {p} {PAD}" for p in pads]) + "\n")
     put(f"{f}/step.mcfunction", "\n".join(
         ["scoreboard players operation @s family.lastpad = @s family.pad"]
         + [f"execute if score @s family.pad matches {i} run return run function family:undersea/wardrobe/{s[4]}"
@@ -69,9 +84,8 @@ def datapack(data, put, give_string):
          f"{in_sea}kill @e[type=minecraft:armor_stand,tag=family.wardrobe]"]
         + [f"{in_sea}fill {hx + x1} {hy + 1} {hz + z} {hx + x2} {hy + 1} {hz + z} minecraft:water replace minecraft:spruce_stairs"
            for z in (-8, 8) for x1, x2 in ((-6, -4), (4, 6))]
-        + [f"{in_sea}setblock {hx + px} {hy} {hz + pz} {PAD}" for _, _, (px, pz), *_ in stands()]
-        + [f"{in_sea}summon minecraft:armor_stand {hx + x + 0.5} {hy + 1} {hz + z + 0.5} {stand_nbt(c, t, col, yaw)}"
-           for x, z, _, yaw, c, t, col in stands()]
+        + [f"{in_sea}setblock {p} {PAD}" for p in pads]
+        + [in_sea + s for s in summons]
         + [f"{in_sea}forceload remove {area}"]) + "\n")
 
 def preview():

@@ -43,7 +43,8 @@ Original art and sounds for our family Paper server (Minecraft 26.3, Java + Bedr
     around the town and refreshes the hidden lights; it leaves plots, buildings and anything built alone.
   - **Costume ring** (`wardrobe.py`, preview `previews/wardrobe.png`): free costumes at the hub. Eight armour
     stands wear the costumes around the hub, each with a pink pad in front. Stepping on a pad gives the pieces of
-    that costume you don't already have. Admin: `/function family:undersea/build_wardrobe` (safe to re-run:
+    that costume you don't already have. A knocked-over mannequin or broken pad comes back on its own within
+    about 10 s while someone is near the hub. Admin: `/function family:undersea/build_wardrobe` (safe to re-run:
     it replaces the stands and pads).
 
 ### Paint your own costume

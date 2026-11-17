@@ -8,3 +8,6 @@ execute in family:undersea run scoreboard players set @a[x=-176,y=39,z=-139,dx=0
 execute in family:undersea run scoreboard players set @a[x=-176,y=39,z=-149,dx=0,dy=1,dz=0] family.pad 7
 execute in family:undersea run scoreboard players set @a[x=-173,y=39,z=-152,dx=0,dy=1,dz=0] family.pad 8
 execute as @a unless score @s family.pad = @s family.lastpad run function family:undersea/wardrobe/step
+execute in family:undersea positioned -168 38 -144 if entity @a[distance=..24] run scoreboard players add #near family.pad 1
+execute in family:undersea positioned -168 38 -144 unless entity @a[distance=..24] run scoreboard players set #near family.pad 0
+execute if score #near family.pad matches 100.. run function family:undersea/wardrobe/repair
