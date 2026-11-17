@@ -218,8 +218,10 @@ BURSTS = {   # where a hit lands: ^ ^-0.4 ^2 from the eyes
 def mcf(*lines):
     return "\n".join(lines) + "\n"
 
-def datapack(data, put):
+def datapack(data, put, give_string):
     d = f"{data}/data/family"; f = f"{d}/function/katana"
+    for el, item in gives(give_string).items():        # console: execute as <player> run function family:give/flame_katana
+        put(f"{d}/function/give/{el}_katana.mcfunction", f"give @s {item}\n")
     put(f"{d}/tags/entity_type/katana_targets.json", {"values": [f"minecraft:{m}" for m in HOSTILE]})
     # Push for players: the smallest damage that still knocks back; no armour wear, no difficulty scaling.
     put(f"{d}/damage_type/katana_push.json", {"message_id": "player", "exhaustion": 0.0, "scaling": "never"})

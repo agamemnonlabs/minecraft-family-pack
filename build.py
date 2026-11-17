@@ -311,7 +311,7 @@ def build_datapack():
     undersea.datapack(DATA, put, give_string)
     town.datapack(DATA, put, undersea.DIM, (undersea.HUB_X, undersea.HUB_Y, undersea.HUB_Z))
     wardrobe.datapack(DATA, put, give_string)
-    katana.datapack(DATA, put)
+    katana.datapack(DATA, put, give_string)
     tags = f"{DATA}/data/minecraft/tags/function"
     put(f"{tags}/load.json", {"values": ["family:undersea/load", "family:undersea/wardrobe/load", "family:katana/load"]})
     put(f"{tags}/tick.json", {"values": ["family:undersea/tick", "family:undersea/wardrobe/tick", "family:katana/tick"]})

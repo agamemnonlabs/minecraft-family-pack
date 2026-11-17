@@ -13,6 +13,8 @@ Original art and sounds for our family Paper server (Minecraft 26.3, Java + Bedr
 - **Elemental katanas** (`katana.py`, art in `katana_art.py`, sounds in `katana_sounds.py`): Flame, Water, Thunder and
   Wind, separate items on top of a diamond sword (item model `family:katana_<element>`). Crafted from diamond sword +
   amethyst shard + blaze powder / prismarine crystals / copper ingot / feather, or `../give-katana.sh ELEMENT PLAYER`.
+  From the server console (or in game as an op): `execute as PLAYER run function family:give/flame_katana`
+  (also `water_katana`, `thunder_katana`, `wind_katana`; `@a` gives one to everyone online).
   - Every swing draws that katana's own arc of particles. Swings at air need the Skript plugin with
     `skript/family-katana.sk` (a datapack can't see them); hits on mobs and players also add a burst.
   - Hold use for the special move (Ember Crescent, Tide Ribbon, Storm Strike, Gale Spiral): 6 damage to hostile
