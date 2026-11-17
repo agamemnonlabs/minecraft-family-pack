@@ -1,0 +1,2 @@
+give @s minecraft:bowl[item_name={"text": "Lunch for Mayor Marina", "color": "light_purple"},lore=[{"text": "From the Bubble Cafe. Tap them to deliver it!", "color": "gray", "italic": false}],custom_data={"family_lunch": 1, "family_to": "mayor"}]
+tellraw @s [{"text": "Chef Clamuel", "color": "gold"}, {"text": ": Thanks, ", "color": "white"}, {"selector": "@s", "color": "white"}, {"text": "! Take it to Mayor Marina by the welcome arch.", "color": "white"}]

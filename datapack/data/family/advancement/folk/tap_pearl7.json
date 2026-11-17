@@ -1,0 +1,19 @@
+{
+  "criteria": {
+    "tap": {
+      "trigger": "minecraft:player_interacted_with_entity",
+      "conditions": {
+        "entity": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "nbt": "{Tags:[\"family.tap.pearl7\"]}"
+          }
+        }
+      }
+    }
+  },
+  "rewards": {
+    "function": "family:undersea/folk/tap/pearl7"
+  }
+}

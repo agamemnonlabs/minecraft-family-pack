@@ -2,6 +2,7 @@
   "values": [
     "family:undersea/load",
     "family:undersea/wardrobe/load",
-    "family:katana/load"
+    "family:katana/load",
+    "family:undersea/folk/load"
   ]
 }

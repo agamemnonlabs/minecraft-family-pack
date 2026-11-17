@@ -1,0 +1,8 @@
+advancement revoke @s only family:folk/tap_pearl3
+execute if entity @s[tag=family.found.pearl3] run return run title @s actionbar [{"text": "You already found this pearl: ", "color": "gold"}, {"score": {"name": "@s", "objective": "family.pearls"}, "color": "gold"}, {"text": " of 10", "color": "gold"}]
+tag @s add family.found.pearl3
+scoreboard players add @s family.pearls 1
+execute in family:undersea positioned -136.5 39.5 -160.5 run particle minecraft:end_rod ~ ~ ~ 0.4 0.4 0.4 0.05 25
+execute in family:undersea positioned -136.5 39.5 -160.5 run playsound minecraft:block.amethyst_block.chime master @s ~ ~ ~ 1 1.2
+title @s actionbar [{"text": "Golden pearl! ", "color": "gold"}, {"score": {"name": "@s", "objective": "family.pearls"}, "color": "gold"}, {"text": " of 10", "color": "gold"}]
+execute if score @s family.pearls matches 10 run tellraw @s [{"text": "Mayor Marina", "color": "light_purple"}, {"text": ": You found all 10?! Come and see me by the welcome arch!", "color": "white"}]

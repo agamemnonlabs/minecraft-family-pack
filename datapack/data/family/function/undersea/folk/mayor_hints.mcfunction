@@ -1,0 +1,1 @@
+dialog show @s {"type":"minecraft:notice","title":{"text":"Mayor Marina","color":"light_purple"},"body":[{"type":"minecraft:plain_message","contents":{"text":"Some pearls are inside houses. Some are up high: look on roofs and on top of things. One is under a jelly, and one is somewhere you can get a snack!"}}],"action":{"label":"Thanks!"}}

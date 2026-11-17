@@ -1,0 +1,1 @@
+tellraw @s [{"text": "Mayor Marina", "color": "light_purple"}, {"text": ": Thank you, ", "color": "white"}, {"selector": "@s", "color": "white"}, {"text": "! Tap each golden pearl you find.", "color": "white"}]

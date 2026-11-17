@@ -46,6 +46,22 @@ Original art and sounds for our family Paper server (Minecraft 26.3, Java + Bedr
     that costume you don't already have. A knocked-over mannequin or broken pad comes back on its own within
     about 10 s while someone is near the hub. Admin: `/function family:undersea/build_wardrobe` (safe to re-run:
     it replaces the stands and pads).
+  - **Townsfolk** (`townsfolk.py`, previews `previews/townsfolk-map.png` and `townsfolk-cafe.png`): four villagers
+    with original names, paid in **Sand Dollars** (a gold nugget named so; renamed nuggets don't count).
+    - **Chef Clamuel** lives in the Bubble Cafe, now dry inside behind a wooden door (a second roof layer stops drip
+      particles), with a kitchen behind a 1.5-high counter (customers stand on a half-block step to see over it). The
+      chef keeps full villager life (smoker by day, bed at night). Tap the chef to buy Coral Cookies, Kelp Shakes,
+      Sea Pies and Party Cakes. Tap the bell on the counter for **Order Up!**: one lunch a Minecraft day (20 min) to
+      deliver to another townsperson for 3 Sand Dollars.
+    - **Mayor Marina** (welcome arch) runs **Lost Pearls**: 10 golden pearls (ochre froglights) hidden around town.
+      Tap one to find it (progress per kid); all 10 pay 10 Sand Dollars and a pet fish, once.
+    - **Farmer Kelpsey** (Jelly Meadow) buys kelp, sea pickles and seagrass for Sand Dollars.
+    - **Driver Finnley** (bus stop): the race comes later.
+    - The three outside are frozen posts (NoAI + Invulnerable, so they don't float up or drown); they turn to
+      face a nearby kid. Everyone greets a kid once per visit. Talking uses dialog menus (iPad: forms).
+    - Admin: `/function family:undersea/build_townsfolk` (re-run replaces the townsfolk and boxes and re-does the
+      cafe rework). Missing townsfolk, tap boxes or pearls come back on their own while a kid is at the hub.
+      `/function family:undersea/folk/give_coins` gives you 10 Sand Dollars for testing.
 
 ### Paint your own costume
 Any costume (`shark`, `diver`, `angler`, `turtle`, `coral`, `axolotl`, `sponge`, `spongebuddy`) can be hand-painted:

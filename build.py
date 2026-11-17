@@ -15,7 +15,7 @@ from art import (draw_blaster, saber_hilt, saber_blade, draw_glow_saber, mix, he
                  palette_texture, LIGHTSABERS)
 from katana_art import bedrock_held_frames, FRAMES
 from sounds import swing, VARIANTS
-import undersea, town, wardrobe, katana
+import undersea, town, wardrobe, katana, townsfolk
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 JAVA, BEDROCK, DATA, DIST = (os.path.join(ROOT, d) for d in ("java", "bedrock", "datapack", "dist"))
@@ -313,8 +313,10 @@ def build_datapack():
     town.datapack(DATA, put, undersea.DIM, (undersea.HUB_X, undersea.HUB_Y, undersea.HUB_Z))
     wardrobe.datapack(DATA, put, give_string)
     katana.datapack(DATA, put, give_string)
+    townsfolk.datapack(DATA, put, give_string)
     tags = f"{DATA}/data/minecraft/tags/function"
-    put(f"{tags}/load.json", {"values": ["family:undersea/load", "family:undersea/wardrobe/load", "family:katana/load"]})
+    put(f"{tags}/load.json", {"values": ["family:undersea/load", "family:undersea/wardrobe/load", "family:katana/load",
+                                        "family:undersea/folk/load"]})
     put(f"{tags}/tick.json", {"values": ["family:undersea/tick", "family:undersea/wardrobe/tick", "family:katana/tick"]})
 
 def zipdir(src, dest):
