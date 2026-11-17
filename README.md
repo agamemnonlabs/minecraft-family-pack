@@ -56,12 +56,26 @@ Original art and sounds for our family Paper server (Minecraft 26.3, Java + Bedr
     - **Mayor Marina** (welcome arch) runs **Lost Pearls**: 10 golden pearls (ochre froglights) hidden around town.
       Tap one to find it (progress per kid); all 10 pay 10 Sand Dollars and a pet fish, once.
     - **Farmer Kelpsey** (Jelly Meadow) buys kelp, sea pickles and seagrass for Sand Dollars.
-    - **Driver Finnley** (bus stop): the race comes later.
+    - **Driver Finnley** (bus stop) runs the **Current Race** (below).
     - The three outside are frozen posts (NoAI + Invulnerable, so they don't float up or drown); they turn to
       face a nearby kid. Everyone greets a kid once per visit. Talking uses dialog menus (iPad: forms).
     - Admin: `/function family:undersea/build_townsfolk` (re-run replaces the townsfolk and boxes and re-does the
       cafe rework). Missing townsfolk, tap boxes or pearls come back on their own while a kid is at the hub.
       `/function family:undersea/folk/give_coins` gives you 10 Sand Dollars for testing.
+  - **Current Race** (`race.py`, preview `previews/race.png`): a swim race around town. Tap Driver Finnley at the bus
+    stop > Let's race! > 3, 2, 1, GO. The clock runs from the checkered START gate across the south street, through 11
+    checkpoints in order (10 red-and-white rings with floating numbers, and the welcome arch as number 10), and back
+    through the gate. Your next checkpoint sparkles, and a short trail of sparkles in front of you points at it (only
+    you see them); 5-minute limit. Corners are split across two rings so no turn is sharper than about 50 degrees.
+    - Racers are in Adventure mode (no flying, no breaking hoops) and get their own game mode back at the finish, on
+      Stop racing (tap Finnley again), on leaving the Undersea or on rejoining the game.
+    - Best times are on the sidebar, shown only in the Undersea (everyone there is on the aqua team `family.undersea`,
+      so names show aqua). The score is race points (3000 minus the time in tenths of a second) so the fastest is on
+      top: PCs show the time, iPads show the time after the name and the points on the right.
+    - A broken ring block comes back within 5 s while someone is near the hub.
+    - Admin: `/function family:undersea/build_race` (places the gate and rings only into water, so never over
+      anything built; re-run replaces the floating numbers). `/function family:undersea/race/reset_times` clears the
+      board.
 
 ### Paint your own costume
 Any costume (`shark`, `diver`, `angler`, `turtle`, `coral`, `axolotl`, `sponge`, `spongebuddy`) can be hand-painted:

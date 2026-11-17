@@ -2,6 +2,7 @@
   "values": [
     "family:undersea/tick",
     "family:undersea/wardrobe/tick",
-    "family:katana/tick"
+    "family:katana/tick",
+    "family:undersea/race/tick"
   ]
 }

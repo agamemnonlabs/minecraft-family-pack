@@ -1,0 +1,13 @@
+execute if score @s family.race_cp matches 0 run return run function family:undersea/race/spark/0
+execute if score @s family.race_cp matches 1 run return run function family:undersea/race/spark/1
+execute if score @s family.race_cp matches 2 run return run function family:undersea/race/spark/2
+execute if score @s family.race_cp matches 3 run return run function family:undersea/race/spark/3
+execute if score @s family.race_cp matches 4 run return run function family:undersea/race/spark/4
+execute if score @s family.race_cp matches 5 run return run function family:undersea/race/spark/5
+execute if score @s family.race_cp matches 6 run return run function family:undersea/race/spark/6
+execute if score @s family.race_cp matches 7 run return run function family:undersea/race/spark/7
+execute if score @s family.race_cp matches 8 run return run function family:undersea/race/spark/8
+execute if score @s family.race_cp matches 9 run return run function family:undersea/race/spark/9
+execute if score @s family.race_cp matches 10 run return run function family:undersea/race/spark/10
+execute if score @s family.race_cp matches 11 run return run function family:undersea/race/spark/11
+execute if score @s family.race_cp matches 12 run return run function family:undersea/race/spark/12

@@ -3,6 +3,7 @@
     "family:undersea/load",
     "family:undersea/wardrobe/load",
     "family:katana/load",
-    "family:undersea/folk/load"
+    "family:undersea/folk/load",
+    "family:undersea/race/load"
   ]
 }

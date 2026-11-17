@@ -11,6 +11,7 @@ tap-to-talk menus and two activities.
 - Taps are caught by invisible interaction boxes (Geyser supports them) and player_interacted_with_entity advancements.
 - Lost Pearls: 10 golden pearls hidden around town, progress per kid; Mayor Marina pays out once.
 - Order Up!: once a Minecraft day (20 min of game time) the chef's bell hands out a lunch for another townsperson.
+- Driver Finnley runs the Current Race (race.py); tapping him opens its menu.
 Coordinates are relative to the hub centre, like town.py; y=0 is the ground.
   python3 townsfolk.py -> previews/townsfolk-cafe.png + previews/townsfolk-map.png
   build.py             -> family:undersea/folk/*  (admin runs family:undersea/build_townsfolk; safe to re-run)"""
@@ -49,7 +50,7 @@ FOLK = {
     "farmer": dict(name="Farmer Kelpsey", colour="green", job="farmer", look="swamp", spot=(2, 1, -26), yaw=0,
                    hello="Howdy, {kid}! I pay Sand Dollars for kelp, sea pickles and seagrass. Tap me to trade."),
     "driver": dict(name="Driver Finnley", colour="aqua", job="cartographer", look="plains", spot=(4, 1, 15), yaw=90,
-                   hello="Beep beep, {kid}! The bus is late again. Tap me!"),
+                   hello="Beep beep, {kid}! The bus is late again. Tap me to race the Current Race!"),
 }
 POSTS = ("mayor", "farmer", "driver")          # NoAI; the chef keeps its AI inside the dry cafe
 LUNCH_TO = ("mayor", "farmer", "driver")       # Order Up! targets, picked at random
@@ -248,7 +249,8 @@ def dialog(who, text, buttons=(), exit_label="Bye!"):
              "exit_action": {"label": exit_label}}
     return "dialog show @s " + snbt(d)
 
-BUTTONS = {1: "mayor_go", 2: "mayor_hints", 3: "pearl_reward", 4: "lunch_take"}
+BUTTONS = {1: "mayor_go", 2: "mayor_hints", 3: "pearl_reward", 4: "lunch_take",     # folk/<name>, or a full id
+           5: "family:undersea/race/go", 6: "family:undersea/race/rules", 7: "family:undersea/race/stop"}
 
 # ---------------------------------------------------------------- datapack
 def datapack(data, put, give_string):
@@ -297,7 +299,8 @@ def datapack(data, put, give_string):
              f"execute if score #near family.folk matches 100.. run function {fn}/repair"]
     put(f"{f}/loop.mcfunction", undersea.mcf(*loop))
     put(f"{f}/button.mcfunction", undersea.mcf(
-        *[f"execute if score @s family.talk matches {n} run function {fn}/{name}" for n, name in BUTTONS.items()],
+        *[f"execute if score @s family.talk matches {n} run function {name if ':' in name else fn + '/' + name}"
+          for n, name in BUTTONS.items()],
         "scoreboard players set @s family.talk 0"))
 
     summons = {who: villager(who) for who in FOLK}
@@ -361,10 +364,8 @@ def datapack(data, put, give_string):
             "title @s actionbar " + json.dumps([{"text": "Golden pearl! ", "color": "gold"}] + count),
             "execute if score @s family.pearls matches 10 run " + say("mayor", "You found all 10?! Come and see me by the welcome arch!")))
 
-    # Driver Finnley: the race comes in step 2.
-    put(f"{f}/tap/driver.mcfunction", undersea.mcf(revoke("driver"), *deliver("driver"), dialog(
-        "driver", "Beep beep! I'm building a race track around town: the Current Race. Come back soon and race your friends!",
-        exit_label="OK!")))
+    # Driver Finnley: the Current Race menu (race.py).
+    put(f"{f}/tap/driver.mcfunction", undersea.mcf(revoke("driver"), *deliver("driver"), "function family:undersea/race/menu"))
     # Farmer Kelpsey: tapping opens the trade screen; a lunch in the inventory is delivered at the same time.
     put(f"{f}/tap/farmer.mcfunction", undersea.mcf(revoke("farmer"), *deliver("farmer")))
 
