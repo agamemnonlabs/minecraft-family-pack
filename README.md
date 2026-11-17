@@ -66,7 +66,11 @@ Original art and sounds for our family Paper server (Minecraft 26.3, Java + Bedr
     stop > Let's race! > 3, 2, 1, GO. The clock runs from the checkered START gate across the south street, through 11
     checkpoints in order (10 red-and-white rings with floating numbers, and the welcome arch as number 10), and back
     through the gate. Your next checkpoint sparkles, and a short trail of sparkles in front of you points at it (only
-    you see them); 5-minute limit. Corners are split across two rings so no turn is sharper than about 50 degrees.
+    you see them); 5-minute limit. Corners are split across two rings so no turn is sharper than about 55 degrees.
+    - Checkpoint 5 is the **Bubble Lift** past the east street's end: 3x3 soul sand makes an upward bubble column,
+      and racers ride it up through a flat ring. An invisible light block ends the bubbles 16 up (so nobody is carried to
+      the surface) without a ceiling to get pinned against: you float out of the top and swim on. No down columns (they
+      need magma, which burns).
     - Racers are in Adventure mode (no flying, no breaking hoops) and get their own game mode back at the finish, on
       Stop racing (tap Finnley again), on leaving the Undersea or on rejoining the game.
     - Best times are on the sidebar, shown only in the Undersea (everyone there is on the aqua team `family.undersea`,

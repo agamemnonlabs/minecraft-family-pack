@@ -11,7 +11,7 @@ execute in family:undersea as @a[tag=family.racing,scores={family.race_cp=1},x=-
 execute in family:undersea as @a[tag=family.racing,scores={family.race_cp=2},x=-153,y=41,z=-108,dx=0,dy=4,dz=4] at @s run function family:undersea/race/cp/2
 execute in family:undersea as @a[tag=family.racing,scores={family.race_cp=3},x=-140,y=41,z=-108,dx=0,dy=4,dz=4] at @s run function family:undersea/race/cp/3
 execute in family:undersea as @a[tag=family.racing,scores={family.race_cp=4},x=-128,y=41,z=-118,dx=4,dy=4,dz=0] at @s run function family:undersea/race/cp/4
-execute in family:undersea as @a[tag=family.racing,scores={family.race_cp=5},x=-128,y=41,z=-144,dx=4,dy=4,dz=0] at @s run function family:undersea/race/cp/5
+execute in family:undersea as @a[tag=family.racing,scores={family.race_cp=5},x=-126,y=51,z=-146,dx=4,dy=0,dz=4] at @s run function family:undersea/race/cp/5
 execute in family:undersea as @a[tag=family.racing,scores={family.race_cp=6},x=-128,y=43,z=-170,dx=4,dy=4,dz=0] at @s run function family:undersea/race/cp/6
 execute in family:undersea as @a[tag=family.racing,scores={family.race_cp=7},x=-138,y=43,z=-184,dx=0,dy=4,dz=4] at @s run function family:undersea/race/cp/7
 execute in family:undersea as @a[tag=family.racing,scores={family.race_cp=8},x=-156,y=44,z=-184,dx=0,dy=4,dz=4] at @s run function family:undersea/race/cp/8

@@ -4,6 +4,10 @@
   the gate and stops when they swim back through it after the last checkpoint.
 - 11 checkpoints in order: 10 red-and-white rings (5-block opening, floating number) and the welcome arch (10).
   Only the next one counts, and it sparkles for that kid only. 5-minute limit.
+- Checkpoint 5 is the Bubble Lift: 3x3 soul sand in the seabed makes an upward bubble column through a flat ring. An
+  invisible, non-solid light block ends the column 16 up (instead of at the surface), so riders float out of the top
+  and swim on. A glass cap pinned them: the bubbles held them against it (play-test, 2026-11-17). No down columns:
+  those need magma, which burns whoever touches the bottom.
 - Best times: a sidebar shown only to the team family.undersea, which everyone in the Undersea is put on (their names
   show aqua there). The score is race points, 3000 minus the time in tenths of a second, so the fastest is on top on
   PC and iPad. PCs show the time instead of the number (fixed number format); iPads show "name time" and the points
@@ -27,7 +31,7 @@ CHECKPOINTS = [                         # (ring centre, travel axis); None = the
     ((15, 5, 38), "x"),                 # 2  past the street's end, east     so no turn is sharper than ~55 deg
     ((28, 5, 38), "x"),                 # 3  south of the submarine          (play-test: a 103 deg turn after
     ((42, 5, 26), "z"),                 # 4  turning north                   ring 1 left people lost)
-    ((42, 5, 0), "z"),                  # 5  across the east street's end
+    ((44, 13, 0), "y"),                 # 5  the Bubble Lift past the east street's end (flat ring, ridden up)
     ((42, 7, -26), "z"),                # 6  east of the Coconut house
     ((30, 7, -38), "x"),                # 7  meadow, turning west
     ((12, 8, -38), "x"),                # 8  under a jelly (the first course's ring 7)
@@ -35,7 +39,10 @@ CHECKPOINTS = [                         # (ring centre, travel axis); None = the
     (None, "z"),                        # 10 through the welcome arch
     ((6, 8, 0), "z")]                   # 11 over the hub's east side, clear of its bubble column (the way home)
 RETIRED = [((0, 4, 34), "z"), ((26, 5, 28), "x"), ((42, 5, 14), "z"), ((42, 5, -1), "z"),   # the first course's rings
-           ((42, 7, -17), "z"), ((31, 7, -36), "x"), ((-10, 6, -36), "z")]                    # (build takes them out)
+           ((42, 7, -17), "z"), ((31, 7, -36), "x"), ((-10, 6, -36), "z"),                    # (build takes them out)
+           ((42, 5, 0), "z")]                                                                 # ring 5 before the lift
+LIFT_CAP = 16                           # where a lift's column ends; the column is x/z +-1 around the ring centre, y 1..15
+LIFT_END = M + "light[level=15,waterlogged=true]"   # not water, so the bubbles stop; no collision, so nobody is pinned
 # Found in the world but not in town.py (probes, 2026-11-17): the course keeps clear of them.
 SEEN = {**{(x, y, z): M + "wet_sponge" for x, y in ((-2, 1), (-2, 2), (-2, 3), (-1, 3), (0, 3), (1, 1), (1, 2), (1, 3))
            for z in (29, 30)},                                              # a kids' sponge arch on the south street
@@ -54,7 +61,7 @@ def ring(c, axis):
     for i in range(-3, 4):
         for j in range(-3, 4):
             d = math.hypot(i, j)
-            p = (cx + i, cy + j, cz) if axis == "z" else (cx, cy + j, cz + i)
+            p = {"z": (cx + i, cy + j, cz), "x": (cx, cy + j, cz + i), "y": (cx + i, cy, cz + j)}[axis]
             if 2.5 <= d < 3.5:
                 seg = int(((math.degrees(math.atan2(j, i)) + 22.5) % 360) // 45)
                 cells[p] = M + ("red_concrete" if seg % 2 else "white_concrete")
@@ -80,7 +87,8 @@ def box(i):
     if c is None:
         return (-3, 1, ARCH_Z, 3, 7, ARCH_Z)
     (cx, cy, cz), r = c, 2
-    return (cx - r, cy - r, cz, cx + r, cy + r, cz) if axis == "z" else (cx, cy - r, cz - r, cx, cy + r, cz + r)
+    return {"z": (cx - r, cy - r, cz, cx + r, cy + r, cz), "x": (cx, cy - r, cz - r, cx, cy + r, cz + r),
+            "y": (cx - r, cy, cz - r, cx + r, cy, cz + r)}[axis]
 
 def centre(i):
     x1, y1, z1, x2, y2, z2 = box(i)
@@ -90,16 +98,32 @@ def label(i):
     """(position, text) of the floating number over checkpoint i (inside the arch's opening for 10)."""
     if i == 0:
         return (GATE[0] + 0.5, 10.3, GATE[2] + 0.5), "CURRENT RACE\nStart / Finish"
-    c, _ = CHECKPOINTS[i - 1]
+    c, axis = CHECKPOINTS[i - 1]
     if c is None:
         return (0.5, 6.2, ARCH_Z + 0.5), str(i)
+    if axis == "y":                                     # over the top of a lift
+        return (c[0] + 0.5, LIFT_CAP + 1.4, c[2] + 0.5), str(i)
     return (c[0] + 0.5, c[1] + 4.3, c[2] + 0.5), str(i)
 
+def lifts():
+    """(column ends, soul sand in the seabed, bubble column cells) of every lift."""
+    caps, seabed, column = {}, {}, set()
+    for c, axis in CHECKPOINTS:
+        if axis == "y":
+            for i in (-1, 0, 1):
+                for j in (-1, 0, 1):
+                    caps[(c[0] + i, LIFT_CAP, c[2] + j)] = LIFT_END
+                    seabed[(c[0] + i, 0, c[2] + j)] = M + "soul_sand"
+                    column.update((c[0] + i, y, c[2] + j) for y in range(1, LIFT_CAP))
+    return caps, seabed, column
+
 def blocks():
+    """Everything the course places into water: the gate, rings and lift ends (not the lifts' soul sand)."""
     out = gate()
     for c, axis in CHECKPOINTS:
         if c:
             out.update(ring(c, axis)[0])
+    out.update(lifts()[0])
     return out
 
 def check():
@@ -108,6 +132,9 @@ def check():
     placed, world = blocks(), {**T.v, **SEEN}
     taken = [(p, world[p]) for p in placed if p in world]
     assert not taken, f"course blocks on town blocks: {taken[:5]}"
+    _, seabed, column = lifts()
+    blocked = [(p, world[p]) for p in [*seabed, *column] if p in world or p in placed]
+    assert not blocked, f"a lift's column or soul sand spot is taken: {blocked[:5]}"
     for i in range(1, N + 1):
         x1, y1, z1, x2, y2, z2 = box(i)
         for p in [(x, y, z) for x in range(x1, x2 + 1) for y in range(y1, y2 + 1) for z in range(z1, z2 + 1)]:
@@ -303,6 +330,7 @@ def datapack(data, put):
 
     # --- Driver Finnley's menu (from townsfolk tap/driver) and its buttons (townsfolk BUTTONS 5-7)
     arch = next(i for i, (c, _) in enumerate(CHECKPOINTS, 1) if c is None)
+    lift = next(i for i, (_, axis) in enumerate(CHECKPOINTS, 1) if axis == "y")
     intro = (f"Beep beep! Want to race the Current Race? Swim through the START gate, then through all {N} hoops in "
              f"order (number {arch} is the welcome arch), and back through the gate. Follow the sparkles!")
     put(f"{f}/menu.mcfunction", mcf(
@@ -323,6 +351,7 @@ def datapack(data, put):
                   "2. Swim through the START gate: the clock starts.\n"
                   f"3. Swim through the hoops in order, 1 to {N}. Number {arch} is the welcome arch. Your next hoop "
                   "sparkles, and sparkles in front of you point the way.\n"
+                  f"   Number {lift} is the Bubble Lift: swim into the bubbles and they carry you up through it!\n"
                   "4. Swim back through the gate to finish!\n\n"
                   f"No flying during a race. You have {LIMIT // 1200} minutes. Your best time goes on the board, "
                   "which you can see anywhere in the Undersea.", exit_label="Got it!")))
@@ -330,12 +359,18 @@ def datapack(data, put):
         "execute unless entity @s[tag=family.racing] run return fail",
         f"function {fn}/end", say("driver", "OK, {kid}! Tap me any time to race again.")))
 
-    # --- the course: rings and gate placed only into water (never over anything built), numbers as text displays
-    course = blocks()
+    # --- the course: rings, gate and lift ends placed only into water or bubbles (never over anything built), the
+    # lifts' soul sand only into the sand floor (after the ends, so the column stops there), numbers as text displays.
+    # A mined soul sand block fills with water: repair puts it back. The first lift's glass caps are swapped out.
+    course, (_, seabed, _) = blocks(), lifts()
+    put(f"{d}/tags/block/race_free.json", {"values": ["minecraft:water", "minecraft:bubble_column"]})
+    put(f"{d}/tags/block/race_seabed.json", {"values": ["minecraft:sand", "minecraft:water"]})
+    place = [f"execute in {dim} if block {a(*p)} #family:race_free run setblock {a(*p)} {b}" for p, b in sorted(course.items())]
+    sink = lambda where: [f"execute in {dim} if block {a(*p)} {where} run setblock {a(*p)} {b}" for p, b in sorted(seabed.items())]
     put(f"{f}/repair.mcfunction", mcf(
         "scoreboard players set #repair family.race_tmp 0",
         f"execute in {dim} positioned {hx} {hy} {hz} unless entity @a[distance=..64] run return 0",
-        *[f"execute in {dim} if block {a(*p)} minecraft:water run setblock {a(*p)} {b}" for p, b in sorted(course.items())]))
+        *place, *sink("minecraft:water")))
     def summon_label(i):
         (x, y, z), text = label(i)
         nbt = {"Tags": ["family.race.label"], "billboard": "center", "brightness": {"sky": 15, "block": 15},
@@ -343,7 +378,7 @@ def datapack(data, put):
                "transformation": {"left_rotation": [F(0), F(0), F(0), F(1)], "right_rotation": [F(0), F(0), F(0), F(1)],
                                   "translation": [F(0), F(0), F(0)], "scale": [F(1.5 if i == 0 else 2.5)] * 3}}
         return f"execute in {dim} run summon minecraft:text_display {hx + x} {hy + y} {hz + z} {snbt(nbt)}"
-    retired = {p: b for c, axis in RETIRED for p, b in ring(c, axis)[0].items() if p not in course}
+    retired = {p: b for c, axis in RETIRED for p, b in ring(c, axis)[0].items() if p not in course and p not in seabed}
     xs = [p[0] for p in [*course, *retired]] + [-3]; zs = [p[2] for p in [*course, *retired]] + [ARCH_Z]
     area = f"{hx + min(xs)} {hz + min(zs)} {hx + max(xs)} {hz + max(zs)}"
     put(f"{data}/data/family/function/undersea/build_race.mcfunction", mcf(
@@ -353,7 +388,9 @@ def datapack(data, put):
           for x, z in ((min(xs), min(zs)), (max(xs), max(zs)))],
         f"execute in {dim} run kill @e[type=minecraft:text_display,tag=family.race.label]",
         *[f"execute in {dim} if block {a(*p)} {b} run setblock {a(*p)} minecraft:water" for p, b in sorted(retired.items())],
-        *[f"execute in {dim} if block {a(*p)} minecraft:water run setblock {a(*p)} {b}" for p, b in sorted(course.items())],
+        *[f"execute in {dim} if block {a(*p)} minecraft:light_blue_stained_glass run setblock {a(*p)} {b}"
+          for p, b in sorted(lifts()[0].items())],
+        *place, *sink("#family:race_seabed"),
         *[summon_label(i) for i in range(0, N + 1)],
         f"execute in {dim} run forceload remove {area}"))
     put(f"{f}/reset_times.mcfunction", mcf("scoreboard players reset * family.race"))   # admin: clear the board
@@ -362,7 +399,7 @@ def datapack(data, put):
 def preview():
     """previews/race.png: the route on the town map, close-ups of the gate and a hoop, and the screen on PC/iPad."""
     from PIL import Image, ImageDraw, ImageFont
-    town.COLOURS.update({"red_concrete": "#C8312D", "black_concrete": "#141519"})
+    town.COLOURS.update({"red_concrete": "#C8312D", "black_concrete": "#141519", "soul_sand": "#51402F"})
     f13, f15, f17, f20 = (ImageFont.load_default(size=s) for s in (13, 15, 17, 20))
     course, length = blocks(), check()
     xs = [x for (x, _, _) in T.v]; zs = [z for (_, _, z) in T.v]
