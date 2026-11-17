@@ -7,6 +7,9 @@ Original art and sounds for our family Paper server (Minecraft 26.3, Java + Bedr
   Main hand only: one put in the off-hand goes back to the inventory.
 - **Lightsabers**: 7 colours, separate items on top of a diamond sword (item model `family:lightsaber_<colour>`).
   Crafted from diamond sword + amethyst shard + dye; hitting something plays a "vwoom".
+  iPads see the soft see-through halo in hand; it doesn't glow in the dark (held items can't on Bedrock).
+- **iPad in-hand models** (attachables in `build.py`): katanas and lightsabers use the bow's hold, adjusted so the
+  hilt sits in the fist with a katana's edge underneath. In the off-hand they are invisible on iPad.
 - **Elemental katanas** (`katana.py`, art in `katana_art.py`, sounds in `katana_sounds.py`): Flame, Water, Thunder and
   Wind, separate items on top of a diamond sword (item model `family:katana_<element>`). Crafted from diamond sword +
   amethyst shard + blaze powder / prismarine crystals / copper ingot / feather, or `../give-katana.sh ELEMENT PLAYER`.
@@ -14,7 +17,8 @@ Original art and sounds for our family Paper server (Minecraft 26.3, Java + Bedr
     `skript/family-katana.sk` (a datapack can't see them); hits on mobs and players also add a burst.
   - Hold use for the special move (Ember Crescent, Tide Ribbon, Storm Strike, Gale Spiral): 6 damage to hostile
     mobs only (tag `family:katana_targets`), other players are only pushed back, 3 s cooldown.
-  - PC players see glowing, animated blades and a whack or stab swing; iPads see bright pictures and the swing speed.
+  - PC players see glowing, animated blades and a whack or stab swing; iPads see the blade animate in hand
+    (solid colours, no glow at night), a still hotbar picture and the swing speed.
   - Previews: `python3 katana.py` writes `previews/katanas.png` and `previews/katana-sounds-<element>.wav`.
 - **The Undersea** (`undersea.py`, art in `undersea_art.py`): dimension `family:undersea`, vanilla overworld
   terrain with the sea level raised to 100 and only vanilla ocean biomes (Bedrock players can't see custom

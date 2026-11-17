@@ -32,6 +32,518 @@
           ]
         }
       ]
+    },
+    {
+      "description": {
+        "identifier": "geometry.family_sword",
+        "texture_width": 16,
+        "texture_height": 16
+      },
+      "bones": [
+        {
+          "name": "rightitem",
+          "texture_meshes": [
+            {
+              "texture": "default",
+              "position": [
+                2.0,
+                1.0,
+                -1.0
+              ],
+              "rotation": [
+                0.0,
+                -135.0,
+                90.0
+              ],
+              "local_pivot": [
+                6.0,
+                0.0,
+                6.0
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": {
+        "identifier": "geometry.family_sword_f1",
+        "texture_width": 16,
+        "texture_height": 16
+      },
+      "bones": [
+        {
+          "name": "rightitem",
+          "texture_meshes": [
+            {
+              "texture": "f1",
+              "position": [
+                2.0,
+                1.0,
+                -1.0
+              ],
+              "rotation": [
+                0.0,
+                -135.0,
+                90.0
+              ],
+              "local_pivot": [
+                6.0,
+                0.0,
+                6.0
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": {
+        "identifier": "geometry.family_sword_f2",
+        "texture_width": 16,
+        "texture_height": 16
+      },
+      "bones": [
+        {
+          "name": "rightitem",
+          "texture_meshes": [
+            {
+              "texture": "f2",
+              "position": [
+                2.0,
+                1.0,
+                -1.0
+              ],
+              "rotation": [
+                0.0,
+                -135.0,
+                90.0
+              ],
+              "local_pivot": [
+                6.0,
+                0.0,
+                6.0
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": {
+        "identifier": "geometry.family_sword_f3",
+        "texture_width": 16,
+        "texture_height": 16
+      },
+      "bones": [
+        {
+          "name": "rightitem",
+          "texture_meshes": [
+            {
+              "texture": "f3",
+              "position": [
+                2.0,
+                1.0,
+                -1.0
+              ],
+              "rotation": [
+                0.0,
+                -135.0,
+                90.0
+              ],
+              "local_pivot": [
+                6.0,
+                0.0,
+                6.0
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": {
+        "identifier": "geometry.family_sword_f4",
+        "texture_width": 16,
+        "texture_height": 16
+      },
+      "bones": [
+        {
+          "name": "rightitem",
+          "texture_meshes": [
+            {
+              "texture": "f4",
+              "position": [
+                2.0,
+                1.0,
+                -1.0
+              ],
+              "rotation": [
+                0.0,
+                -135.0,
+                90.0
+              ],
+              "local_pivot": [
+                6.0,
+                0.0,
+                6.0
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": {
+        "identifier": "geometry.family_sword_f5",
+        "texture_width": 16,
+        "texture_height": 16
+      },
+      "bones": [
+        {
+          "name": "rightitem",
+          "texture_meshes": [
+            {
+              "texture": "f5",
+              "position": [
+                2.0,
+                1.0,
+                -1.0
+              ],
+              "rotation": [
+                0.0,
+                -135.0,
+                90.0
+              ],
+              "local_pivot": [
+                6.0,
+                0.0,
+                6.0
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": {
+        "identifier": "geometry.family_sword_f6",
+        "texture_width": 16,
+        "texture_height": 16
+      },
+      "bones": [
+        {
+          "name": "rightitem",
+          "texture_meshes": [
+            {
+              "texture": "f6",
+              "position": [
+                2.0,
+                1.0,
+                -1.0
+              ],
+              "rotation": [
+                0.0,
+                -135.0,
+                90.0
+              ],
+              "local_pivot": [
+                6.0,
+                0.0,
+                6.0
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": {
+        "identifier": "geometry.family_sword_f7",
+        "texture_width": 16,
+        "texture_height": 16
+      },
+      "bones": [
+        {
+          "name": "rightitem",
+          "texture_meshes": [
+            {
+              "texture": "f7",
+              "position": [
+                2.0,
+                1.0,
+                -1.0
+              ],
+              "rotation": [
+                0.0,
+                -135.0,
+                90.0
+              ],
+              "local_pivot": [
+                6.0,
+                0.0,
+                6.0
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": {
+        "identifier": "geometry.family_sword_tp",
+        "texture_width": 16,
+        "texture_height": 16
+      },
+      "bones": [
+        {
+          "name": "rightitem",
+          "texture_meshes": [
+            {
+              "texture": "tp",
+              "position": [
+                0.5,
+                1.0,
+                -1.0
+              ],
+              "rotation": [
+                0.0,
+                -135.0,
+                90.0
+              ],
+              "local_pivot": [
+                1.6,
+                0.0,
+                11.6
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": {
+        "identifier": "geometry.family_sword_tp_f1",
+        "texture_width": 16,
+        "texture_height": 16
+      },
+      "bones": [
+        {
+          "name": "rightitem",
+          "texture_meshes": [
+            {
+              "texture": "tp_f1",
+              "position": [
+                0.5,
+                1.0,
+                -1.0
+              ],
+              "rotation": [
+                0.0,
+                -135.0,
+                90.0
+              ],
+              "local_pivot": [
+                1.6,
+                0.0,
+                11.6
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": {
+        "identifier": "geometry.family_sword_tp_f2",
+        "texture_width": 16,
+        "texture_height": 16
+      },
+      "bones": [
+        {
+          "name": "rightitem",
+          "texture_meshes": [
+            {
+              "texture": "tp_f2",
+              "position": [
+                0.5,
+                1.0,
+                -1.0
+              ],
+              "rotation": [
+                0.0,
+                -135.0,
+                90.0
+              ],
+              "local_pivot": [
+                1.6,
+                0.0,
+                11.6
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": {
+        "identifier": "geometry.family_sword_tp_f3",
+        "texture_width": 16,
+        "texture_height": 16
+      },
+      "bones": [
+        {
+          "name": "rightitem",
+          "texture_meshes": [
+            {
+              "texture": "tp_f3",
+              "position": [
+                0.5,
+                1.0,
+                -1.0
+              ],
+              "rotation": [
+                0.0,
+                -135.0,
+                90.0
+              ],
+              "local_pivot": [
+                1.6,
+                0.0,
+                11.6
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": {
+        "identifier": "geometry.family_sword_tp_f4",
+        "texture_width": 16,
+        "texture_height": 16
+      },
+      "bones": [
+        {
+          "name": "rightitem",
+          "texture_meshes": [
+            {
+              "texture": "tp_f4",
+              "position": [
+                0.5,
+                1.0,
+                -1.0
+              ],
+              "rotation": [
+                0.0,
+                -135.0,
+                90.0
+              ],
+              "local_pivot": [
+                1.6,
+                0.0,
+                11.6
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": {
+        "identifier": "geometry.family_sword_tp_f5",
+        "texture_width": 16,
+        "texture_height": 16
+      },
+      "bones": [
+        {
+          "name": "rightitem",
+          "texture_meshes": [
+            {
+              "texture": "tp_f5",
+              "position": [
+                0.5,
+                1.0,
+                -1.0
+              ],
+              "rotation": [
+                0.0,
+                -135.0,
+                90.0
+              ],
+              "local_pivot": [
+                1.6,
+                0.0,
+                11.6
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": {
+        "identifier": "geometry.family_sword_tp_f6",
+        "texture_width": 16,
+        "texture_height": 16
+      },
+      "bones": [
+        {
+          "name": "rightitem",
+          "texture_meshes": [
+            {
+              "texture": "tp_f6",
+              "position": [
+                0.5,
+                1.0,
+                -1.0
+              ],
+              "rotation": [
+                0.0,
+                -135.0,
+                90.0
+              ],
+              "local_pivot": [
+                1.6,
+                0.0,
+                11.6
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": {
+        "identifier": "geometry.family_sword_tp_f7",
+        "texture_width": 16,
+        "texture_height": 16
+      },
+      "bones": [
+        {
+          "name": "rightitem",
+          "texture_meshes": [
+            {
+              "texture": "tp_f7",
+              "position": [
+                0.5,
+                1.0,
+                -1.0
+              ],
+              "rotation": [
+                0.0,
+                -135.0,
+                90.0
+              ],
+              "local_pivot": [
+                1.6,
+                0.0,
+                11.6
+              ]
+            }
+          ]
+        }
+      ]
     }
   ]
 }

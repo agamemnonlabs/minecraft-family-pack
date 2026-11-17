@@ -96,9 +96,7 @@ def blade_pixel(el, u, v, phase, solid):
     return None
 
 def sparkle(el, img, frame, solid):
-    """Per-frame accents on the Java blade: sparks, shimmer bands, wind streaks."""
-    if solid:
-        return
+    """Per-frame accents on the blade: sparks, shimmer bands, wind streaks (opaque when solid)."""
     p = PALETTES[el]; px = img.load(); rnd = random.Random(f"{el}{frame}")
     if el == "thunder":                            # a few sparks crackling around the edge
         for _ in range(4):
@@ -118,10 +116,11 @@ def sparkle(el, img, frame, solid):
             u = rnd.uniform(COLLAR + 3, L - 1); v = spine(u) + widths(u)[1] + rnd.uniform(1.0, 2.6)
             x, y = P0[0] + u * DX + v * NX, P0[1] + u * DY + v * NY
             if 0 <= int(x) < 32 and 0 <= int(y) < 32:
-                px[int(x), int(y)] = hexc(p["core"])[:3] + (220,)
+                px[int(x), int(y)] = hexc(p["core"])[:3] + (255 if solid else 220,)
 
-def draw(el, part="all", frame=0, solid=False):
-    """part: 'hilt', 'blade' or 'all'. frame picks the animation phase of the blade."""
+def draw(el, part="all", frame=0, solid=False, sparks=None):
+    """part: 'hilt', 'blade' or 'all'. frame picks the animation phase of the blade.
+    sparks: draw the per-frame accents (default: only on see-through Java art)."""
     img = Image.new("RGBA", (32, 32), (0, 0, 0, 0)); px = img.load()
     phase = frame / FRAMES
     for y in range(32):
@@ -134,7 +133,7 @@ def draw(el, part="all", frame=0, solid=False):
                 c = hilt_pixel(el, u, v)
             if c:
                 px[x, y] = c
-    if part in ("blade", "all"):
+    if part in ("blade", "all") and (not solid if sparks is None else sparks):
         sparkle(el, img, frame, solid)
     if part in ("hilt", "all"):
         outline(img)
@@ -160,3 +159,8 @@ def blade_strip(el):
 def bedrock_icon(el):
     """Bedrock: one opaque picture, glow painted as a solid light rim."""
     return draw(el, "all", 0, solid=True)
+
+def bedrock_held_frames(el):
+    """Bedrock in-hand flipbook: the icon art with the Java blade's moving pattern and sparkle, all
+    opaque (entity_alphatest cuts see-through pixels)."""
+    return [draw(el, "all", f, solid=True, sparks=True) for f in range(FRAMES)]

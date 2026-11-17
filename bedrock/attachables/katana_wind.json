@@ -1,0 +1,69 @@
+{
+  "format_version": "1.10.0",
+  "minecraft:attachable": {
+    "description": {
+      "identifier": "family:katana_wind",
+      "materials": {
+        "default": "entity_alphatest",
+        "enchanted": "entity_alphatest_glint"
+      },
+      "textures": {
+        "default": "textures/items/family_katana_wind_held",
+        "f1": "textures/items/family_katana_wind_held_f1",
+        "f2": "textures/items/family_katana_wind_held_f2",
+        "f3": "textures/items/family_katana_wind_held_f3",
+        "f4": "textures/items/family_katana_wind_held_f4",
+        "f5": "textures/items/family_katana_wind_held_f5",
+        "f6": "textures/items/family_katana_wind_held_f6",
+        "f7": "textures/items/family_katana_wind_held_f7",
+        "tp": "textures/items/family_katana_wind_held_tp",
+        "tp_f1": "textures/items/family_katana_wind_held_tp_f1",
+        "tp_f2": "textures/items/family_katana_wind_held_tp_f2",
+        "tp_f3": "textures/items/family_katana_wind_held_tp_f3",
+        "tp_f4": "textures/items/family_katana_wind_held_tp_f4",
+        "tp_f5": "textures/items/family_katana_wind_held_tp_f5",
+        "tp_f6": "textures/items/family_katana_wind_held_tp_f6",
+        "tp_f7": "textures/items/family_katana_wind_held_tp_f7",
+        "enchanted": "textures/misc/enchanted_item_glint"
+      },
+      "geometry": {
+        "default": "geometry.family_sword",
+        "f1": "geometry.family_sword_f1",
+        "f2": "geometry.family_sword_f2",
+        "f3": "geometry.family_sword_f3",
+        "f4": "geometry.family_sword_f4",
+        "f5": "geometry.family_sword_f5",
+        "f6": "geometry.family_sword_f6",
+        "f7": "geometry.family_sword_f7",
+        "tp": "geometry.family_sword_tp",
+        "tp_f1": "geometry.family_sword_tp_f1",
+        "tp_f2": "geometry.family_sword_tp_f2",
+        "tp_f3": "geometry.family_sword_tp_f3",
+        "tp_f4": "geometry.family_sword_tp_f4",
+        "tp_f5": "geometry.family_sword_tp_f5",
+        "tp_f6": "geometry.family_sword_tp_f6",
+        "tp_f7": "geometry.family_sword_tp_f7"
+      },
+      "animations": {
+        "hold": "animation.family.wield",
+        "hide": "animation.family.hide"
+      },
+      "scripts": {
+        "pre_animation": [
+          "variable.family_tp = c.is_first_person ? 0.0 : 1.0;"
+        ],
+        "animate": [
+          {
+            "hold": "context.item_slot != 'off_hand'"
+          },
+          {
+            "hide": "context.item_slot == 'off_hand'"
+          }
+        ]
+      },
+      "render_controllers": [
+        "controller.render.family_flipbook"
+      ]
+    }
+  }
+}

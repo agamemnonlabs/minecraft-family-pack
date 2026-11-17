@@ -17,6 +17,31 @@
           ]
         }
       }
+    },
+    "animation.family.wield": {
+      "loop": true,
+      "bones": {
+        "rightitem": {
+          "position": [
+            "c.is_first_person ? -5.5 : 0.5",
+            "c.is_first_person ? -3.0 : -0.5",
+            "c.is_first_person ? -3.0 : -1.0"
+          ],
+          "rotation": [
+            "c.is_first_person ? 38.0 : 180.0",
+            "c.is_first_person ? -120.0 : 0.0",
+            "c.is_first_person ? -63.0 : 0.0"
+          ]
+        }
+      }
+    },
+    "animation.family.hide": {
+      "loop": true,
+      "bones": {
+        "rightitem": {
+          "scale": 0.0
+        }
+      }
     }
   }
 }

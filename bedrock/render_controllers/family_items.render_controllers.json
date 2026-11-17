@@ -1,0 +1,85 @@
+{
+  "format_version": "1.10.0",
+  "render_controllers": {
+    "controller.render.family_flipbook": {
+      "arrays": {
+        "textures": {
+          "array.frames": [
+            "texture.default",
+            "texture.f1",
+            "texture.f2",
+            "texture.f3",
+            "texture.f4",
+            "texture.f5",
+            "texture.f6",
+            "texture.f7",
+            "texture.tp",
+            "texture.tp_f1",
+            "texture.tp_f2",
+            "texture.tp_f3",
+            "texture.tp_f4",
+            "texture.tp_f5",
+            "texture.tp_f6",
+            "texture.tp_f7"
+          ]
+        },
+        "geometries": {
+          "array.meshes": [
+            "geometry.default",
+            "geometry.f1",
+            "geometry.f2",
+            "geometry.f3",
+            "geometry.f4",
+            "geometry.f5",
+            "geometry.f6",
+            "geometry.f7",
+            "geometry.tp",
+            "geometry.tp_f1",
+            "geometry.tp_f2",
+            "geometry.tp_f3",
+            "geometry.tp_f4",
+            "geometry.tp_f5",
+            "geometry.tp_f6",
+            "geometry.tp_f7"
+          ]
+        }
+      },
+      "geometry": "array.meshes[math.mod(math.floor(q.life_time * 10.0), 8) + variable.family_tp * 8]",
+      "materials": [
+        {
+          "*": "variable.is_enchanted ? material.enchanted : material.default"
+        }
+      ],
+      "textures": [
+        "array.frames[math.mod(math.floor(q.life_time * 10.0), 8) + variable.family_tp * 8]",
+        "texture.enchanted"
+      ]
+    },
+    "controller.render.family_sword": {
+      "arrays": {
+        "textures": {
+          "array.frames": [
+            "texture.default",
+            "texture.tp"
+          ]
+        },
+        "geometries": {
+          "array.meshes": [
+            "geometry.default",
+            "geometry.tp"
+          ]
+        }
+      },
+      "geometry": "array.meshes[0 + variable.family_tp * 1]",
+      "materials": [
+        {
+          "*": "variable.is_enchanted ? material.enchanted : material.default"
+        }
+      ],
+      "textures": [
+        "array.frames[0 + variable.family_tp * 1]",
+        "texture.enchanted"
+      ]
+    }
+  }
+}

@@ -101,7 +101,7 @@ def java(a, put, display):
 
 # ------------------------------------------------------------------ Bedrock pack
 def bedrock(b, put):
-    """Copies sounds; returns (item icons, sound definitions). Normal sword hold, no attachable."""
+    """Copies sounds; returns (item icons, sound definitions). The in-hand models are in build.py."""
     copy_sounds(f"{b}/sounds/family/katana")
     defs = {}
     for el in KATANAS:
