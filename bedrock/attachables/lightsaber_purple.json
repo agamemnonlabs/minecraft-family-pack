@@ -34,7 +34,7 @@
         ]
       },
       "render_controllers": [
-        "controller.render.family_sword"
+        "controller.render.family_held"
       ]
     }
   }

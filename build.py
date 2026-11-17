@@ -19,7 +19,7 @@ import undersea, town, wardrobe, katana
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 JAVA, BEDROCK, DATA, DIST = (os.path.join(ROOT, d) for d in ("java", "bedrock", "datapack", "dist"))
-VERSION = [1, 0, 21]                      # bump for every change shipped to Bedrock (iPads cache by version)
+VERSION = [1, 0, 22]                      # bump for every change shipped to Bedrock (iPads cache by version)
 JAVA_FORMAT, DATA_FORMAT = 97, 121        # resource / data pack formats of Minecraft 26.3
 BEDROCK_HEADER_UUID = "6f1d2b8e-3c47-4a8e-9d2f-5b1a7c0e4f21"
 BEDROCK_MODULE_UUID = "a3c9e5d7-81f2-4b6a-b0e4-2d8f6c1a9e53"
@@ -163,35 +163,36 @@ def build_bedrock():
     put(f"{BEDROCK}/textures/item_texture.json", {"resource_pack_name": "family", "texture_name": "atlas.items",
         "texture_data": {n: {"textures": f"textures/items/{n}"} for n in textures}})
     # In-hand models (attachables). Mesh and poses copied from Mojang's player bow (bedrock-samples
-    # attachables/bow.json): "wield" is its normal hold, "aim" adds its first-person pull pose (Bedrock
-    # adds the two), which points the arrow ahead; the blaster's muzzle sits where the arrow tip is
-    # (top-left). Katanas and lightsabers use "wield" (since pack 1.0.21): katana blades animate like on
-    # PC, lightsabers get the PC see-through halo. (No
-    # held item glows at night on Bedrock: emissive materials, ignore_lighting and light_color_multiplier
-    # were all tested.) The hand holds the picture at local_pivot (texture units, 16 across, rows from
-    # the top): the bow's (6, 6) is mid-sword on ours, which looks right in first person. The bow's
-    # third-person pose holds a sword blade back and down, so in third person "wield" turns it over
-    # around the hand, and the model is drawn from the picture mirrored across the blade (turning it
-    # over along its length, or a katana's edge ends up on top), held at (1.6, 11.6): mid-hilt, moved
-    # toward the spine so the hilt sits in the fist, not above it; and 1.5 px further out from the body
-    # (the bow's mesh sits 2 px inward of the hand), centred in the fist. One render controller picks the
-    # first- or third-person picture and mesh (a second controller didn't draw in first person). In
-    # the off-hand the model is hidden instead of being drawn in the right hand over the main-hand item.
+    # attachables/bow.json): "wield" is its normal hold, "aim" adds its first-person pull pose (Bedrock adds
+    # the two), which points the arrow ahead; the blaster's muzzle sits where the arrow tip is (top-left).
+    # Katanas and lightsabers use "wield" (since pack 1.0.21): katana blades animate like on PC, lightsabers
+    # get the PC see-through halo. (No held item glows at night on Bedrock: emissive materials,
+    # ignore_lighting and light_color_multiplier were all tested.) The hand holds the picture at local_pivot
+    # (texture units, 16 across, rows from the top): the bow's (6, 6) is mid-sword on ours, which looks right
+    # in first person. The bow's third-person pose holds a sword blade back and down (and the blaster's barrel
+    # straight down), so in third person "wield" and "aim" turn the item over around the hand, and the model
+    # is drawn from a flipped picture. A sword's is mirrored across the blade (turning it over along its
+    # length, or a katana's edge ends up on top), held at (1.6, 11.6): mid-hilt, moved toward the spine so the
+    # hilt sits in the fist, not above it; and 1.5 px further out from the body (the bow's mesh sits 2 px
+    # inward of the hand), centred in the fist. The blaster's is mirrored left to right (muzzle ahead, top
+    # up), held mid-grip: the sword's grip point moved by (grip - hilt middle). One render controller picks
+    # the first- or third-person picture and mesh (a second controller didn't draw in first person). In the
+    # off-hand a sword is hidden instead of being drawn in the right hand over the main-hand item (the blaster
+    # can't be in the off-hand).
     suffix = lambda slot: "" if slot == "default" else f"_{slot}"
     tp_slot = lambda slot: f"tp{suffix(slot)}"
     MAIN, OFF = "context.item_slot != 'off_hand'", "context.item_slot == 'off_hand'"   # as GeyserMC Rainbow
     SWORD = ("family_sword", {"hold": "animation.family.wield", "hide": "animation.family.hide"},
-             [{"hold": MAIN}, {"hide": OFF}], True)
-    TP_GRIP = (1.6, 11.6, 0.5)                     # local_pivot x, z; mesh position x
-    def held(name, frames, materials, controllers,
-             rig=("family_item", {"hold": "animation.family.aim"}, ["hold"], False)):
+             [{"hold": MAIN}, {"hide": OFF}], Image.Transpose.TRANSVERSE)   # across the blade line
+    GUN = ("family_item", {"hold": "animation.family.aim"}, ["hold"], Image.Transpose.FLIP_LEFT_RIGHT)
+    TP_GRIP, GUN_TP_GRIP = (1.6, 11.6, 0.5), (6.1, 11.7, 0.5)   # local_pivot x, z; mesh position x
+    def held(name, frames, materials, controllers, rig):
         """Several frames cycle at Java's frametime 2; each gets its own mesh (cut from its picture).
-        materials: (normal, enchanted); rig: (geometry, animations, animate, own third-person pictures)."""
-        geometry, animations, animate, third_person = rig
+        materials: (normal, enchanted); rig: (geometry, animations, animate, third-person picture flip)."""
+        geometry, animations, animate, tp_flip = rig
         slots = ["default"] + [f"f{i}" for i in range(1, len(frames))]
         pictures = dict(zip(slots, frames))
-        if third_person:          # mirrored across the blade line (pommel bottom-left, tip top-right)
-            pictures.update({tp_slot(s): img.transpose(Image.Transpose.TRANSVERSE) for s, img in zip(slots, frames)})
+        pictures.update({tp_slot(s): img.transpose(tp_flip) for s, img in zip(slots, frames)})
         for s, img in pictures.items():
             img.save(f"{t}/family_{name}_held{suffix(s)}.png")
         put(f"{BEDROCK}/attachables/{name}.json", {"format_version": "1.10.0", "minecraft:attachable": {
@@ -202,17 +203,17 @@ def build_bedrock():
                              "enchanted": "textures/misc/enchanted_item_glint"},
                 "geometry": {s: f"geometry.{geometry}{suffix(s)}" for s in pictures},
                 "animations": animations,
-                "scripts": {**({"pre_animation": ["variable.family_tp = c.is_first_person ? 0.0 : 1.0;"]}
-                               if third_person else {}), "animate": animate},
+                "scripts": {"pre_animation": ["variable.family_tp = c.is_first_person ? 0.0 : 1.0;"],
+                            "animate": animate},
                 "render_controllers": controllers}}})
     held("foam_blaster", [draw_blaster(32, "left")], ("entity_alphatest", "entity_alphatest"),
-         ["controller.render.item_default"])
+         ["controller.render.family_held"], GUN)
     for el in katana.KATANAS:
         held(f"katana_{el}", bedrock_held_frames(el), ("entity_alphatest", "entity_alphatest_glint"),
              ["controller.render.family_flipbook"], SWORD)
     for colour, (blade, hilt, _) in LIGHTSABERS.items():
         held(f"lightsaber_{colour}", [draw_glow_saber(blade, hilt, solid_halo=False)],
-             ("entity_alphablend", "entity_alphatest_glint"), ["controller.render.family_sword"], SWORD)
+             ("entity_alphablend", "entity_alphatest_glint"), ["controller.render.family_held"], SWORD)
     slots = ["default"] + [f"f{i}" for i in range(1, FRAMES)]
     mesh = lambda s, x=6.0, z=6.0, at=2.0: {"texture": s, "position": [at, 1.0, -1.0],
                                             "rotation": [0.0, -135.0, 90.0], "local_pivot": [x, 0.0, z]}
@@ -220,14 +221,14 @@ def build_bedrock():
                                "bones": bones}
     held_at = lambda name, s, *pivot: geo(name, [{"name": "rightitem", "texture_meshes": [mesh(s, *pivot)]}])
     put(f"{BEDROCK}/models/entity/family_item.geo.json", {"format_version": "1.16.0", "minecraft:geometry": [
-        held_at("geometry.family_item", "default")] +
+        held_at("geometry.family_item", "default"), held_at("geometry.family_item_tp", "tp", *GUN_TP_GRIP)] +
         [held_at(f"geometry.family_sword{suffix(s)}", s) for s in slots] +
         [held_at(f"geometry.family_sword{suffix(tp_slot(s))}", tp_slot(s), *TP_GRIP) for s in slots]})
     fp = lambda a, b: f"c.is_first_person ? {a} : {b}"
     put(f"{BEDROCK}/animations/family_items.animation.json", {"format_version": "1.8.0", "animations": {
-        "animation.family.aim": {"loop": True, "bones": {"rightitem": {
-            "position": [fp(-7.0, 0.5), fp(-0.5, -2.5), fp(-7.8, 1.0)],
-            "rotation": [fp(-15.0, 0.0), fp(-112.0, 0.0), fp(-28.0, 0.0)]}}},
+        "animation.family.aim": {"loop": True, "bones": {"rightitem": {      # third person as "wield"
+            "position": [fp(-7.0, 0.5), fp(-0.5, -0.5), fp(-7.8, -1.0)],
+            "rotation": [fp(-15.0, 180.0), fp(-112.0, 0.0), fp(-28.0, 0.0)]}}},
         "animation.family.wield": {"loop": True, "bones": {"rightitem": {   # third person: turned over,
             "position": [fp(-5.5, 0.5), fp(-3.0, -0.5), fp(-3.0, -1.0)],        # grip kept in place
             "rotation": [fp(38.0, 180.0), fp(-120.0, 0.0), fp(-63.0, 0.0)]}}},
@@ -245,7 +246,7 @@ def build_bedrock():
                 "textures": [f"array.frames[{pick}]", "texture.enchanted"]}
     put(f"{BEDROCK}/render_controllers/family_items.render_controllers.json", {"format_version": "1.10.0",
         "render_controllers": {"controller.render.family_flipbook": sword_controller(slots),
-                               "controller.render.family_sword": sword_controller(["default"])}})
+                               "controller.render.family_held": sword_controller(["default"])}})
     make_sounds(f"{BEDROCK}/sounds/family/lightsaber", "swing")
     put(f"{BEDROCK}/sounds/sound_definitions.json", {"format_version": "1.14.0", "sound_definitions": {
         HIT_SOUND: {"category": "player", "max_distance": 16.0,

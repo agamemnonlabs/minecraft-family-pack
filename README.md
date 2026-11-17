@@ -10,6 +10,7 @@ Original art and sounds for our family Paper server (Minecraft 26.3, Java + Bedr
   iPads see the soft see-through halo in hand; it doesn't glow in the dark (held items can't on Bedrock).
 - **iPad in-hand models** (attachables in `build.py`): katanas and lightsabers use the bow's hold, adjusted so the
   hilt sits in the fist with a katana's edge underneath. In the off-hand they are invisible on iPad.
+  The foam blaster's third person is turned the same way (muzzle ahead, top up); it sits a little above the fist.
 - **Elemental katanas** (`katana.py`, art in `katana_art.py`, sounds in `katana_sounds.py`): Flame, Water, Thunder and
   Wind, separate items on top of a diamond sword (item model `family:katana_<element>`). Crafted from diamond sword +
   amethyst shard + blaze powder / prismarine crystals / copper ingot / feather, or `../give-katana.sh ELEMENT PLAYER`.

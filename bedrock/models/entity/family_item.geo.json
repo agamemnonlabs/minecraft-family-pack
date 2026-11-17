@@ -35,6 +35,38 @@
     },
     {
       "description": {
+        "identifier": "geometry.family_item_tp",
+        "texture_width": 16,
+        "texture_height": 16
+      },
+      "bones": [
+        {
+          "name": "rightitem",
+          "texture_meshes": [
+            {
+              "texture": "tp",
+              "position": [
+                0.5,
+                1.0,
+                -1.0
+              ],
+              "rotation": [
+                0.0,
+                -135.0,
+                90.0
+              ],
+              "local_pivot": [
+                6.1,
+                0.0,
+                11.7
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "description": {
         "identifier": "geometry.family_sword",
         "texture_width": 16,
         "texture_height": 16

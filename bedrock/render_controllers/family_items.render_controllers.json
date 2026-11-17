@@ -55,7 +55,7 @@
         "texture.enchanted"
       ]
     },
-    "controller.render.family_sword": {
+    "controller.render.family_held": {
       "arrays": {
         "textures": {
           "array.frames": [
