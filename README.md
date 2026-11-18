@@ -39,8 +39,11 @@ Original art and sounds for our family Paper server (Minecraft 26.3, Java + Bedr
     coconut and watermelon houses, the Bubble Cafe (a sunken submarine), 6 empty plots for the kids, a jelly
     meadow, streets, a welcome arch the kids can name, a bus stop and hidden light blocks.
     Admin, ONCE ever: `/function family:undersea/build_town` (it flattens the plots, so never again once kids build).
-    `/function family:undersea/tidy_town` clears natural reef (coral, sand/stone lumps) between and 6 blocks
-    around the town and refreshes the hidden lights; it leaves plots, buildings and anything built alone.
+    `/function family:undersea/tidy_town` clears natural reef between and 6 blocks around the town and refreshes the
+    hidden lights. Plots, buildings, streets and the meadow are never touched. Elsewhere it turns coral, sand,
+    sandstone, stone (and granite, diorite, andesite, tuff, deepslate), dirt, gravel, clay and magma into water up to
+    16 blocks above the seabed, including anything a kid built from them, so check for kids' builds outside the plots
+    before running it.
   - **Costume ring** (`wardrobe.py`, preview `previews/wardrobe.png`): free costumes at the hub. Eight armour
     stands wear the costumes around the hub, each with a pink pad in front. Stepping on a pad gives the pieces of
     that costume you don't already have. A knocked-over mannequin or broken pad comes back on its own within
