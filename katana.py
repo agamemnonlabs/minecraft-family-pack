@@ -231,9 +231,8 @@ def datapack(data, put, give_string):
             "type": "minecraft:crafting_shapeless", "category": "equipment",
             "ingredients": ["minecraft:diamond_sword", "minecraft:amethyst_shard", f"minecraft:{k['ingredient']}"],
             "result": {"id": "minecraft:diamond_sword", "components": components(el)}})
-    put(f"{d}/advancement/unlock_katanas.json", {
-        "criteria": {"has_amethyst": {"trigger": "minecraft:inventory_changed",
-                                      "conditions": {"items": [{"items": "minecraft:amethyst_shard"}]}}},
+    put(f"{d}/advancement/unlock_katanas.json", {      # in every recipe book from the first join
+        "criteria": {"joined": {"trigger": "minecraft:tick"}},
         "rewards": {"recipes": [f"family:katana_{el}" for el in KATANAS]}})
 
     put(f"{f}/load.mcfunction", mcf(*[f"scoreboard objectives add family.{s} dummy" for s in ("kcd", "kswcd", "kfr", "kel")]))

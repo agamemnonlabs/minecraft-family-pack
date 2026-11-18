@@ -281,14 +281,10 @@ def build_datapack():
         "type": "minecraft:crafting_shapeless", "category": "equipment",
         "ingredients": ["minecraft:crossbow", "minecraft:amethyst_shard", "minecraft:orange_dye"],
         "result": {"id": "minecraft:crossbow", "components": BLASTER_COMPONENTS}})
-    put(f"{d}/advancement/unlock_foam_blaster.json", {         # separate, so players who already unlocked
-        "criteria": {"has_amethyst": {"trigger": "minecraft:inventory_changed",   # the sabers get it too
-                                      "conditions": {"items": [{"items": "minecraft:amethyst_shard"}]}}},
-        "rewards": {"recipes": ["family:foam_blaster"]}})
-    put(f"{d}/advancement/unlock_lightsabers.json", {          # show recipes once they hold an amethyst shard
-        "criteria": {"has_amethyst": {"trigger": "minecraft:inventory_changed",
-                                      "conditions": {"items": [{"items": "minecraft:amethyst_shard"}]}}},
-        "rewards": {"recipes": [f"family:lightsaber_{c}" for c in LIGHTSABERS]}})
+    put(f"{d}/advancement/unlock_foam_blaster.json", {         # in every recipe book from the first join
+        "criteria": {"joined": {"trigger": "minecraft:tick"}}, "rewards": {"recipes": ["family:foam_blaster"]}})
+    put(f"{d}/advancement/unlock_lightsabers.json", {
+        "criteria": {"joined": {"trigger": "minecraft:tick"}}, "rewards": {"recipes": [f"family:lightsaber_{c}" for c in LIGHTSABERS]}})
     put(f"{d}/advancement/lightsaber_hit.json", {              # melee hit while holding a lightsaber
         "criteria": {"hit": {"trigger": "minecraft:player_hurt_entity", "conditions": {"damage": {"type": {
             "direct_entity": {"minecraft:equipment": {"mainhand": {

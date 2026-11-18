@@ -1,14 +1,7 @@
 {
   "criteria": {
-    "has_amethyst": {
-      "trigger": "minecraft:inventory_changed",
-      "conditions": {
-        "items": [
-          {
-            "items": "minecraft:amethyst_shard"
-          }
-        ]
-      }
+    "joined": {
+      "trigger": "minecraft:tick"
     }
   },
   "rewards": {
