@@ -128,6 +128,33 @@ Original art and sounds for our family Paper server (Minecraft 26.3, Java + Bedr
     - Missing clam tap boxes and the board come back while a kid is near the coconut; an open clam left over shuts.
     - Admin: `/function family:undersea/build_houses` (safe to re-run: it replaces the two townsfolk, the boxes and the
       board, and places blocks only into water).
+  - **Raids** (`raid.py`): sea raiders attack the whole town.
+    - Starting one: tap the **alarm bell** on the hub's north side > Ring it! (10 s warning; the bell rests 15 minutes
+      after a raid). **Surprise raids** also come by themselves at Undersea dusk (when Chef Clamuel goes to bed), if a kid
+      has been in town 10+ minutes and the last raid was 60+ minutes ago: a 1-in-2 chance, with a 30 s warning.
+    - The warning: ENEMY ATTACK! title, raid horns and bells, the town's 43 lamps blinking red, whirlpools at four spots
+      round the edge of town, a banner over the welcome arch and a red countdown bar.
+    - Everyone in town switches to Adventure for the raid (monsters never go for Creative players), except spectators,
+      racers and anyone tagged `family.raid.exempt`. They get their own game mode back on leaving town or the Undersea,
+      when the raid ends, or on rejoining later. Healing is 1 heart every 20 s. **Bubble rescue**: at 3 hearts a kid is
+      healed, shielded for 5 s and sent to the hub.
+    - Waves (N = kids in the fight): 4+2N Barnacle Pirates (drowned); then Pirates, Seabed Shamblers (zombie villagers,
+      they walk the seabed), 2 Bone Divers (skeletons) and 1-2 Spike Eyes (guardians); then Captain Grimtide (a big
+      drowned with his own purple bar) and N+2 Shell Riders on zombie nautiluses. The next wave comes when 2 or fewer
+      are left or after 90 s; at most 24 alive. Beat the Captain and the rest swim off: TOWN SAVED, 3 Sand Dollars per
+      defender. Each raider a kid beats has a 1-in-3 chance of dropping a Sand Dollar; the Captain drops 5.
+    - **Town Spirit** (green bar) drops 1 a second for each raider in the square. At 0, or after 8 minutes of fighting,
+      the raiders swim off with the cafe's cookies (no bonus, nothing really lost).
+    - Raiders hit softly (half a heart; the Captain a heart), pick nothing up and never despawn by themselves. One with
+      no kid near drifts towards the square; one that swims high above town or wanders off goes back to a whirlpool.
+      All of them go when the raid ends, and any left over (a restart, an unloaded chunk) goes as soon as it loads.
+      Mob griefing is off in the Undersea (`execute in family:undersea run gamerule mob_griefing false`).
+    - Admin: `/function family:undersea/build_raid` places the bell (safe to re-run). `/function family:undersea/raid/start`
+      starts one (10 s warning, ignores the bell's rest), `raid/stop` calls it off, `raid/surprises_off` /
+      `raid/surprises_on` switch surprise raids. To watch as an op without being attacked: `/tag NAME add
+      family.raid.exempt` (`tag NAME remove family.raid.exempt` to fight). One raider to try out:
+      `execute as NAME at NAME run function family:undersea/raid/trial/pirate` (also `shambler`, `diver`, `eye`,
+      `rider`, `captain`); `/function family:undersea/raid/trial/clear` removes them.
 
 ### Paint your own costume
 Any costume (`shark`, `diver`, `angler`, `turtle`, `coral`, `axolotl`, `sponge`, `spongebuddy`) can be hand-painted:

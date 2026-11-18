@@ -1,0 +1,19 @@
+{
+  "criteria": {
+    "tap": {
+      "trigger": "minecraft:player_interacted_with_entity",
+      "conditions": {
+        "entity": {
+          "type": "minecraft:entity_properties",
+          "entity": "this",
+          "predicate": {
+            "nbt": "{Tags:[\"family.tap.alarm\"]}"
+          }
+        }
+      }
+    }
+  },
+  "rewards": {
+    "function": "family:undersea/raid/tap"
+  }
+}

@@ -6,6 +6,7 @@
     "family:undersea/folk/load",
     "family:undersea/race/load",
     "family:undersea/alive/load",
-    "family:undersea/houses/load"
+    "family:undersea/houses/load",
+    "family:undersea/raid/load"
   ]
 }
