@@ -44,7 +44,8 @@ def cafe(x, y, z):
 # ---------------------------------------------------------------- who's who
 FOLK = {
     "chef": dict(name="Chef Clamuel", colour="gold", job="butcher", look="plains", spot=cafe(8, 2, 0), yaw=90,
-                 hello="Welcome to the Bubble Cafe, {kid}! Tap me for snacks, or tap my bell for a delivery job."),
+                 hello="Welcome to the Bubble Cafe, {kid}! Tap me for snacks, or tap my bell for a delivery job.",
+                 night="Zzz... mmm, coral cookies... (Chef Clamuel is fast asleep. The cafe opens again at sunrise!)"),
     "mayor": dict(name="Mayor Marina", colour="light_purple", job="cleric", look="plains", spot=(-2, 1, -14), yaw=0,
                   hello="Hello, {kid}! Oh dear, have you seen my golden pearls? Tap me!"),
     "farmer": dict(name="Farmer Kelpsey", colour="green", job="farmer", look="swamp", spot=(2, 1, -26), yaw=0,
@@ -53,6 +54,7 @@ FOLK = {
                    hello="Beep beep, {kid}! The bus is late again. Tap me to race the Current Race!"),
 }
 POSTS = ("mayor", "farmer", "driver")          # NoAI; the chef keeps its AI inside the dry cafe
+NIGHT = "#night family.alive"                  # 1 while the chef is asleep: set by alive.py, picks the "night" hello
 LUNCH_TO = ("mayor", "farmer", "driver")       # Order Up! targets, picked at random
 BELL = cafe(7, 4, 2)
 PEARL = M + "ochre_froglight"                  # "golden pearl": glows, and nothing else in town uses it
@@ -284,7 +286,9 @@ def datapack(data, put, give_string):
         loop += [f"execute as {me} at @s as @a[distance=..5,tag=!family.met.{who}] run function {fn}/hello/{who}",
                  f"execute as {me} at @s run tag @a[distance=12..,tag=family.met.{who}] remove family.met.{who}"]
         put(f"{f}/hello/{who}.mcfunction", undersea.mcf(
-            f"tag @s add family.met.{who}", say(who, FOLK[who]["hello"]),
+            f"tag @s add family.met.{who}",
+            *([f"execute if score {NIGHT} matches 1 run return run " + say(who, FOLK[who]["night"])] if "night" in FOLK[who] else []),
+            say(who, FOLK[who]["hello"]),
             "playsound minecraft:entity.villager.ambient neutral @s ~ ~ ~"))
     for who in POSTS:
         me = f"@e[type=minecraft:villager,tag=family.folk.{who}]"

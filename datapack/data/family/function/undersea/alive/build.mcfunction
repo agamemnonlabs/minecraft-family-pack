@@ -1,0 +1,13 @@
+execute in family:undersea unless loaded -195 38 -201 run return run schedule function family:undersea/alive/build 2s replace
+execute in family:undersea unless loaded -134 38 -120 run return run schedule function family:undersea/alive/build 2s replace
+execute in family:undersea as @e[tag=family.alive] at @s run function family:undersea/alive/remove
+execute in family:undersea if block -144 58 -130 #family:race_free run setblock -144 58 -130 minecraft:light[level=15,waterlogged=true]
+execute in family:undersea if block -144 49 -130 minecraft:orange_concrete run setblock -144 49 -130 minecraft:water
+execute in family:undersea if block -144 48 -130 minecraft:orange_concrete run setblock -144 48 -130 minecraft:soul_sand
+execute in family:undersea run summon minecraft:axolotl -173.5 40 -137.5 {"Tags":["family.alive","family.alive.noodle"],"CustomName":{"text":"Noodle","color":"light_purple"},"CustomNameVisible":true,"PersistenceRequired":true,"Invulnerable":true,"Variant":0,"attributes":[{"id":"minecraft:attack_damage","base":0.0}]}
+execute in family:undersea run summon minecraft:axolotl -161.5 40 -149.5 {"Tags":["family.alive","family.alive.sprinkles"],"CustomName":{"text":"Sprinkles","color":"yellow"},"CustomNameVisible":true,"PersistenceRequired":true,"Invulnerable":true,"Variant":2,"attributes":[{"id":"minecraft:attack_damage","base":0.0}]}
+execute in family:undersea run summon minecraft:axolotl -173.5 40 -149.5 {"Tags":["family.alive","family.alive.puddle"],"CustomName":{"text":"Puddle","color":"aqua"},"CustomNameVisible":true,"PersistenceRequired":true,"Invulnerable":true,"Variant":3,"attributes":[{"id":"minecraft:attack_damage","base":0.0}]}
+execute in family:undersea run summon minecraft:axolotl -147.5 42 -174.5 {"Tags":["family.alive","family.alive.blueberry"],"CustomName":{"text":"Blueberry","color":"blue"},"CustomNameVisible":true,"PersistenceRequired":true,"Invulnerable":true,"Variant":4,"attributes":[{"id":"minecraft:attack_damage","base":0.0}]}
+execute in family:undersea run summon minecraft:turtle -179.999 45 -179.52 {"Tags":["family.alive","family.alive.mossback"],"CustomName":{"text":"Grandpa Mossback","color":"dark_green"},"CustomNameVisible":true,"PersistenceRequired":true,"Invulnerable":true,"NoAI":true,"Rotation":[0.0f,0.0f]}
+execute in family:undersea run summon minecraft:turtle -169.5 44 -175.525 {"Tags":["family.alive","family.alive.pebble"],"CustomName":{"text":"Pebble","color":"green"},"CustomNameVisible":true,"PersistenceRequired":true,"Invulnerable":true,"NoAI":true,"Rotation":[0.0f,0.0f],"Age":-2147483648}
+execute in family:undersea run forceload remove -195 -201 -134 -120

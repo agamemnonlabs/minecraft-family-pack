@@ -93,6 +93,24 @@ Original art and sounds for our family Paper server (Minecraft 26.3, Java + Bedr
     - Admin: `/function family:undersea/build_race` (places the gate and rings only into water, so never over
       anything built; re-run replaces the floating numbers). `/function family:undersea/race/reset_times` clears the
       sidebar and the leaderboard.
+  - **Town life** (`alive.py`):
+    - Sea pets with their names always showing:
+      - axolotls Noodle, Sprinkles and Puddle in the square, and Blueberry (blue) in the Jelly Meadow. One that strays
+        too far pops back home. They don't bite (0 damage), so fish and glow squid are safe. A kid can bucket one and
+        keep it; a new one turns up in town.
+      - turtles Grandpa Mossback and baby Pebble, who paddle slow loops over the meadow. Vanilla turtles swim off
+        towards spots hundreds of blocks away, so these two are moved by the datapack.
+    - **Bubble chimney**: a vent in the Bubble Cafe's tower top (soul sand under it) sends up a bubble column that ends
+      9 blocks up at an invisible light block, so kids can ride it and float out of the top.
+    - **Night** is while Chef Clamuel sleeps in his bed (about half of each 20-minute day; sleeping villagers don't
+      trade). During it:
+      - a floating CLOSED sign hangs over the cafe door;
+      - the chef's hello is a sleepy one;
+      - glow squid Glimmer, Twinkle and Lumo drift among the jellies, and swim off at sunrise.
+      - The Order Up! bell keeps working.
+    - Missing pets, the sign, the glow squid and chimney blocks come back while a kid is nearby.
+    - Admin: `/function family:undersea/build_alive` (re-run replaces the pets; it cuts the vent only where the tower is
+      still as built).
 
 ### Paint your own costume
 Any costume (`shark`, `diver`, `angler`, `turtle`, `coral`, `axolotl`, `sponge`, `spongebuddy`) can be hand-painted:

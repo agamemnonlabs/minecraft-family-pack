@@ -15,7 +15,7 @@ from art import (draw_blaster, saber_hilt, saber_blade, draw_glow_saber, mix, he
                  palette_texture, LIGHTSABERS)
 from katana_art import bedrock_held_frames, FRAMES
 from sounds import swing, VARIANTS
-import undersea, town, wardrobe, katana, townsfolk, race
+import undersea, town, wardrobe, katana, townsfolk, race, alive
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 JAVA, BEDROCK, DATA, DIST = (os.path.join(ROOT, d) for d in ("java", "bedrock", "datapack", "dist"))
@@ -315,11 +315,13 @@ def build_datapack():
     katana.datapack(DATA, put, give_string)
     townsfolk.datapack(DATA, put, give_string)
     race.datapack(DATA, put)
+    alive.datapack(DATA, put)
     tags = f"{DATA}/data/minecraft/tags/function"
     put(f"{tags}/load.json", {"values": ["family:undersea/load", "family:undersea/wardrobe/load", "family:katana/load",
-                                        "family:undersea/folk/load", "family:undersea/race/load"]})
+                                        "family:undersea/folk/load", "family:undersea/race/load",
+                                        "family:undersea/alive/load"]})
     put(f"{tags}/tick.json", {"values": ["family:undersea/tick", "family:undersea/wardrobe/tick", "family:katana/tick",
-                                        "family:undersea/race/tick"]})
+                                        "family:undersea/race/tick", "family:undersea/alive/tick"]})
 
 def zipdir(src, dest):
     """Deterministic zip (fixed timestamps, sorted) so rebuilding unchanged content keeps the same sha1."""
