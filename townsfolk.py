@@ -371,7 +371,7 @@ def datapack(data, put, give_string):
         "execute if entity @s[tag=family.pearls_done] run return fail",
         "tag @s add family.pearls_done", give_coins(PEARL_PAY), f"give @s {give_string('minecraft:tropical_fish_bucket', FISH)}",
         say("mayor", f"Here are {PEARL_PAY} Sand Dollars, and a pet fish! Let it out somewhere nice."),
-        "playsound minecraft:entity.player.levelup master @s ~ ~ ~"))
+        "execute at @s run playsound minecraft:entity.player.levelup master @s ~ ~ ~"))   # buttons have no position
     for i, (x, y, z) in enumerate(PEARLS, 1):
         here = f"execute in {dim} positioned {hx + x + 0.5} {hy + y + 0.5} {hz + z + 0.5} run "
         count = [{"score": {"name": "@s", "objective": "family.pearls"}, "color": "gold"}, {"text": " of 10", "color": "gold"}]
