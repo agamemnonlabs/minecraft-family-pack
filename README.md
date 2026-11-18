@@ -44,6 +44,13 @@ Original art and sounds for our family Paper server (Minecraft 26.3, Java + Bedr
     sandstone, stone (and granite, diorite, andesite, tuff, deepslate), dirt, gravel, clay and magma into water up to
     16 blocks above the seabed, including anything a kid built from them, so check for kids' builds outside the plots
     before running it.
+  - **Dry houses** (`drain.py`, its own datapack `dist/family-drain.zip`): kids build the whole shell first from full
+    blocks, with a door for the doorway. No stairs, slabs, fences, glass panes or trapdoors in the outer walls, roof
+    or floor: water gets through them. Then an op stands in the water inside and runs `/function family:drain_here`
+    (console: `execute as NAME at NAME run function family:drain_here`). The water turns to air, and waterlogged
+    chests, stairs and the like inside are dried. If the water reaches the sea (a gap, or a room spreading more than
+    15 blocks from where you stand) or holds more than 1500 blocks, nothing changes and the chat says why. Run it
+    again for any pocket it missed. A roof one block thick shows drips underneath; a second layer or glass stops them.
   - **Costume ring** (`wardrobe.py`, preview `previews/wardrobe.png`): free costumes at the hub. Eight armour
     stands wear the costumes around the hub, each with a pink pad in front. Stepping on a pad gives the pieces of
     that costume you don't already have. A knocked-over mannequin or broken pad comes back on its own within
@@ -103,6 +110,7 @@ Any costume (`shark`, `diver`, `angler`, `turtle`, `coral`, `axolotl`, `sponge`,
 | `dist/family-pack-bedrock.mcpack` | `plugins/Geyser-Spigot/packs/` (iPads) |
 | `geyser/custom_mappings/family.json` | `plugins/Geyser-Spigot/custom_mappings/` |
 | `dist/family-datapack.zip` | `world/datapacks/` (recipes, hit sound, blaster main-hand lock) |
+| `dist/family-drain.zip` | `world/datapacks/` (drain command; rebuild with `python3 drain.py`) |
 | `skript/family-katana.sk` | `plugins/Skript/scripts/` (katana swing arcs; needs the Skript plugin) |
 
 Rebuild after editing `art.py` / `sounds.py`: `python3 build.py` (needs Pillow and `oggenc` from vorbis-tools).
