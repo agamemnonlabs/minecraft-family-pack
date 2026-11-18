@@ -165,6 +165,54 @@ def check():
     return length
 
 # ---------------------------------------------------------------- datapack
+def leaderboard(put, f, fn, store, tmp, score, title, line, namer_tag, sign_tag, extra=(), shown=BOARD_SHOWN, keep=10):
+    """A top-`keep` list in storage `store` board ([{u: UUID, n: name, p: points, ...}], best first) and the top `shown`
+    on the text display tagged `sign_tag`. `{fn}/leaderboard/add` runs as a player after a new score: points are their
+    `score` (bigger is better); `extra` are commands that store more fields in `store` new for `line` (a row: $(n), $(p)
+    and those fields). A name can't be read off the scoreboard, so a player head in the hidden item display tagged
+    `namer_tag` is filled with the player's profile and the name is read from it. (26.3 loot functions are keyed "type",
+    not "function".) `tmp` holds #np, #bp and #i."""
+    mcf, lb = undersea.mcf, f"{fn}/leaderboard"
+    namer = f"@e[type=minecraft:item_display,tag={namer_tag},limit=1]"
+    sign = f"@e[type=minecraft:text_display,tag={sign_tag},limit=1]"
+    put(f"{f}/leaderboard/add.mcfunction", mcf(
+        f"execute unless score @s {score} matches 0.. run return fail",
+        f"data remove storage {store} new",
+        f"item replace entity {namer} contents with minecraft:player_head",
+        f'item modify entity {namer} contents {{type:"minecraft:fill_player_head",entity:"this"}}',
+        f'data modify storage {store} new.n set from entity {namer} item.components."minecraft:profile".name',
+        f'execute unless data storage {store} new.n run data modify storage {store} new.n set value "?"',
+        f"data modify storage {store} new.u set from entity @s UUID",
+        f"execute store result storage {store} new.p int 1 run scoreboard players get @s {score}",
+        *extra,
+        f"function {lb}/drop with storage {store} new",
+        f"scoreboard players operation #np {tmp} = @s {score}",
+        f"data modify storage {store} at.i set value 0",
+        f"function {lb}/insert with storage {store} at",
+        f"data remove storage {store} board[{keep}]",
+        f"function {lb}/show"))
+    put(f"{f}/leaderboard/drop.mcfunction", f"$data remove storage {store} board[{{u:$(u)}}]\n")
+    put(f"{f}/leaderboard/insert.mcfunction", mcf(               # walk down the list; go in before the first lower one
+        f"$execute unless data storage {store} board[$(i)] run return run "
+        f"data modify storage {store} board append from storage {store} new",
+        f"$execute store result score #bp {tmp} run data get storage {store} board[$(i)].p",
+        f"$execute if score #np {tmp} > #bp {tmp} run return run "
+        f"data modify storage {store} board insert $(i) from storage {store} new",
+        f"$scoreboard players set #i {tmp} $(i)", f"scoreboard players add #i {tmp} 1",
+        f"execute store result storage {store} at.i int 1 run scoreboard players get #i {tmp}",
+        f"function {lb}/insert with storage {store} at"))
+    put(f"{f}/leaderboard/show.mcfunction", mcf(
+        f"data modify storage {store} view set value {{" + ",".join(f'l{k}:"-"' for k in range(shown)) + "}",
+        *[l for k in range(shown) for l in (
+            f"data modify storage {store} row set from storage {store} board[{k}]",
+            f"data modify storage {store} row.k set value {k}",
+            f"execute if data storage {store} board[{k}] run function {lb}/line with storage {store} row")],
+        f"function {lb}/render with storage {store} view"))
+    put(f"{f}/leaderboard/line.mcfunction", f'$data modify storage {store} view.l$(k) set value "{line}"\n')
+    put(f"{f}/leaderboard/render.mcfunction", f"$data modify entity {sign} text set value " + json.dumps(
+        [{"text": f"{title}\n", "color": "gold", "bold": True},
+         {"text": "\n".join(f"{k + 1}. $(l{k})" for k in range(shown)), "color": "white", "bold": False}]) + "\n")
+
 def datapack(data, put):
     hx, hy, hz = undersea.HUB_X, undersea.HUB_Y, undersea.HUB_Z
     dim, d = undersea.DIM, f"{data}/data/family"
@@ -369,52 +417,12 @@ def datapack(data, put):
         "execute unless entity @s[tag=family.racing] run return fail",
         f"function {fn}/end", say("driver", "OK, {kid}! Tap me any time to race again.")))
 
-    # --- the leaderboard: the top 10 best times in storage family:race board ([{u: UUID, n: name, p: points, s, d}],
-    # best first), the top BOARD_SHOWN on the board's text display. A name can't be read off the scoreboard, so a player
-    # head in a hidden item display is filled with the racer's profile and the name is read from it. (26.3 loot functions
-    # are keyed "type", not "function".)
-    namer = "@e[type=minecraft:item_display,tag=family.race.namer,limit=1]"
-    sign = "@e[type=minecraft:text_display,tag=family.race.board,limit=1]"
+    # --- the leaderboard (the top 10 best times, each with its seconds and tenths for the board's line)
     lb = f"{fn}/leaderboard"
-    put(f"{f}/leaderboard/add.mcfunction", mcf(                  # as the racer, after every finish
-        "execute unless score @s family.race matches 0.. run return fail",
-        "data remove storage family:race new",
-        f"item replace entity {namer} contents with minecraft:player_head",
-        f'item modify entity {namer} contents {{type:"minecraft:fill_player_head",entity:"this"}}',
-        f'data modify storage family:race new.n set from entity {namer} item.components."minecraft:profile".name',
-        'execute unless data storage family:race new.n run data modify storage family:race new.n set value "?"',
-        "data modify storage family:race new.u set from entity @s UUID",
-        "execute store result storage family:race new.p int 1 run scoreboard players get @s family.race",
-        *best,
-        "execute store result storage family:race new.s int 1 run scoreboard players get #bs family.race_tmp",
-        "execute store result storage family:race new.d int 1 run scoreboard players get #bd family.race_tmp",
-        f"function {lb}/drop with storage family:race new",
-        "scoreboard players operation #np family.race_tmp = @s family.race",
-        "data modify storage family:race at.i set value 0",
-        f"function {lb}/insert with storage family:race at",
-        "data remove storage family:race board[10]",
-        f"function {lb}/show"))
-    put(f"{f}/leaderboard/drop.mcfunction", "$data remove storage family:race board[{u:$(u)}]\n")
-    put(f"{f}/leaderboard/insert.mcfunction", mcf(               # walk down the list; go in before the first slower one
-        "$execute unless data storage family:race board[$(i)] run return run "
-        "data modify storage family:race board append from storage family:race new",
-        "$execute store result score #bp family.race_tmp run data get storage family:race board[$(i)].p",
-        "$execute if score #np family.race_tmp > #bp family.race_tmp run return run "
-        "data modify storage family:race board insert $(i) from storage family:race new",
-        "$scoreboard players set #i family.race_tmp $(i)", "scoreboard players add #i family.race_tmp 1",
-        "execute store result storage family:race at.i int 1 run scoreboard players get #i family.race_tmp",
-        f"function {lb}/insert with storage family:race at"))
-    put(f"{f}/leaderboard/show.mcfunction", mcf(
-        "data modify storage family:race view set value {" + ",".join(f'l{k}:"-"' for k in range(BOARD_SHOWN)) + "}",
-        *[l for k in range(BOARD_SHOWN) for l in (
-            f"data modify storage family:race row set from storage family:race board[{k}]",
-            f"data modify storage family:race row.k set value {k}",
-            f"execute if data storage family:race board[{k}] run function {lb}/line with storage family:race row")],
-        f"function {lb}/render with storage family:race view"))
-    put(f"{f}/leaderboard/line.mcfunction", '$data modify storage family:race view.l$(k) set value "$(n)   $(s).$(d)s"\n')
-    put(f"{f}/leaderboard/render.mcfunction", f"$data modify entity {sign} text set value " + json.dumps(
-        [{"text": "BEST TIMES\n", "color": "gold", "bold": True},
-         {"text": "\n".join(f"{k + 1}. $(l{k})" for k in range(BOARD_SHOWN)), "color": "white", "bold": False}]) + "\n")
+    leaderboard(put, f, fn, "family:race", "family.race_tmp", "family.race", "BEST TIMES", "$(n)   $(s).$(d)s",
+                "family.race.namer", "family.race.board", extra=[
+                    *best, "execute store result storage family:race new.s int 1 run scoreboard players get #bs family.race_tmp",
+                    "execute store result storage family:race new.d int 1 run scoreboard players get #bd family.race_tmp"])
 
     # --- the course: rings, gate and lift ends placed only into water or bubbles (never over anything built), the
     # lifts' soul sand only into the sand floor (after the ends, so the column stops there), numbers as text displays.

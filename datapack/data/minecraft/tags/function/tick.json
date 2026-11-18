@@ -4,6 +4,7 @@
     "family:undersea/wardrobe/tick",
     "family:katana/tick",
     "family:undersea/race/tick",
-    "family:undersea/alive/tick"
+    "family:undersea/alive/tick",
+    "family:undersea/houses/tick"
   ]
 }

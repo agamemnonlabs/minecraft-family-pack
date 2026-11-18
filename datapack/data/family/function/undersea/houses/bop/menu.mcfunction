@@ -1,0 +1,5 @@
+scoreboard players enable @s family.talk
+execute if score #game family.house matches 1.. run return run dialog show @s {"type":"minecraft:notice","title":{"text":"Coach Cockle","color":"red"},"body":[{"type":"minecraft:plain_message","contents":{"text":"A game is on right now! Jump in and bop the pink clams!"}}],"action":{"label":"OK!"}}
+execute unless score @s family.bop_best matches 0.. run return run dialog show @s {"type":"minecraft:multi_action","title":{"text":"Coach Cockle","color":"red"},"body":[{"type":"minecraft:plain_message","contents":{"text":"Hi! I'm Coach Cockle. Want to play Clam Bop? Clams in the floor pop open and glow pink. Bop them before they shut! You have 30 seconds."}}],"columns":1,"actions":[{"label":"Play Clam Bop!","action":{"type":"minecraft:run_command","command":"/trigger family.talk set 15"}},{"label":"How to play","action":{"type":"minecraft:run_command","command":"/trigger family.talk set 16"}}],"exit_action":{"label":"Not now"}}
+execute store result storage family:houses me.b int 1 run scoreboard players get @s family.bop_best
+function family:undersea/houses/bop/menu_best with storage family:houses me

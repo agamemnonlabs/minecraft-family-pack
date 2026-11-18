@@ -1,4 +1,4 @@
-"""Undersea townsfolk: four villagers who live and work in the town (town.py), shops paid in Sand Dollars,
+"""Undersea townsfolk: villagers who live and work in the town (town.py), shops paid in Sand Dollars,
 tap-to-talk menus and two activities.
 - Chef Clamuel works the Bubble Cafe. The cafe is dried out (a wooden door holds the sea back; doors never let
   water through) and gets a counter across the room with a 2-deep kitchen behind it: smoker, bed, pantry, order
@@ -12,6 +12,7 @@ tap-to-talk menus and two activities.
 - Lost Pearls: 10 golden pearls hidden around town, progress per kid; Mayor Marina pays out once.
 - Order Up!: once a Minecraft day (20 min of game time) the chef's bell hands out a lunch for another townsperson.
 - Driver Finnley runs the Current Race (race.py); tapping him opens its menu.
+- Professor Periwinkle (Seashell house) and Coach Cockle (Coconut house) are posts too; their menus are in houses.py.
 Coordinates are relative to the hub centre, like town.py; y=0 is the ground.
   python3 townsfolk.py -> previews/townsfolk-cafe.png + previews/townsfolk-map.png
   build.py             -> family:undersea/folk/*  (admin runs family:undersea/build_townsfolk; safe to re-run)"""
@@ -47,15 +48,25 @@ FOLK = {
                  hello="Welcome to the Bubble Cafe, {kid}! Tap me for snacks, or tap my bell for a delivery job.",
                  night="Zzz... mmm, coral cookies... (Chef Clamuel is fast asleep. The cafe opens again at sunrise!)"),
     "mayor": dict(name="Mayor Marina", colour="light_purple", job="cleric", look="plains", spot=(-2, 1, -14), yaw=0,
-                  hello="Hello, {kid}! Oh dear, have you seen my golden pearls? Tap me!"),
+                  hello="Hello, {kid}! Oh dear, have you seen my golden pearls? Tap me!", where="by the welcome arch"),
     "farmer": dict(name="Farmer Kelpsey", colour="green", job="farmer", look="swamp", spot=(2, 1, -26), yaw=0,
-                   hello="Howdy, {kid}! I pay Sand Dollars for kelp, sea pickles and seagrass. Tap me to trade."),
+                   hello="Howdy, {kid}! I pay Sand Dollars for kelp, sea pickles and seagrass. Tap me to trade.",
+                   where="at the Jelly Meadow"),
     "driver": dict(name="Driver Finnley", colour="aqua", job="cartographer", look="plains", spot=(4, 1, 15), yaw=90,
-                   hello="Beep beep, {kid}! The bus is late again. Tap me to race the Current Race!"),
+                   hello="Beep beep, {kid}! The bus is late again. Tap me to race the Current Race!",
+                   where="at the bus stop", menu="family:undersea/race/menu"),
+    # houses.py: their menus and activities live there
+    "professor": dict(name="Professor Periwinkle", colour="dark_aqua", job="librarian", look="plains", spot=(16, 1, -21),
+                      yaw=0, hello="Oh, hello {kid}! Tap me for a joke, a sea fact or the riddle of the day.",
+                      where="in the Seashell house", menu="family:undersea/houses/prof/menu"),
+    "coach": dict(name="Coach Cockle", colour="red", job="fisherman", look="jungle", spot=(31, 3, -21), yaw=0,
+                  hello="Hey there, {kid}! Ready to bop some clams? Tap me to play Clam Bop!",
+                  where="in the Coconut house", menu="family:undersea/houses/bop/menu"),
 }
-POSTS = ("mayor", "farmer", "driver")          # NoAI; the chef keeps its AI inside the dry cafe
+POSTS = ("mayor", "farmer", "driver", "professor", "coach")   # NoAI; the chef keeps its AI inside the dry cafe
+TALKERS = ("mayor", "driver", "professor", "coach")          # tapped through a box (the farmer: his trade screen)
 NIGHT = "#night family.alive"                  # 1 while the chef is asleep: set by alive.py, picks the "night" hello
-LUNCH_TO = ("mayor", "farmer", "driver")       # Order Up! targets, picked at random
+LUNCH_TO = ("mayor", "farmer", "driver", "professor", "coach")   # Order Up! targets, picked at random
 BELL = cafe(7, 4, 2)
 PEARL = M + "ochre_froglight"                  # "golden pearl": glows, and nothing else in town uses it
 MEADOW_FLOOR = 1 + max(y for (x, y, z), b in T.v.items() if (x, z) == (-6, -38) and b == M + "moss_block")
@@ -116,7 +127,7 @@ def villager(who):
 # Tap boxes: the talking townsfolk, the chef's bell and each pearl. Slightly bigger than what they cover,
 # so taps hit the box first (on Bedrock too); a box over a pearl also stops it being mined.
 def boxes():
-    out = {f"{who}": (FOLK[who]["spot"], 1.0, 2.2, 0.0) for who in ("mayor", "driver")}
+    out = {f"{who}": (FOLK[who]["spot"], 1.0, 2.2, 0.0) for who in TALKERS}
     out["bell"] = (BELL, 1.1, 1.1, -0.05)
     out.update({f"pearl{i}": (p, 1.1, 1.1, -0.05) for i, p in enumerate(PEARLS, 1)})
     return out
@@ -203,6 +214,15 @@ def check_sealed():
             assert town.wl(T.v[n]) == T.v[n], f"cafe leaks: waterlogged {T.v[n]} at {n}"
     return dry
 
+def dry_fills(at, cells):
+    """Kids' chests and light blocks in a drained room are waterlogged and would pour water back in. Dry them in the
+    drain's tick: in open water a dried block soon refills. fill keeps a chest's contents when only its state changes."""
+    (x1, y1, z1), (x2, y2, z2) = [[f(c[i] for c in cells) for i in range(3)] for f in (min, max)]
+    box = f"~{x1} ~{y1} ~{z1} ~{x2} ~{y2} ~{z2}"
+    return [f"{at}fill {box} minecraft:{s},waterlogged=false] replace minecraft:{s},waterlogged=true]"
+            for s in [f"chest[facing={f},type={t}" for f in ("north", "south", "east", "west") for t in ("single", "left", "right")]
+            + [f"light[level={n}" for n in range(16)]]
+
 def cafe_commands(at):
     """Seal the doorway, take out the old counter, drain, then the kitchen and the dry re-placements."""
     put = lambda p, b: f"{at}setblock ~{p[0]} ~{p[1]} ~{p[2]} {b}"
@@ -219,13 +239,7 @@ def cafe_commands(at):
             if b != a + 1:
                 cmds.append(f"{at}fill ~{start} ~{y} ~{z} ~{a} ~{y} ~{z} minecraft:air replace minecraft:water")
                 start = b
-    # Kids' chests and light blocks in the room are waterlogged and would pour water back in. Dry them in this same
-    # tick: in open water a dried block soon refills. fill keeps a chest's contents when only its state changes.
-    (x1, y1, z1), (x2, y2, z2) = [[f(c[i] for c in interior()) for i in range(3)] for f in (min, max)]
-    box = f"~{x1} ~{y1} ~{z1} ~{x2} ~{y2} ~{z2}"
-    for s in [f"chest[facing={f},type={t}" for f in ("north", "south", "east", "west") for t in ("single", "left", "right")] + \
-             [f"light[level={n}" for n in range(16)]:
-        cmds.append(f"{at}fill {box} minecraft:{s},waterlogged=false] replace minecraft:{s},waterlogged=true]")
+    cmds += dry_fills(at, interior())
     inside = sorted(cafe_inside().items(), key=lambda pb: (pb[0][1], "part=head" in pb[1]))  # stand before bell, bed foot before head
     return cmds + [put(p, b) for p, b in inside] + [put(p, b) for p, b in cafe_roof().items()]
 
@@ -252,7 +266,10 @@ def dialog(who, text, buttons=(), exit_label="Bye!"):
     return "dialog show @s " + snbt(d)
 
 BUTTONS = {1: "mayor_go", 2: "mayor_hints", 3: "pearl_reward", 4: "lunch_take",     # folk/<name>, or a full id
-           5: "family:undersea/race/go", 6: "family:undersea/race/rules", 7: "family:undersea/race/stop"}
+           5: "family:undersea/race/go", 6: "family:undersea/race/rules", 7: "family:undersea/race/stop",
+           **{n: f"family:undersea/houses/{name}" for n, name in enumerate(
+               ("prof/joke", "prof/punchline", "prof/fact", "prof/riddle", "prof/answer", "prof/answer", "prof/answer",
+                "bop/start", "bop/rules"), 8)}}
 
 # ---------------------------------------------------------------- datapack
 def datapack(data, put, give_string):
@@ -315,7 +332,7 @@ def datapack(data, put, give_string):
         *[f"execute in {dim} unless block {absol(*p)} {PEARL} run setblock {absol(*p)} {PEARL}" for p in PEARLS]))
 
     # --- taps (an advancement per tap box or shop villager; each revokes itself)
-    for key in ["mayor", "driver", "farmer", "bell"] + [f"pearl{i}" for i in range(1, len(PEARLS) + 1)]:
+    for key in [*TALKERS, "farmer", "bell"] + [f"pearl{i}" for i in range(1, len(PEARLS) + 1)]:
         put(f"{d}/advancement/folk/tap_{key}.json", {
             "criteria": {"tap": {"trigger": "minecraft:player_interacted_with_entity", "conditions": {"entity": {
                 "type": "minecraft:entity_properties", "entity": "this",
@@ -368,8 +385,9 @@ def datapack(data, put, give_string):
             "title @s actionbar " + json.dumps([{"text": "Golden pearl! ", "color": "gold"}] + count),
             "execute if score @s family.pearls matches 10 run " + say("mayor", "You found all 10?! Come and see me by the welcome arch!")))
 
-    # Driver Finnley: the Current Race menu (race.py).
-    put(f"{f}/tap/driver.mcfunction", undersea.mcf(revoke("driver"), *deliver("driver"), "function family:undersea/race/menu"))
+    # Driver Finnley: the Current Race menu (race.py); Professor Periwinkle and Coach Cockle: houses.py.
+    for who in [w for w in FOLK if "menu" in FOLK[w]]:
+        put(f"{f}/tap/{who}.mcfunction", undersea.mcf(revoke(who), *deliver(who), f"function {FOLK[who]['menu']}"))
     # Farmer Kelpsey: tapping opens the trade screen; a lunch in the inventory is delivered at the same time.
     put(f"{f}/tap/farmer.mcfunction", undersea.mcf(revoke("farmer"), *deliver("farmer")))
 
@@ -390,13 +408,12 @@ def datapack(data, put, give_string):
         f"execute if items entity @s container.* {has_lunch()} run return fail", *today,
         "execute if score @s family.lunchday = #day family.folk run return fail",
         "scoreboard players operation @s family.lunchday = #day family.folk",
-        "execute store result score #pick family.folk run random value 1..3",
+        f"execute store result score #pick family.folk run random value 1..{len(LUNCH_TO)}",
         *[f"execute if score #pick family.folk matches {i} run return run function {fn}/lunch/{to}"
           for i, to in enumerate(LUNCH_TO, 1)]))
-    where = {"mayor": "by the welcome arch", "farmer": "at the Jelly Meadow", "driver": "at the bus stop"}
     for to in LUNCH_TO:
         put(f"{f}/lunch/{to}.mcfunction", undersea.mcf(
-            f"give @s {lunch(to)}", say("chef", f"Thanks, {{kid}}! Take it to {FOLK[to]['name']} {where[to]}.")))
+            f"give @s {lunch(to)}", say("chef", f"Thanks, {{kid}}! Take it to {FOLK[to]['name']} {FOLK[to]['where']}.")))
 
     # Build: load the area, wait for its entities, then the cafe, pearls and townsfolk (old ones replaced).
     pts = [FOLK[w]["spot"] for w in FOLK] + PEARLS + [cafe(-13, 0, -5), cafe(13, 0, 5)]

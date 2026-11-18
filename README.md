@@ -111,6 +111,23 @@ Original art and sounds for our family Paper server (Minecraft 26.3, Java + Bedr
     - Missing pets, the sign, the glow squid and chimney blocks come back while a kid is nearby.
     - Admin: `/function family:undersea/build_alive` (re-run replaces the pets; it cuts the vent only where the tower is
       still as built).
+  - **Houses** (`houses.py`, preview `previews/houses.png`): something to do in each house, with a sign over each door.
+    - **Clam Bop** (Coconut house): tap Coach Cockle > Play Clam Bop!, then 3, 2, 1, GO: 30 seconds. 8 clams (bone
+      blocks) in the coconut's floor pop open one at a time (glowing pink, bubbles, a pop) and shut again a second or so
+      later, faster towards the end. Tap an open clam (iPad) or click it with either button (PC): 1 bop. Everyone in the
+      coconut plays at once. Each kid's best is kept, the top 5 float on a TOP BOPPERS board in the coconut, and
+      10 bops or more pays 2 Sand Dollars (once a Minecraft day). `/function family:undersea/houses/bop/reset_scores`
+      clears the bests and the board.
+    - **Professor Periwinkle** (Seashell house), among bookshelves: tap for a joke, a true sea fact, or the riddle of the
+      day (3 answer buttons; right pays 2 Sand Dollars once a day, wrong gives a hint). Each kid hears all 24 jokes (and
+      all 24 facts) once, in a scrambled order, before any comes round again. The texts are lists in `houses.py`.
+    - **The clubhouse** (Watermelon house): dried out like the Bubble Cafe behind a wooden door, with a second rind layer
+      where the sea would sit on a 1-thick ceiling (no drips). Empty for the kids to furnish; its sign says
+      "(name me!)".
+    - Coach Cockle and Professor Periwinkle are townsfolk posts like the mayor, and Order Up! lunches go to them too.
+    - Missing clam tap boxes and the board come back while a kid is near the coconut; an open clam left over shuts.
+    - Admin: `/function family:undersea/build_houses` (safe to re-run: it replaces the two townsfolk, the boxes and the
+      board, and places blocks only into water).
 
 ### Paint your own costume
 Any costume (`shark`, `diver`, `angler`, `turtle`, `coral`, `axolotl`, `sponge`, `spongebuddy`) can be hand-painted:
