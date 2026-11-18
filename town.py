@@ -325,7 +325,7 @@ def build():
 # ---------------------------------------------------------------- tidy: clear the reef between and around
 TIDY_MARGIN, TIDY_TOP = 6, 16
 REEF = ["#minecraft:coral_blocks", "#minecraft:corals", "#minecraft:wall_corals", "minecraft:sea_pickle",
-        "minecraft:kelp", "minecraft:kelp_plant", "minecraft:tall_seagrass", "#minecraft:sand", "minecraft:gravel",
+        "minecraft:kelp", "minecraft:kelp_plant", "minecraft:seagrass", "minecraft:tall_seagrass", "#minecraft:sand", "minecraft:gravel",
         "minecraft:sandstone", "minecraft:clay", "minecraft:dirt", "minecraft:magma_block",
         "#minecraft:base_stone_overworld", "minecraft:suspicious_gravel"]   # natural seabed only: never what people build
 
@@ -369,7 +369,7 @@ def datapack(data, put, dim, hub):
     f = f"{data}/data/family/function/undersea"
     put(f"{data}/data/family/tags/block/town_reef.json", {"values": REEF})
     put(f"{data}/data/family/tags/block/town_ground.json",
-        {"values": ["#family:town_reef", "minecraft:water", "minecraft:seagrass"]})
+        {"values": ["#family:town_reef", "minecraft:water"]})
     def fills(positions, only_water=False):
         out, done = [], set()
         for (x, y, z) in sorted(positions, key=lambda p: (p[1], p[2], p[0])):
