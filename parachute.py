@@ -199,17 +199,18 @@ def datapack(data, put, give_string):
 
     me = lambda pred: {"type": "minecraft:entity_properties", "entity": "this", "predicate": pred}
     player = lambda **kw: me({"minecraft:type_specific/player": kw})
-    ref = lambda n: {"type": "minecraft:reference", "name": f"family:parachute/{n}"}
-    fluid = {"type": "minecraft:any_of", "terms": [
-        {"type": "minecraft:location_check", "predicate": {"fluid": {"fluids": f"#minecraft:{t}"}}} for t in ("water", "lava")]}
-    put(f"{p}/in_fluid.json", fluid)                          # at the feet (functions run at @s)
-    put(f"{p}/landed.json", {"type": "minecraft:any_of", "terms": [
-        me({"minecraft:flags": {"is_on_ground": True}}), me({"minecraft:flags": {"is_flying": True}}),
-        me({"minecraft:flags": {"is_swimming": True}}), me({"minecraft:vehicle": {}}), ref("in_fluid")]})
+    # 26.3 has no minecraft:reference condition (a datapack using it stops the server from starting), so the
+    # shared "landed" terms are written out in each predicate.
+    landed = [me({"minecraft:flags": {"is_on_ground": True}}), me({"minecraft:flags": {"is_flying": True}}),
+              me({"minecraft:flags": {"is_swimming": True}}), me({"minecraft:vehicle": {}})] + [
+             {"type": "minecraft:location_check", "predicate": {"fluid": {"fluids": f"#minecraft:{t}"}}}
+             for t in ("water", "lava")]                     # at the feet (functions run at @s)
+    put(f"{p}/landed.json", {"type": "minecraft:any_of", "terms": landed})
     put(f"{p}/can_open.json", {"type": "minecraft:all_of", "terms": [
-        {"type": "minecraft:inverted", "term": ref("landed")}, player(gamemode=["survival", "adventure", "creative"])]})
+        {"type": "minecraft:inverted", "term": {"type": "minecraft:any_of", "terms": landed}},
+        player(gamemode=["survival", "adventure", "creative"])]})
     put(f"{p}/should_close.json", {"type": "minecraft:any_of", "terms": [
-        ref("landed"), player(input={"sneak": True}), player(gamemode=["spectator"])]})
+        *landed, player(input={"sneak": True}), player(gamemode=["spectator"])]})
     put(f"{p}/sneak.json", player(input={"sneak": True}))
     put(f"{p}/jump.json", player(input={"jump": True}))
     put(f"{p}/fall_far.json", me({"minecraft:movement": {"fall_distance": {"min": 4}}}))

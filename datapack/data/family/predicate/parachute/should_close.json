@@ -2,8 +2,54 @@
   "type": "minecraft:any_of",
   "terms": [
     {
-      "type": "minecraft:reference",
-      "name": "family:parachute/landed"
+      "type": "minecraft:entity_properties",
+      "entity": "this",
+      "predicate": {
+        "minecraft:flags": {
+          "is_on_ground": true
+        }
+      }
+    },
+    {
+      "type": "minecraft:entity_properties",
+      "entity": "this",
+      "predicate": {
+        "minecraft:flags": {
+          "is_flying": true
+        }
+      }
+    },
+    {
+      "type": "minecraft:entity_properties",
+      "entity": "this",
+      "predicate": {
+        "minecraft:flags": {
+          "is_swimming": true
+        }
+      }
+    },
+    {
+      "type": "minecraft:entity_properties",
+      "entity": "this",
+      "predicate": {
+        "minecraft:vehicle": {}
+      }
+    },
+    {
+      "type": "minecraft:location_check",
+      "predicate": {
+        "fluid": {
+          "fluids": "#minecraft:water"
+        }
+      }
+    },
+    {
+      "type": "minecraft:location_check",
+      "predicate": {
+        "fluid": {
+          "fluids": "#minecraft:lava"
+        }
+      }
     },
     {
       "type": "minecraft:entity_properties",

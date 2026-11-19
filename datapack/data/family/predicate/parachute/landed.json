@@ -36,8 +36,20 @@
       }
     },
     {
-      "type": "minecraft:reference",
-      "name": "family:parachute/in_fluid"
+      "type": "minecraft:location_check",
+      "predicate": {
+        "fluid": {
+          "fluids": "#minecraft:water"
+        }
+      }
+    },
+    {
+      "type": "minecraft:location_check",
+      "predicate": {
+        "fluid": {
+          "fluids": "#minecraft:lava"
+        }
+      }
     }
   ]
 }
