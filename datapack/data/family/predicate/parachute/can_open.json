@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:all_of",
+  "terms": [
+    {
+      "type": "minecraft:inverted",
+      "term": {
+        "type": "minecraft:reference",
+        "name": "family:parachute/landed"
+      }
+    },
+    {
+      "type": "minecraft:entity_properties",
+      "entity": "this",
+      "predicate": {
+        "minecraft:type_specific/player": {
+          "gamemode": [
+            "survival",
+            "adventure",
+            "creative"
+          ]
+        }
+      }
+    }
+  ]
+}

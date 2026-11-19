@@ -23,6 +23,18 @@ Original art and sounds for our family Paper server (Minecraft 26.3, Java + Bedr
   - PC players see glowing, animated blades and a whack or stab swing; iPads see the blade animate in hand
     (solid colours, no glow at night), a still hotbar picture and the swing speed.
   - Previews: `python3 katana.py` writes `previews/katanas.png` and `previews/katana-sounds-<element>.wav`.
+- **Parachute** (`parachute.py`, preview `previews/parachute.png`): worn on the back in the chest slot, like an
+  elytra (so not together with a costume top). Crafted from 3 wool on top, string at both sides and leather in the
+  bottom middle, or `../give-parachute.sh PLAYER`, or from the console: `execute as PLAYER run function family:give/parachute`.
+  - It opens by itself after a 4-block fall, or early with jump in mid-air, if there are 3 blocks of air below.
+    Crouch folds it (it then stays folded until you land, unless you jump again). It packs itself up on landing,
+    in water and when flying (creative or elytra).
+  - Floating: slow falling, plus a short levitation "brake" whenever you fall faster than 5 blocks/s, until you're
+    under 3 b/s (about one tug every 2 s; the levitation icon blinks then). Slow falling alone settles near 10 b/s.
+  - PC: the canopy is an item display riding the kid; it pops open over 5 ticks. It needs the Skript plugin with
+    `skript/family-parachute.sk` (nothing can be put on a player by command). Without it, PC players see no canopy.
+  - iPad: the worn item's attachable draws the canopy (the datapack swaps the item between `family:parachute` and
+    `family:parachute_open`). Your own canopy shows only in third-person view; everyone else's always shows.
 - **The Undersea** (`undersea.py`, art in `undersea_art.py`): dimension `family:undersea`, vanilla overworld
   terrain with the sea level raised to 100 and only vanilla ocean biomes (Bedrock players can't see custom
   biomes). Everyone there gets conduit power (breathing + underwater sight).
@@ -174,6 +186,7 @@ Any costume (`shark`, `diver`, `angler`, `turtle`, `coral`, `axolotl`, `sponge`,
 | `dist/family-datapack.zip` | `world/datapacks/` (recipes, hit sound, blaster main-hand lock) |
 | `dist/family-drain.zip` | `world/datapacks/` (drain command; rebuild with `python3 drain.py`) |
 | `skript/family-katana.sk` | `plugins/Skript/scripts/` (katana swing arcs; needs the Skript plugin) |
+| `skript/family-parachute.sk` | `plugins/Skript/scripts/` (parachute canopy on PC; needs the Skript plugin) |
 
 Rebuild after editing `art.py` / `sounds.py`: `python3 build.py` (needs Pillow and `oggenc` from vorbis-tools).
 The server links to a specific commit, so a rebuild only goes live once that link and its sha1 are updated.

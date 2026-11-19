@@ -499,6 +499,26 @@
           }
         }
       }
+    ],
+    "minecraft:leather_chestplate": [
+      {
+        "bedrock_identifier": "family:parachute",
+        "model": "family:parachute",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_parachute"
+          }
+        }
+      },
+      {
+        "bedrock_identifier": "family:parachute_open",
+        "model": "family:parachute_open",
+        "bedrock_options": {
+          "icons": {
+            "default": "family_parachute"
+          }
+        }
+      }
     ]
   }
 }

@@ -57,5 +57,10 @@
     "sounds": [
       "family:katana/wind_special"
     ]
+  },
+  "family.parachute_open": {
+    "sounds": [
+      "family:parachute/open"
+    ]
   }
 }

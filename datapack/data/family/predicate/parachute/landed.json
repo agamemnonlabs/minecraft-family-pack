@@ -1,0 +1,43 @@
+{
+  "type": "minecraft:any_of",
+  "terms": [
+    {
+      "type": "minecraft:entity_properties",
+      "entity": "this",
+      "predicate": {
+        "minecraft:flags": {
+          "is_on_ground": true
+        }
+      }
+    },
+    {
+      "type": "minecraft:entity_properties",
+      "entity": "this",
+      "predicate": {
+        "minecraft:flags": {
+          "is_flying": true
+        }
+      }
+    },
+    {
+      "type": "minecraft:entity_properties",
+      "entity": "this",
+      "predicate": {
+        "minecraft:flags": {
+          "is_swimming": true
+        }
+      }
+    },
+    {
+      "type": "minecraft:entity_properties",
+      "entity": "this",
+      "predicate": {
+        "minecraft:vehicle": {}
+      }
+    },
+    {
+      "type": "minecraft:reference",
+      "name": "family:parachute/in_fluid"
+    }
+  ]
+}

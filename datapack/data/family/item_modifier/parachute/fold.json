@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:set_components",
+  "components": {
+    "minecraft:item_model": "family:parachute",
+    "minecraft:equippable": {
+      "slot": "chest",
+      "asset_id": "family:parachute",
+      "equip_sound": "minecraft:item.armor.equip_leather"
+    }
+  }
+}

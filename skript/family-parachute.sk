@@ -1,0 +1,16 @@
+# Family pack: parachute canopy for PC players. Nothing can be put on a player by command (/ride refuses), so
+# when a parachute opens the datapack (family:parachute/open) summons the canopy, an item display tagged
+# family.canopy_new, and tags the player family.chute_mount. This makes the canopy ride them, so it moves with
+# them smoothly. A canopy left without a rider is removed by the datapack on the next tick. iPads can't see item
+# displays; they draw the canopy from the worn item instead.
+function familyMountCanopy(p: player):
+	loop all entities in radius 3 around {_p}:
+		if loop-entity has scoreboard tag "family.canopy_new":
+			remove "family.canopy_new" from scoreboard tags of loop-entity
+			make loop-entity ride {_p}
+
+every 1 tick:
+	loop all players:
+		if loop-player has scoreboard tag "family.chute_mount":
+			remove "family.chute_mount" from scoreboard tags of loop-player
+			familyMountCanopy(loop-player)

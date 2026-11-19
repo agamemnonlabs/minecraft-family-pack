@@ -6,6 +6,7 @@
   dist/foam-blaster.item            -> /give item string, used by ../give-blaster.sh
   dist/undersea.json                -> /give item strings: Bubble Shell + Shark costume
   dist/katanas.json                 -> /give item strings for the elemental katanas, used by ../give-katana.sh
+  dist/parachute.item               -> /give item string for the parachute, used by ../give-parachute.sh
   geyser/custom_mappings/family.json -> Geyser: our items -> custom Bedrock items
 Run: python3 build.py   (needs Pillow and oggenc)"""
 from PIL import Image
@@ -15,11 +16,11 @@ from art import (draw_blaster, saber_hilt, saber_blade, draw_glow_saber, mix, he
                  palette_texture, LIGHTSABERS)
 from katana_art import bedrock_held_frames, FRAMES
 from sounds import swing, VARIANTS
-import undersea, town, wardrobe, katana, townsfolk, race, alive, houses, raid
+import undersea, town, wardrobe, katana, townsfolk, race, alive, houses, raid, parachute
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 JAVA, BEDROCK, DATA, DIST = (os.path.join(ROOT, d) for d in ("java", "bedrock", "datapack", "dist"))
-VERSION = [1, 0, 22]                      # bump for every change shipped to Bedrock (iPads cache by version)
+VERSION = [1, 0, 23]                      # bump for every change shipped to Bedrock (iPads cache by version)
 JAVA_FORMAT, DATA_FORMAT = 97, 121        # resource / data pack formats of Minecraft 26.3
 BEDROCK_HEADER_UUID = "6f1d2b8e-3c47-4a8e-9d2f-5b1a7c0e4f21"
 BEDROCK_MODULE_UUID = "a3c9e5d7-81f2-4b6a-b0e4-2d8f6c1a9e53"
@@ -71,7 +72,7 @@ def make_sounds(dest_dir, prefix):
 
 def build_java():
     shutil.rmtree(JAVA, ignore_errors=True)
-    put(f"{JAVA}/pack.mcmeta", {"pack": {"description": "Family server: foam blaster, lightsabers, katanas, Undersea",
+    put(f"{JAVA}/pack.mcmeta", {"pack": {"description": "Family server: foam blaster, lightsabers, katanas, parachute, Undersea",
                                          "min_format": JAVA_FORMAT, "max_format": 999}})
     draw_blaster(32).resize((64, 64), 0).save(f"{JAVA}/pack.png")
     a = f"{JAVA}/assets"
@@ -118,8 +119,10 @@ def build_java():
         saber_blade(blade, solid_halo=False).save(f"{a}/family/textures/item/{n}_blade.png")
     make_sounds(f"{a}/family/sounds/lightsaber", "swing")
     katana_sounds = katana.java(a, put, HANDHELD_DISPLAY)
+    parachute_sounds = parachute.java(a, put)
     put(f"{a}/minecraft/sounds.json",
-        {HIT_SOUND: {"sounds": [f"family:lightsaber/swing{i}" for i in range(1, len(VARIANTS) + 1)]}, **katana_sounds})
+        {HIT_SOUND: {"sounds": [f"family:lightsaber/swing{i}" for i in range(1, len(VARIANTS) + 1)]}, **katana_sounds,
+         **parachute_sounds})
     undersea.java(a, put)
 
 def bright_saber(blade_hex, hilt_hex):
@@ -147,7 +150,7 @@ def build_bedrock():
     shutil.rmtree(BEDROCK, ignore_errors=True)
     put(f"{BEDROCK}/manifest.json", {
         "format_version": 2,
-        "header": {"name": "Family server pack", "description": "Foam blaster, lightsabers, katanas, Undersea",
+        "header": {"name": "Family server pack", "description": "Foam blaster, lightsabers, katanas, parachute, Undersea",
                    "uuid": BEDROCK_HEADER_UUID, "version": VERSION, "min_engine_version": [1, 21, 0]},
         "modules": [{"type": "resources", "uuid": BEDROCK_MODULE_UUID, "version": VERSION}]})
     draw_blaster(32).resize((128, 128), 0).save(f"{BEDROCK}/pack_icon.png")
@@ -158,6 +161,8 @@ def build_bedrock():
     textures.update(undersea.bedrock(BEDROCK, put))
     katana_icons, katana_sounds = katana.bedrock(BEDROCK, put)
     textures.update(katana_icons)
+    parachute_icons, parachute_sounds = parachute.bedrock(BEDROCK, put)
+    textures.update(parachute_icons)
     for name, img in textures.items():
         img.save(f"{t}/{name}.png")
     put(f"{BEDROCK}/textures/item_texture.json", {"resource_pack_name": "family", "texture_name": "atlas.items",
@@ -251,7 +256,7 @@ def build_bedrock():
     put(f"{BEDROCK}/sounds/sound_definitions.json", {"format_version": "1.14.0", "sound_definitions": {
         HIT_SOUND: {"category": "player", "max_distance": 16.0,
                     "sounds": [f"sounds/family/lightsaber/swing{i}" for i in range(1, len(VARIANTS) + 1)]},
-        **katana_sounds}})
+        **katana_sounds, **parachute_sounds}})
     # No creative_category: Geyser can't turn a creative-menu pick of these back into a Java item,
     # so they'd vanish (and lack the tags that make them work). Kids get them by /give or crafting.
     def item(model, icon):
@@ -265,11 +270,11 @@ def build_bedrock():
                            "minecraft:use_effects": {"speed_multiplier": 1.0}}}],
         "minecraft:diamond_sword": [item(f"family:lightsaber_{c}", f"family_lightsaber_{c}")
                                     for c in LIGHTSABERS] + katana.mappings(),
-        **undersea.mappings()}})
+        **undersea.mappings(), **parachute.mappings()}})
 
 def build_datapack():
     shutil.rmtree(DATA, ignore_errors=True)
-    put(f"{DATA}/pack.mcmeta", {"pack": {"description": "Family server: recipes, lightsaber hit sound, blaster main-hand lock, katanas, Undersea",
+    put(f"{DATA}/pack.mcmeta", {"pack": {"description": "Family server: recipes, lightsaber hit sound, blaster main-hand lock, katanas, parachute, Undersea",
                                          "min_format": DATA_FORMAT, "max_format": 999}})
     d = f"{DATA}/data/family"
     for colour, (_, _, dye) in LIGHTSABERS.items():           # diamond sword + amethyst shard + dye
@@ -314,6 +319,7 @@ def build_datapack():
     alive.datapack(DATA, put)
     houses.datapack(DATA, put, give_string)
     raid.datapack(DATA, put, give_string)
+    parachute.datapack(DATA, put, give_string)
     tags = f"{DATA}/data/minecraft/tags/function"
     put(f"{tags}/load.json", {"values": ["family:undersea/load", "family:undersea/wardrobe/load", "family:katana/load",
                                         "family:undersea/folk/load", "family:undersea/race/load",
@@ -321,7 +327,8 @@ def build_datapack():
                                         "family:undersea/raid/load"]})
     put(f"{tags}/tick.json", {"values": ["family:undersea/tick", "family:undersea/wardrobe/tick", "family:katana/tick",
                                         "family:undersea/race/tick", "family:undersea/alive/tick",
-                                        "family:undersea/houses/tick", "family:undersea/raid/tick"]})
+                                        "family:undersea/houses/tick", "family:undersea/raid/tick",
+                                        "family:parachute/tick"]})
 
 def zipdir(src, dest):
     """Deterministic zip (fixed timestamps, sorted) so rebuilding unchanged content keeps the same sha1."""
@@ -346,6 +353,7 @@ if __name__ == "__main__":
     put(f"{DIST}/foam-blaster.item", give_string("minecraft:crossbow", BLASTER_COMPONENTS) + "\n")
     put(f"{DIST}/undersea.json", undersea.gives(give_string))
     put(f"{DIST}/katanas.json", katana.gives(give_string))
+    put(f"{DIST}/parachute.item", parachute.gives(give_string) + "\n")
     for f in sorted(os.listdir(DIST)):
         b = open(f"{DIST}/{f}", "rb").read()
         print(f"{f}: {len(b)} bytes, sha1 {hashlib.sha1(b).hexdigest()}")

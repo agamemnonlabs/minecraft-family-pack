@@ -6,6 +6,7 @@
     "family:undersea/race/tick",
     "family:undersea/alive/tick",
     "family:undersea/houses/tick",
-    "family:undersea/raid/tick"
+    "family:undersea/raid/tick",
+    "family:parachute/tick"
   ]
 }

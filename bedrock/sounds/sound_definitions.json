@@ -77,6 +77,13 @@
       "sounds": [
         "sounds/family/katana/wind_special"
       ]
+    },
+    "family.parachute_open": {
+      "category": "player",
+      "max_distance": 24.0,
+      "sounds": [
+        "sounds/family/parachute/open"
+      ]
     }
   }
 }

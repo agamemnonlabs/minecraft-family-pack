@@ -136,6 +136,9 @@
     },
     "family_katana_wind": {
       "textures": "textures/items/family_katana_wind"
+    },
+    "family_parachute": {
+      "textures": "textures/items/family_parachute"
     }
   }
 }

@@ -1,0 +1,31 @@
+{
+  "type": "minecraft:any_of",
+  "terms": [
+    {
+      "type": "minecraft:reference",
+      "name": "family:parachute/landed"
+    },
+    {
+      "type": "minecraft:entity_properties",
+      "entity": "this",
+      "predicate": {
+        "minecraft:type_specific/player": {
+          "input": {
+            "sneak": true
+          }
+        }
+      }
+    },
+    {
+      "type": "minecraft:entity_properties",
+      "entity": "this",
+      "predicate": {
+        "minecraft:type_specific/player": {
+          "gamemode": [
+            "spectator"
+          ]
+        }
+      }
+    }
+  ]
+}

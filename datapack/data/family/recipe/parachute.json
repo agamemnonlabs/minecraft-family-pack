@@ -1,0 +1,46 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "pattern": [
+    "WWW",
+    "S S",
+    " L "
+  ],
+  "key": {
+    "W": "#minecraft:wool",
+    "S": "minecraft:string",
+    "L": "minecraft:leather"
+  },
+  "result": {
+    "id": "minecraft:leather_chestplate",
+    "components": {
+      "minecraft:item_model": "family:parachute",
+      "minecraft:custom_name": {
+        "text": "Parachute",
+        "color": "#FF9A3C",
+        "italic": false
+      },
+      "minecraft:lore": [
+        {
+          "text": "Wear it on your back. Opens when you fall,",
+          "color": "gray",
+          "italic": false
+        },
+        {
+          "text": "or jump in the air. Crouch to fold it.",
+          "color": "gray",
+          "italic": false
+        }
+      ],
+      "minecraft:equippable": {
+        "slot": "chest",
+        "asset_id": "family:parachute",
+        "equip_sound": "minecraft:item.armor.equip_leather"
+      },
+      "minecraft:unbreakable": {},
+      "minecraft:custom_data": {
+        "family_parachute": true
+      }
+    }
+  }
+}
